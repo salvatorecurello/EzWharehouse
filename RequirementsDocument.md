@@ -50,7 +50,16 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Stakeholder x..     |             | 
+|   Administrator     | Handles economic resources for the company mantains relationship with suppliers| 
+|   Quality Office     |Offices that perform quality check on new items             | 
+|   Production Organization Unit     |Area that requests product to warehouse to build something             | 
+|   Packaging OU    |Area that packages items for shipping              | 
+|   Suppliers     |Who supplies the items requested by company              | 
+|   Manager DataBase     |Who manages the database              | 
+|   Warehouse Worker    |Person/Machine that moves items around the warehouse             | 
+|   Database   |Location to store informations about items, supplier and orders             | 
+|   Internal Network     |Network that allows to link different internal organization with warehouse | 
+
 
 # Context Diagram and interfaces
 
