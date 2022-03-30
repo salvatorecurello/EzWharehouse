@@ -19,17 +19,27 @@ Version: 0.0
 	+ [Context Diagram](#context-diagram)
 	+ [Interfaces](#interfaces) 
 	
+- [Contents](#contents)
+- [Informal description](#informal-description)
+- [Stakeholders](#stakeholders)
+- [Context Diagram and interfaces](#context-diagram-and-interfaces)
+	- [Context Diagram](#context-diagram)
+	- [Interfaces](#interfaces)
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
-	+ [Functional Requirements](#functional-requirements)
-	+ [Non functional requirements](#non-functional-requirements)
+	- [Functional Requirements](#functional-requirements)
+	- [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
-	+ [Use case diagram](#use-case-diagram)
-	+ [Use cases](#use-cases)
-    	+ [Relevant scenarios](#relevant-scenarios)
+	- [Use case diagram](#use-case-diagram)
+		- [Use case 1, UC1](#use-case-1-uc1)
+				- [Scenario 1.1](#scenario-11)
+				- [Scenario 1.2](#scenario-12)
+				- [Scenario 1.x](#scenario-1x)
+		- [Use case 2, UC2](#use-case-2-uc2)
+		- [Use case x, UCx](#use-case-x-ucx)
 - [Glossary](#glossary)
-- [System design](#system-design)
-- [Deployment diagram](#deployment-diagram)
+- [System Design](#system-design)
+- [Deployment Diagram](#deployment-diagram)
 
 # Informal description
 Medium companies and retailers need a simple application to manage the relationship with suppliers and the inventory of physical items stocked in a physical warehouse. 
@@ -59,23 +69,23 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Warehouse Worker    |Person/Machine that moves items around the warehouse             | 
 |   Database   |Location to store informations about items, supplier and orders             | 
 |   Internal Network     |Network that allows to link different internal organization with warehouse | 
+|   Warehouse Manager    | Manages the warehouse, places orders |
 
 
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
-\<actors are a subset of stakeholders>
+![](./images/context.png)
 
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|   Actor x..     |  |  |
+| Suppliers | GUI | Keyboard+Mouse |
+| Manager Warehouse | GUI | Keyboard+Mouse/Touchscreen |
+| Warehouse Worker | GUI | Touchscreen/Barcode scanner |
+| Quality Assurance | GUI | Keyboard+Mouse/Touchscreen |
 
 # Stories and personas
 Marika is the manager of the warehouse, periodically she supervises the availability of items and once an item has low availability, she analyzes the list of the suppliers who provide this item and she performs an order to the one who is the most convenient for the company.
