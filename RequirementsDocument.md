@@ -78,11 +78,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Actor x..     |  |  |
 
 # Stories and personas
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
+Marika is the manager of the warehouse, periodically she supervises the availability of items and once an item has low availability, she analyzes the list of the suppliers who provide this item and she performs an order to the one who is the most convenient for the company.
 
-\<Persona is-an-instance-of actor>
+Matteo is a warehouse worker, his job is to receive notifications from the application to move items and to confirm their movement. 
 
-\<stories will be formalized later as scenarios in use cases>
+Giacomo is dedicated to test the quality of the items received from the suppliers, picks random items to check their quality and approves/rejects the transfer.
 
 
 # Functional and non functional requirements
