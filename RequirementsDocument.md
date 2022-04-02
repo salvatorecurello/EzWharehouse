@@ -88,20 +88,27 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Quality Assurance | GUI | Keyboard+Mouse/Touchscreen |
 
 # Stories and personas
-Marika is the manager of the warehouse, periodically she supervises the availability of items and once an item has low availability, she analyzes the list of the suppliers who provide this item and she performs an order to the one who is the most convenient for the company.
 
-Matteo is a warehouse worker, his job is to receive notifications from the application to move items and to confirm their movement. 
+- Marika is the manager of the warehouse, periodically she supervises the availability of items and once an item has low availability, she analyzes the list of the suppliers who provide this item and she performs an order to the one who is the most convenient for the company.
 
-Giacomo is dedicated to test the quality of the items received from the suppliers, picks random items to check their quality and approves/rejects the transfer.
+At the end of every day, Marika opens her PC and checks whether to buy a product or not. She wants to place an order quickly and go back home.
+Marika decides to buy products that are available in limited quantities by looking at the quantities present and taking into consideration a threshold of necessity for the company. Furthermore, based on the quantity requested by the company, she can decide which supplier to contact to get the best possible discount on the purchase.
+Marika is not interested in staying at the office long, so she leaves the work to come back home.
+
+
+- Matteo is a warehouse employee, his job is to receive notifications from the application to move items and to confirm their movement. 
+
+Every day, he is called upon to respond to requests from an organizational unit within the company. His job will therefore be to recieve a request, move the requested item around, scan the barcode of the item and then update who has received this product. At the end of the day, Matteo can relax because he can log out of the application quickly enough and then happily return home.
+
+
+- Giacomo is dedicated to test the quality of the items received from the suppliers, picks random items to check their quality and approves/rejects the transfer.
+
+Every day, including holidays, Giacomo applies quality control processes for his company, to guarantee the highest quality for internal products. Sometimes he even decides to take the products home with him to finish his work in the most correct way possible by filling in the supplier's card on his PC and thus informing the administrator about its reliability. The work he does is very tiring but has its advantages with the possibility of giving more space to his family.
 
 
 # Functional and non functional requirements
 
 ## Functional Requirements
-
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
 
 | ID        | Description  |
 | ------------- |:-------------:| 
@@ -146,8 +153,6 @@ Giacomo is dedicated to test the quality of the items received from the supplier
 |  FR7 | Manage Employees |
 
 ## Non Functional Requirements
-
-\<Describe constraints on functional requirements>
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
