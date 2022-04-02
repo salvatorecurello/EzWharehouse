@@ -105,9 +105,45 @@ Giacomo is dedicated to test the quality of the items received from the supplier
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
-| FRx..  | | 
+|  FR1 | Notification when an item is in quantity lower than the threshold |
+|  FR1.1 | Show list of suppliers for product |
+|  FR2 | Manage Order |
+|  FR2.1 | retrieve catalog |
+|  FR2.2 | request order |
+|  FR2.2.1 | check for free space |
+|  FR2.2.2 | notify accounting for payment |
+|  FR2.3 | notify warehouse manager if order is finalized |
+|  FR3 | Manage Quality Check Information |
+|  FR3.1 | Notify warehouse manager when item arrives at quality check |
+|  FR3.2 | Add result about quality check |
+|  FR3.2.1 | Add comment about result |
+|  FR3.3 | Notify warehouse manager when item leaves quality check |
+|  FR3.4 | Issue a reorder for product |
+|  FR4 | Manage Products |
+|  FR4.1 | Manage ingoing items |
+|  FR4.1.1 | Define where to place item |
+|  FR4.1.2 | Notify employee for transfer |
+|  FR4.1.3 | Notify warehouse manager when transfer is complete |
+|  FR4.1.4 | Generate barcode for item |
+|  FR4.2 | Manage outgoing item |
+|  FR4.2.1 | Find an item in storage |
+|  FR4.2.2 | Notify employee for transfer |
+|  FR4.2.3 | Complete transfer with code scan |
+|  FR4.2.4 | Reject order |
+|  FR4.3 | Change product information |
+|  FR4.3.1 | Change quantity available of product |
+|  FR4.3.2 | Change the supplier providing the product |
+|  FR4.3.3 | Add new product to DB |
+|  FR4.3.4 | Remove product code from DB |
+|  FR4.3.5 | Update available warehouse space |
+|  FR5 | Manage Suppliers |
+|  FR5.1 | Retrieve list of suppliers |
+|  FR5.2 | Add/Remove suppliers |
+|  FR5.3 | Manage suppliers information |
+|  FR5.3.1 | Change supplier name |
+|  FR5.3.2 | Modify supplier's P_Iva |
+|  FR6 | Authentication and authorization |
+|  FR7 | Manage Employees |
 
 ## Non Functional Requirements
 
@@ -115,10 +151,11 @@ Giacomo is dedicated to test the quality of the items received from the supplier
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
-| NFRx .. | | | | 
+|  NFR1     | Usability | employees are able to use the app after 30 minutes of training; warehouse managers need 1 hour training | All FRs |
+|  NFR2     | Privacy | items locations in warehouse and suppliers information and prices should not be disclosed | FR2, FR4, FR5 |
+|  NFR3     | Performance | All internal functions should complete in less than 0.5s | FR1, FR3, FR4, FR6, FR7 |
+|  NFR4     | Security | Access only to authorized personnel | All FRs |
+|  NFR5     | Domain | Generated barcodes should be unique and 15 digits long | FR4 |
 
 
 # Use case diagram and use cases
