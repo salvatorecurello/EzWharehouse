@@ -112,22 +112,24 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1 | Notification when an item is in quantity lower than the threshold |
-|  FR1.1 | Show list of suppliers for product |
+|  FR1 | Manage Employees |
+|  FR1.1 | Create new account |
+|  FR1.2 | Read account |
+|  FR1.3 | Update account |
+|  FR1.4 | Delete account |
 |  FR2 | Manage Order |
-|  FR2.1 | Retrieve catalog |
+|  FR2.1 | Show list of suppliers for item |
 |  FR2.2 | Send order request to accounting |
 |  FR2.3 | Check for free space |
 |  FR2.4 | Update order |
 |  FR3 | Manage Quality Check Information |
-|  FR3.1 | Update order status |
-|  FR3.2 | Add quality check result and comment |
-|  FR3.3 | Issue a reorder for product |
+|  FR3.1 | Add quality check result and comment |
+|  FR3.2 | Issue a reorder for product |
 |  FR4 | Manage Products |
 |  FR4.1 | Find item |
 |  FR4.2 | Find space for incoming item |
 |  FR4.3 | Notify employee for transfer |
-|  FR4.4 | Confirm transfer and notify manager |
+|  FR4.4 | Confirm transfer |
 |  FR4.5 | Generate barcode |
 |  FR4.6 | Reject order |
 |  FR4.7 | Change product info |
@@ -140,10 +142,8 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR5.3 | Remove supplier |
 |  FR5.4 | Manage suppliers information |
 |  FR6 | Authentication and authorization |
-|  FR6.1 | Check user info |
-|  FR7 | Manage Employees |
-|  FR7.1 | Generate account for new employee |
-|  FR7.2 | Delete account for old employees |
+|  FR6.1 | Login |
+|  FR6.2 | Logout |
 
 ## Non Functional Requirements
 
