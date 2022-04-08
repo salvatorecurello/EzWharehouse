@@ -70,6 +70,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Database   |Location to store informations about items, supplier and orders             | 
 |   Internal Network     |Network that allows to link different internal organization with warehouse | 
 |   Warehouse Manager    | Manages the warehouse, places orders |
+|   Accounting   | Manages payments |
 
 
 # Context Diagram and interfaces
@@ -82,10 +83,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-| Suppliers | GUI | Keyboard+Mouse |
+| Suppliers | E-mail | Keyboard+Mouse |
 | Manager Warehouse | GUI | Keyboard+Mouse/Touchscreen |
 | Warehouse Worker | GUI | Touchscreen/Barcode scanner |
 | Quality Assurance | GUI | Keyboard+Mouse/Touchscreen |
+| Accounting | E-mail | Keyboard+Mouse |
 
 # Stories and personas
 
@@ -160,10 +162,10 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 
 ## Use case diagram
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+
+![](./images/usecase.png)
 
 
-\<next describe here each use case in the UCD>
 ### Use case 1, UC1
 | Actors Involved        |  |
 | ------------- |:-------------:| 
