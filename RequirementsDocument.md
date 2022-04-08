@@ -166,43 +166,408 @@ Every day, including holidays, Giacomo applies quality control processes for his
 ![](./images/usecase.png)
 
 
-### Use case 1, UC1
-| Actors Involved        |  |
+### Use case 1, Manage Employees
+| Actors Involved        | Administrator  |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Precondition     | Administrator A logged in  |
+|  Post condition     | Account U for Employee E exists |
+|  Nominal Scenario     | Administrator A creates (if not existing) a new account for E |
+|  Variants     |  U exist already, issue warning|
 
 ##### Scenario 1.1 
 
-\<describe here scenarios instances of UC1>
+| Scenario  |  Create new account employee | 
+| ----------------- |:-----------:|
+|   Precondition     | Administrator A is logged in | 
+|		      | Account U of Employee E does not exist |
+|   Post condition     | Account U exists | 
+|   Step#   | Description   | 
+|   1   | A defines the credentials of the new Account U  | 
+|   2   | A selects the role for the new account U  |
+|   3   | A confirm the inserted data |
+|   4   | Account U is added in the system |
 
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
-| Scenario 1.1 | |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
-| Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
 
 ##### Scenario 1.2
 
-##### Scenario 1.x
+| Scenario  |  Delete account employee | 
+| ----------------- |:-----------:|
+|   Precondition     | Administrator A is logged in | 
+|		      | Account U of Employee E exists |
+|   Post condition     | Account U does not exist | 
+|   Step#   | Description   | 
+|   1   | A selects Account U  | 
+|   2   | A deletes account U  |
+|   3   | Account U is deleted in the system |
 
-### Use case 2, UC2
-..
+##### Scenario 1.3
 
-### Use case x, UCx
-..
+| Scenario  |  Update account employee | 
+| ----------------- |:-----------:|
+|   Precondition     | Administrator A is logged in | 
+|		      | Account U of Employee E exists |
+|   Post condition     | Account U.role updated | 
+|   Step#   | Description   | 
+|   1   | A selects Account U  | 
+|   2   | A select which field to update  |
+|   3   | A insert the new value |
+|   4   | The account U of employee E is modified |
+
+##### Scenario 1.4
+
+| Scenario  |  Read account employee | 
+| ----------------- |:-----------:|
+|   Precondition     | Administrator A is logged in | 
+|		      | Account U of Employee E exists |
+|   Post condition     | Account U is shown | 
+|   Step#   | Description   | 
+|   1   | A selects Account U  | 
+|   2   | A asks for U information  |
+|   3   | The system show the information related to account U |
+
+##### Scenario 1.5
+
+| Scenario  |  Search an account | 
+| ----------------- |:-----------:|
+|   Precondition     | Administrator A is logged in | 
+|		      | Account U of Employee E exists |
+|   Post condition     | Account U is shown | 
+|   Step#   | Description   | 
+|   1   | A insert rule to search Account U  |  
+|   2   | System show the result |
+
+### Use case 2, Manage Order
+
+| Actors Involved        | Manager  |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in  |
+|  Post condition     |  |
+|  Nominal Scenario     | Manager creates new order request for item I. Manager sends order request to accounting |
+|  Variants     | Creation of order, item I does not exist, issue warning |
+|| Update order O, order does not exist, issue warning |
+|| Show list supplier of item I, item I does not exist, issue warning |
+
+##### Scenario 2.1
+
+| Scenario  | Retrieve catalog | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+| 			| Supplier S exists |
+|   Post condition     | Catalog C of supplier S is shown | 
+|   Step#   | Description   | 
+|   1   | Manager M select supplier S | 
+|   2   | The system shows Catalog C of supplier S  (ProductID, ProductName, ProductDescription, ProductPrice) |
+
+
+##### Scenario 2.2
+
+| Scenario  | Send order request to accounting  | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|   Post condition     | Order request R is sent to accounting | 
+|   Step#   | Description   | 
+|   1   | Manager M creates new order request R| 
+|   2   | M insert item.id and item.price and quantity in the request |
+|   3   | M confirm the summary of the order request R |
+|  4    | The system send R to accounting |
+
+##### Scenario 2.3
+
+| Scenario  | Check for free space | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|   Post condition     | SpaceAvailable is shown | 
+|   Step#   | Description   | 
+|   1   | Manager M asks for SpaceAvailable | 
+|   2   | The system shows SpaceAvailable |
+
+##### Scenario 2.4
+
+| Scenario  | Update order | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Order O exist |
+|   Post condition     | Order O is updated | 
+|   Step#   | Description   | 
+|   1   | Manager M select order O | 
+|   2   | M insert new values in order O fields |
+|   3   | Order O is updated|
+
+##### Scenario 2.5
+
+| Scenario  | Show list of suppliers for item | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | List of supplier L exist |
+|		     | item I exist |
+|   Post condition     | List L of supplier of item I is shown | 
+|   Step#   | Description   | 
+|   1   | Manager M select item I | 
+|   2   | M select item.L |
+|   3   | The system show L to M |
+
+### Use case 3, Manage Quality Check Information 
+
+| Actors Involved        | Employee  |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E of quality check office is logged in  |
+|  Post condition     | Quality check result and comment recorded in the system |
+|  Nominal Scenario     | Employee E of quality check area performs a test on item I and adds the result of the test together with a comment. |
+|  Variants     |  add quality check result of item I, item I does not exist, issue warning|
+|  Exceptions     | \<exceptions, errors > |
+
+##### Scenario 3.1
+
+| Scenario  | Add quality check result and comment  | 
+| ----------------- |:-----------:|
+|   Precondition     | Employee E of quality office is logged in | 
+|		     | item I exist |
+|   Post condition     | Quality check result QC of item I is recorded   | 
+|   Step#   | Description   | 
+|   1   | Employee E select item I | 
+|   2   | E insert QC |
+|   3   | E insert comment of quality check |
+|   4   | Quality check result and comment added in the system |
+
+##### Scenario 3.2
+
+| Scenario  | Issue a reorder for product   | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		     | Order O exist |
+|		     | items I exist |
+|		     | I.TextResult of Order O failed |
+|   Post condition     | Notification to accounting sent  | 
+|   Step#   | Description   | 
+|   1   | Manager M select O | 
+|   2   | Manager M notify accounting to ask for a refund of order O |
+|   3   | Notification sent to accounting |
+
+### Use case 4, Manage Products
+
+| Actors Involved        |  Employee, Manager |
+| ------------- |:-------------:| 
+|  Precondition     |  User U logged in  |
+|  Post condition     |  |
+|  Nominal Scenario     |  Employee looks for the place of a certain item. Manager add, delete or update an item |
+|  Variants     |  Add new item, the item already exists, Manager modify only the fields|
+|| Employee asks for the place of the item, item does not exist, issue warning |
+
+##### Scenario 4.1
+
+| Scenario  | Find item | 
+| ----------------- |:-----------:|
+|   Precondition     | Item I exist |
+|		      | Employee E is logged in|
+|   Post condition     | Place P is show  |
+|   Step#   | Description   | 
+|   1   | E Select item I  |
+|   2   | E Select I.P  |  
+|   3   | Place P of item I is shown |
+
+##### Scenario 4.2
+
+| Scenario  | Find space for incoming item | 
+| ----------------- |:-----------:|
+|   Precondition     | Item I is arrived | 
+|		      | Employee E is logged in |
+|		      | SpaceAvailable>=I.size |
+|   Post condition     | Place P is found  |
+|   Step#   | Description   | 
+|   1   | Employee E select item I  |
+|   2   | Select “Find Space” |
+|   3   | First available place P is selected by the system |  
+|   4   | Place P is linked to I |
+
+##### Scenario 4.3
+
+| Scenario  | Notify employee for transfer | 
+| ----------------- |:-----------:|
+|   Precondition     | OU ordered item I | 
+|		      | Item I is available | 
+|   Post condition     | Notification sent to employee E| 
+|   Step#   | Description   | 
+|   1   | OU create request of transfer  | 
+|   2   | OU insert item in the request |  
+|   3   | Notification of request sent |
+
+##### Scenario 4.4
+
+| Scenario  | Confirm transfer and notify manager  | 
+| ----------------- |:-----------:|
+|   Precondition     | Employee E is logged in |  
+|   Post condition     | Notification transfer complete sent | 
+|   Step#   | Description   | 
+|   1   | Employee E moves item I | 
+|   2   | Employee E confirm transfer |
+|   3   | The system sent notification to the Manager  |
+
+##### Scenario 4.5
+
+| Scenario | Add barcode |
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|       | Order for item I is placed | 
+|   Post condition     | Barcode is added | 
+|   Step#   | Description   | 
+|   1   | Order is confirmed | 
+|   2   | M add Barcode|
+
+##### Scenario 4.6
+
+| Scenario | Reject order |
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|       | Organization Unit OU placed order O for item I | 
+|   Post condition     | Order O reject | 
+|   Step#   | Description   | 
+|   1   | M select order O | 
+|   2   | M select “reject order” |
+|   3   | Order O is reject |
+|   4   | The system sent a notification to OU |
+
+##### Scenario 4.7
+
+| Scenario  |  Change product info  | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Item I exist |
+|   Post condition     | Info of item I is updated | 
+|   Step#   | Description   | 
+|   1   | Manager M select item I | 
+|   2   | M updates fields of item I |
+|   4   | Info of item I are updated  |
+
+##### Scenario 4.8
+
+| Scenario  | Add product | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Item I does not exists | 
+|   Post condition     | Item I exists | 
+|   Step#   | Description   | 
+|   1   | M creates item I  | 
+|   2   | M populate item I fields |
+|   3   | I is recorded in the system |
+
+##### Scenario 4.9
+
+| Scenario  |  Remove product | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Item I exists | 
+|   Post condition     | Item I does not exists | 
+|   Step#   | Description   | 
+|   1   | M selects item I  | 
+|   2   | M deleted item I |
+|   3   | I is deleted in the system |
+
+##### Scenario 4.10
+
+| Scenario  | Update available warehouse space  | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|   Post condition     | the space available SpaceAvailable is updated | 
+|   Step#   | Description   | 
+|   1   | M select SpaceAvailable |
+|   2   | M insert new value of SpaceAvailable  | 
+|   3   | New value of SpaceAvailable updated |
+
+##### Scenario 4.11
+
+| Scenario  | Retrieve list of items | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|   Post condition     | List of items L is shown | 
+|   Step#   | Description   | 
+|   1   | Manager M asks for L | 
+|   2   | The system shows L (ProductID, ProductName, ProductDescription, ProductPosition, ProductSupplier) |
+
+
+### Use case 5, Manage Suppliers
+| Actors Involved        | Manager  |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in |
+|  Post condition     |  |
+|  Nominal Scenario     | Manager M retrieve the list with all suppliers. Manager M add, delete and update information about suppliers |
+|  Variants     |  Add new Supplier, supplier exist, issue warning|
+|| Manage a supplier informations, supplier does not exist, issue warning|
+
+##### Scenario 5.1
+
+| Scenario  | Retrieve the list of suppliers | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|   Post condition     | List L of supplier is shown | 
+|   Step#   | Description   | 
+|   1   | Manager M asks for List L | 
+|   2   | The system shows L |
+
+##### Scenario 5.2
+
+| Scenario  | Add supplier | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Supplier S does not exists |
+|   Post condition     | Supplier S exist | 
+|   Step#   | Description   | 
+|   1   | M inputs the supplier informations (name, surname, P_Iva, Ragione Sociale)   | 
+|   2   | S is added |
+
+##### Scenario 5.3
+
+| Scenario  | Remove supplier | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Supplier S exists |
+|   Post condition     | Supplier S does not exist | 
+|   Step#   | Description   | 
+|   1   | M selects supplier S  | 
+|   2   | M deletes supplier S |
+|   2   | S is deleted from the system  |
+
+##### Scenario 5.4
+
+| Scenario  | Manage supplier informations | 
+| ----------------- |:-----------:|
+|   Precondition     | Manager M is logged in | 
+|		      | Supplier S exists |
+|   Post condition     | Supplier S updated | 
+|   Step#   | Description   | 
+|   1   | M select supplier S  | 
+|   2   | M modifies information of S |
+|   3   | S is updated |
+
+### Use case 6, Authenticate and Authorize
+| Actors Involved        | Administrator, Employee, Manager |
+| ------------- |:-------------:| 
+|  Precondition     |  |
+|  Post condition     |  |
+|  Nominal Scenario     | Login: user enters credentials, system checks credentials, user is authenticated |
+|  Variants     |  Login, credentials wrong, user not authenticated |
+|| Logout |
+
+
+##### Scenario 6.1
+
+| Scenario  |  Login | 
+| ----------------- |:-----------:|
+|   Precondition     | Account for user U (Administrator, Employee, Manager) existing |  
+|   Post condition     | U logged in | 
+|   Step#   | Description   | 
+|   1   | U insert his ID  | 
+|   2   | U insert his password  |
+|   3   | U logged in |
+
+##### Scenario 6.2
+
+| Scenario  |  Logout | 
+| ----------------- |:-----------:|
+|   Precondition     | User U logged in|  
+|   Post condition     | U logged out | 
+|   Step#   | Description   | 
+|   1   | U logs out  | 
+|   2   | The system show the login page  |
 
 
 
