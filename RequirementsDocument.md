@@ -314,7 +314,6 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  Post condition     | Quality check result and comment recorded in the system |
 |  Nominal Scenario     | Employee E of quality check area performs a test on item I and adds the result of the test together with a comment. |
 |  Variants     |  add quality check result of item I, item I does not exist, issue warning|
-|  Exceptions     | \<exceptions, errors > |
 
 ##### Scenario 3.1
 
@@ -483,6 +482,19 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   1   | Manager M asks for L | 
 |   2   | The system shows L (ProductID, ProductName, ProductDescription, ProductPosition, ProductSupplier) |
 
+##### Scenario 4.12
+
+| Scenario  | Place internal order | 
+| ----------------- |:-----------:|
+|   Precondition     | Organizational Unit OU is logged in | 
+|		             | item I exist |
+|   Post condition     | Internal Order OI is placed | 
+|   Step#   | Description   | 
+|   1   | OU creates a new internal order OI |
+|   2   | OU select item I | 
+|   3   | OU insert quantity <= item.quantity |
+|   4   | OU confirm the request |
+|   5   | OI is placed |
 
 ### Use case 5, Manage Suppliers
 | Actors Involved        | Manager  |
