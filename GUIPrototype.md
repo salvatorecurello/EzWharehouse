@@ -63,6 +63,19 @@ Then the system aswers with the list of suppliers that supplied the item choosen
 ![](GUI_Images/Manager/SuppliersItem1.png)
 
 ### Use case 3, Manage Quality Check Information 
+An Employee with quality checker role in the company can assign comment or result about the process of quality made for the set of products. All the Employees can see this page:
+![](GUI_Images/Employee/Product.png)
+For the role of quality checker, an Employee can set informations thanks to menu that it's possible to open with right key on the single set of item
+![](GUI_Images/Employee/MenuProduct.png)
+The Quality Checker Employee select the menu about 'Add Comment QC' and the window will show this screen
+![](GUI_Images/Employee/Quality1.png)
+Finally, Quality Checker Employee can apply the comment with 'Save' button or to select 'Turn Back' button to return to initial page. In particular, if the Employee selects 'Save' button, the system will show an alert to confirm the changes:
+![](GUI_Images/Employee/Quality2.png)
+
+Manager can also sent a request to refund an order to accounting. To make this, he/she accesses to system in the screen about orders and to select the order to refund. Then he/she can click on 'Create New Request' and, in this case, the system understands that's a refund question to accounting and sends an alert to confirm this
+![](GUI_Images/Manager/OrderSelected.png)
+![](GUI_Images/Manager/RefundAlert.png)
+
 ### Use case 4, Manage Products
 ### Use case 5, Manage Suppliers
 Manager can see informations about suppliers with the suppliers screen
