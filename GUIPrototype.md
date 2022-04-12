@@ -65,11 +65,23 @@ Then the system aswers with the list of suppliers that supplied the item choosen
 ### Use case 3, Manage Quality Check Information 
 ### Use case 4, Manage Products
 ### Use case 5, Manage Suppliers
+Manager can see informations about suppliers with the suppliers screen
+![](GUI_Images/Manager/Suppliers.png)
 
+On this page, he/she can make some operations such as add a new supplier, delete supplier or update a supplier. First operation allows to Manager to add a new supplier with vary informations; in particular he/she have to select 'add supplier' button
+![](GUI_Images/Manager/AddSupplier1.png)
+After to have inserted these informations, the window will show an alert where to confirm the modification on the supplier list
+![](GUI_Images/Manager/AddSupplier2.png)
 
+If the Manager wants, he/she can also delete a supplier. To make this, he/she can select the supplier and presses 'Remove Supplier' button
+![](GUI_Images/Manager/RemoveSupplier0.png)
+After this operation, the window will show an alert
+![](GUI_Images/Manager/RemoveSupplier1.png)
 
-
-
+Finally, she/he can also update supplier's informations with 'Update Supplier' button. It's need to select the supplier to update and to press on the button
+![](GUI_Images/Manager/UpdateSupplier.png)
+In the last, the window will show an alert about the update
+![](GUI_Images/Manager/UpdateSupplier1.png)
 
 ### Use case 6, Authenticate and Authorize
 The user can insert his identifier and the password as shown in this page.
