@@ -310,25 +310,24 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 ### Use case 3, Manage Quality Check Information 
 
-| Actors Involved        | Employee  |
+| Actors Involved        | Quality check employee  |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E of quality check office is logged in  |
+|  Precondition     | Quality check employee QE of quality check office is logged in  |
 |  Post condition     | Quality check result and comment recorded in the system |
-|  Nominal Scenario     | Employee E of quality check area performs a test on item I and adds the result of the test together with a comment. |
+|  Nominal Scenario     | Quality check employee QE of quality check area performs a test on item I and adds the result of the test together with a comment. |
 |  Variants     |  add quality check result of item I, item I does not exist, issue warning|
-|  Exceptions     | \<exceptions, errors > |
 
 ##### Scenario 3.1
 
 | Scenario  | Add quality check result and comment  | 
 | ----------------- |:-----------:|
-|   Precondition     | Employee E of quality office is logged in | 
+|   Precondition     | Quality check employee QE of quality office is logged in | 
 |		     | item I exist |
 |   Post condition     | Quality check result QC of item I is recorded   | 
 |   Step#   | Description   | 
-|   1   | Employee E select item I | 
-|   2   | E insert QC |
-|   3   | E insert comment of quality check |
+|   1   | Quality check employee QE select item I | 
+|   2   | QE insert QC |
+|   3   | QE insert comment of quality check |
 |   4   | Quality check result and comment added in the system |
 
 ##### Scenario 3.2
@@ -347,24 +346,24 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 ### Use case 4, Manage Products
 
-| Actors Involved        |  Employee, Manager |
+| Actors Involved        |  Warehouse worker, Manager |
 | ------------- |:-------------:| 
 |  Precondition     |  User U logged in  |
 |  Post condition     |  |
-|  Nominal Scenario     |  Employee looks for the place of a certain item. Manager add, delete or update an item |
+|  Nominal Scenario     |  Warehouse worker looks for the place of a certain item. Manager add, delete or update an item |
 |  Variants     |  Add new item, the item already exists, Manager modify only the fields|
-|| Employee asks for the place of the item, item does not exist, issue warning |
+|| Warehouse worker asks for the place of the item, item does not exist, issue warning |
 
 ##### Scenario 4.1
 
 | Scenario  | Find item | 
 | ----------------- |:-----------:|
 |   Precondition     | Item I exist |
-|		      | Employee E is logged in|
+|		      | Warehouse worker W is logged in|
 |   Post condition     | Place P is show  |
 |   Step#   | Description   | 
-|   1   | E Select item I  |
-|   2   | E Select I.P  |  
+|   1   | W Select item I  |
+|   2   | W Select I.P  |  
 |   3   | Place P of item I is shown |
 
 ##### Scenario 4.2
@@ -372,36 +371,36 @@ Every day, including holidays, Giacomo applies quality control processes for his
 | Scenario  | Find space for incoming item | 
 | ----------------- |:-----------:|
 |   Precondition     | Item I is arrived | 
-|		      | Employee E is logged in |
+|		      | Warehouse worker W is logged in |
 |		      | SpaceAvailable>=I.size |
 |   Post condition     | Place P is found  |
 |   Step#   | Description   | 
-|   1   | Employee E select item I  |
+|   1   | W select item I  |
 |   2   | Select “Find Space” |
 |   3   | First available place P is selected by the system |  
 |   4   | Place P is linked to I |
 
 ##### Scenario 4.3
 
-| Scenario  | Notify employee for transfer | 
+| Scenario  | Notify Warehouse worker for transfer | 
 | ----------------- |:-----------:|
 |   Precondition     | OU ordered item I | 
 |		      | Item I is available | 
-|   Post condition     | Notification sent to employee E| 
+|   Post condition     | Notification sent to Warehouse worker W| 
 |   Step#   | Description   | 
 |   1   | OU create request of transfer  | 
 |   2   | OU insert item in the request |  
-|   3   | Notification of request sent |
+|   3   | Notification of request sent to W |
 
 ##### Scenario 4.4
 
 | Scenario  | Confirm transfer and notify manager  | 
 | ----------------- |:-----------:|
-|   Precondition     | Employee E is logged in |  
+|   Precondition     | Warehouse worker W is logged in |  
 |   Post condition     | Notification transfer complete sent | 
 |   Step#   | Description   | 
-|   1   | Employee E moves item I | 
-|   2   | Employee E confirm transfer |
+|   1   | W moves item I | 
+|   2   | W confirm transfer |
 |   3   | The system sent notification to the Manager  |
 
 ##### Scenario 4.5
@@ -485,6 +484,19 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   1   | Manager M asks for L | 
 |   2   | The system shows L (ProductID, ProductName, ProductDescription, ProductPosition, ProductSupplier) |
 
+##### Scenario 4.12
+
+| Scenario  | Place internal order | 
+| ----------------- |:-----------:|
+|   Precondition     | Organizational Unit OU is logged in | 
+|		             | item I exist |
+|   Post condition     | Internal Order OI is placed | 
+|   Step#   | Description   | 
+|   1   | OU creates a new internal order OI |
+|   2   | OU select item I | 
+|   3   | OU insert quantity <= item.quantity |
+|   4   | OU confirm the request |
+|   5   | OI is placed |
 
 ### Use case 5, Manage Suppliers
 | Actors Involved        | Manager  |
@@ -541,7 +553,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   3   | S is updated |
 
 ### Use case 6, Authenticate and Authorize
-| Actors Involved        | Administrator, Employee, Manager |
+| Actors Involved        | Administrator, Warehouse worker, Quality check employee, Manager |
 | ------------- |:-------------:| 
 |  Precondition     |  |
 |  Post condition     |  |
@@ -554,7 +566,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 | Scenario  |  Login | 
 | ----------------- |:-----------:|
-|   Precondition     | Account for user U (Administrator, Employee, Manager) existing |  
+|   Precondition     | Account for user U (Administrator, Quality check employee, Warehouse worker, Manager) existing |  
 |   Post condition     | U logged in | 
 |   Step#   | Description   | 
 |   1   | U insert his ID  | 
@@ -570,6 +582,17 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   Step#   | Description   | 
 |   1   | U logs out  | 
 |   2   | The system show the login page  |
+
+##### Scenario 6.3
+|Scenario| Wrong Credentials|
+| ------------- |:-------------:| 
+|  Precondition     | Account for user U (Administrator, Quality check employee, Warehouse worker, Manager) existing |
+|  Post condition     | User has access to data |
+| Step#        | Description  |
+|  1           | User enters wrong credentials | 
+|  2           | System does not give access and asks again for credentials |
+| 3            | User types correct credentials |
+| 4 		   | System gives access to user 
 
 
 
