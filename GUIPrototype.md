@@ -65,6 +65,12 @@ Then the system aswers with the list of suppliers that supplied the item choosen
 ### Use case 3, Manage Quality Check Information 
 ### Use case 4, Manage Products
 ### Use case 5, Manage Suppliers
+
+
+
+
+
+
 ### Use case 6, Authenticate and Authorize
 The user can insert his identifier and the password as shown in this page.
 ![](GUI_Images/Login/Login1.png)
