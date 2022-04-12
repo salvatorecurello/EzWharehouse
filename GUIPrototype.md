@@ -35,11 +35,38 @@ Also in this case, the alert is shown
 ![](GUI_Images/Admin/DeleteUser2.png)
 
 ### Use case 2, Manage Order
+When a manager try to access to system, he/she will see other functions. This is the first page for a single manager of Warehouse, in particular he/she can see available space in the Warehouse:
+![](GUI_Images/Manager/FirstPage.png)
+
+The first functionality that he/she requires is the possibility to see catalog of a single supplier selected. In this case, Manager selects a Supplier and, with right key, opens a menu bar with 'See Catalog' function
+![](GUI_Images/Manager/Catalog1.png)
+After he/she presses the menu item, the screen will show the catalog of the supplier
+![](GUI_Images/Manager/Catalog2.png)
+
+Manager can also make a request to accounting organization to obtain item. To make this, he/she can select the screen for orders and select the 'Send Request' button
+![](GUI_Images/Manager/Orders.png)
+After he/she can fill the fields in the request and then Manager can press 'Send Request' button
+![](GUI_Images/Manager/Request1.png)
+Finally, the screen will show the summary about filled request
+![](GUI_Images/Manager/Request2.png)
+
+Manager can manage different types of orders. In general, to change informations about an order, he/she can select the order to manage and to press 'Manage Order' button 
+![](GUI_Images/Manager/ManageOrder1.png)
+The window will show the information about the order and then he/she can edit these informations 
+![](GUI_Images/Manager/ManageOrder2.png)
+Finally, he/she will see an alert to confirm his/her changes
+![](GUI_Images/Manager/ManageOrder3.png)
+
+The last functionality for the Manage, in this Use Case, allows to see the list of suppliers for item supplied. In particular, he/she can use the search box on the right to select the item to see 
+![](GUI_Images/Manager/SuppliersItem.png)
+Then the system aswers with the list of suppliers that supplied the item choosen
+![](GUI_Images/Manager/SuppliersItem1.png)
+
 ### Use case 3, Manage Quality Check Information 
 ### Use case 4, Manage Products
 ### Use case 5, Manage Suppliers
 ### Use case 6, Authenticate and Authorize
-The user can insert his identifier and the password as shown in this page
+The user can insert his identifier and the password as shown in this page.
 ![](GUI_Images/Login/Login1.png)
 
 If the credentials are wrong, the system asks another times the credentials to user
