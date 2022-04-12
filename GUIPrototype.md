@@ -35,11 +35,69 @@ Also in this case, the alert is shown
 ![](GUI_Images/Admin/DeleteUser2.png)
 
 ### Use case 2, Manage Order
+When a manager try to access to system, he/she will see other functions. This is the first page for a single manager of Warehouse, in particular he/she can see available space in the Warehouse:
+![](GUI_Images/Manager/FirstPage.png)
+
+The first functionality that he/she requires is the possibility to see catalog of a single supplier selected. In this case, Manager selects a Supplier and, with right key, opens a menu bar with 'See Catalog' function
+![](GUI_Images/Manager/Catalog1.png)
+After he/she presses the menu item, the screen will show the catalog of the supplier
+![](GUI_Images/Manager/Catalog2.png)
+
+Manager can also make a request to accounting organization to obtain item. To make this, he/she can select the screen for orders and select the 'Send Request' button
+![](GUI_Images/Manager/Orders.png)
+After he/she can fill the fields in the request and then Manager can press 'Send Request' button
+![](GUI_Images/Manager/Request1.png)
+Finally, the screen will show the summary about filled request
+![](GUI_Images/Manager/Request2.png)
+
+Manager can manage different types of orders. In general, to change informations about an order, he/she can select the order to manage and to press 'Manage Order' button 
+![](GUI_Images/Manager/ManageOrder1.png)
+The window will show the information about the order and then he/she can edit these informations 
+![](GUI_Images/Manager/ManageOrder2.png)
+Finally, he/she will see an alert to confirm his/her changes
+![](GUI_Images/Manager/ManageOrder3.png)
+
+The last functionality for the Manage, in this Use Case, allows to see the list of suppliers for item supplied. In particular, he/she can use the search box on the right to select the item to see 
+![](GUI_Images/Manager/SuppliersItem.png)
+Then the system aswers with the list of suppliers that supplied the item choosen
+![](GUI_Images/Manager/SuppliersItem1.png)
+
 ### Use case 3, Manage Quality Check Information 
+An Employee with quality checker role in the company can assign comment or result about the process of quality made for the set of products. All the Employees can see this page:
+![](GUI_Images/Employee/Product.png)
+For the role of quality checker, an Employee can set informations thanks to menu that it's possible to open with right key on the single set of item
+![](GUI_Images/Employee/MenuProduct.png)
+The Quality Checker Employee select the menu about 'Add Comment QC' and the window will show this screen
+![](GUI_Images/Employee/Quality1.png)
+Finally, Quality Checker Employee can apply the comment with 'Save' button or to select 'Turn Back' button to return to initial page. In particular, if the Employee selects 'Save' button, the system will show an alert to confirm the changes:
+![](GUI_Images/Employee/Quality2.png)
+
+Manager can also sent a request to refund an order to accounting. To make this, he/she accesses to system in the screen about orders and to select the order to refund. Then he/she can click on 'Create New Request' and, in this case, the system understands that's a refund question to accounting and sends an alert to confirm this
+![](GUI_Images/Manager/OrderSelected.png)
+![](GUI_Images/Manager/RefundAlert.png)
+
 ### Use case 4, Manage Products
 ### Use case 5, Manage Suppliers
+Manager can see informations about suppliers with the suppliers screen
+![](GUI_Images/Manager/Suppliers.png)
+
+On this page, he/she can make some operations such as add a new supplier, delete supplier or update a supplier. First operation allows to Manager to add a new supplier with vary informations; in particular he/she have to select 'add supplier' button
+![](GUI_Images/Manager/AddSupplier1.png)
+After to have inserted these informations, the window will show an alert where to confirm the modification on the supplier list
+![](GUI_Images/Manager/AddSupplier2.png)
+
+If the Manager wants, he/she can also delete a supplier. To make this, he/she can select the supplier and presses 'Remove Supplier' button
+![](GUI_Images/Manager/RemoveSupplier0.png)
+After this operation, the window will show an alert
+![](GUI_Images/Manager/RemoveSupplier1.png)
+
+Finally, she/he can also update supplier's informations with 'Update Supplier' button. It's need to select the supplier to update and to press on the button
+![](GUI_Images/Manager/UpdateSupplier.png)
+In the last, the window will show an alert about the update
+![](GUI_Images/Manager/UpdateSupplier1.png)
+
 ### Use case 6, Authenticate and Authorize
-The user can insert his identifier and the password as shown in this page
+The user can insert his identifier and the password as shown in this page.
 ![](GUI_Images/Login/Login1.png)
 
 If the credentials are wrong, the system asks another times the credentials to user

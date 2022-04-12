@@ -426,7 +426,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   Step#   | Description   | 
 |   1   | M select order O | 
 |   2   | M select “reject order” |
-|   3   | Order O is reject |
+|   3   | Order O is rejected |
 |   4   | The system sent a notification to OU |
 
 ##### Scenario 4.7
