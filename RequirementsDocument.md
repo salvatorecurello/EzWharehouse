@@ -581,6 +581,17 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   1   | U logs out  | 
 |   2   | The system show the login page  |
 
+##### Scenario 6.3
+|Scenario| Wrong Credentials|
+| ------------- |:-------------:| 
+|  Precondition     | Account for user U (Administrator, Quality check employee, Warehouse worker, Manager) existing |
+|  Post condition     | User has access to data |
+| Step#        | Description  |
+|  1           | User enters wrong credentials | 
+|  2           | System does not give access and asks again for credentials |
+| 3            | User types correct credentials |
+| 4 		   | System gives access to user 
+
 
 
 # Glossary

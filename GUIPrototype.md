@@ -34,6 +34,21 @@ Finally functionality is about Delete an user. In this case, Admin presses the '
 Also in this case, the alert is shown
 ![](GUI_Images/Admin/DeleteUser2.png)
 
+### Use case 2, Manage Order
+### Use case 3, Manage Quality Check Information 
+### Use case 4, Manage Products
+### Use case 5, Manage Suppliers
+### Use case 6, Authenticate and Authorize
+The user can insert his identifier and the password as shown in this page
+![](GUI_Images/Login/Login1.png)
+
+If the credentials are wrong, the system asks another times the credentials to user
+![](GUI_Images/Login/WrongCredentials.png)
+
+After insert the correct credentials, the page for the user (in this example for the admin) will be shown. To make logout, the user can click on 'Logout' button near the company icon
+![](GUI_Images/Login/Logout.png)
+
+
 
 
 
