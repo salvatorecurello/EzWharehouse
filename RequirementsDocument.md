@@ -119,10 +119,12 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR1.2 | Read account |
 |  FR1.3 | Update account |
 |  FR1.4 | Delete account |
+|  FR1.5 | Search account |
 |  FR2 | Manage Order |
 |  FR2.1 | Show list of suppliers for item |
 |  FR2.2 | Send order request to accounting |
 |  FR2.3 | Check for free space |
+|  FR2.5 | Search for account |
 |  FR2.4 | Update order |
 |  FR3 | Manage Quality Check Information |
 |  FR3.1 | Add quality check result and comment |
@@ -130,7 +132,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR4 | Manage Products |
 |  FR4.1 | Find item |
 |  FR4.2 | Find space for incoming item |
-|  FR4.3 | Notify employee for transfer |
+|  FR4.3 | Notify Warehouse Worker for transfer |
 |  FR4.4 | Confirm transfer |
 |  FR4.5 | Generate barcode |
 |  FR4.6 | Reject order |
@@ -138,6 +140,8 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR4.8 | Add product to DB |
 |  FR4.9 | Remove product from DB |
 |  FR4.10 | Update available warehouse space |
+|  FR4.11 | Retrieve list of items |
+|  FR4.12 | Place internal order |
 |  FR5 | Manage Suppliers |
 |  FR5.1 | Retrieve list of suppliers |
 |  FR5.2 | Add supplier |
@@ -596,18 +600,14 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
-
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+![](./images/glossary.png)
 
 # System Design
-\<describe here system design>
+![](./images/systemDesign.png)
 
-\<must be consistent with Context diagram>
+# Deployment Diagram
+![](./images/deployment.png)
 
-# Deployment Diagram 
-
-\<describe here deployment diagram >
 
 
 
