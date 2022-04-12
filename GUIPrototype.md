@@ -77,6 +77,67 @@ Manager can also sent a request to refund an order to accounting. To make this, 
 ![](GUI_Images/Manager/RefundAlert.png)
 
 ### Use case 4, Manage Products
+In this Use Case, the main content is about "to manage product". An Employee can see the position of a product simply on clicking with righ key on his product screen and then press the menu about "Find Position"
+![](GUI_IMages/Employee/Position1.png)
+An alert will be generated and the position will be shown
+![](GUI_Images/Employee/Position2.png)
+
+To find a space for incoming item, an Employee can see different works for different orders
+![](GUI_Images/Employee/Works.png)
+
+For finding a free space for items, an Employee can select the work and then he/she makes right key and select "Find Space Available"
+![](GUI_Images/Employee/FindSpace1.png)
+Then the system shows free space in warehouse that it's divided into: Area, Lotto and Columns. In particular, an Employee can select the row returned by system and to click on "Update Space"
+![](GUI_Images/Employee/FindSpace2.png)
+![](GUI_Images/Employee/FindSpace3.png)
+![](GUI_Images/Employee/FindSpace4.png)
+The alert will be shown if we want use the position of Warehouse
+
+An OU (Organizational Unit) Employee can request an item to Warehouse. To make this, he/she can have a screen about available items
+![](GUI_Images/Employee/ItemOUEmployee.png)
+In order to request an item, an OU Employee can select an item
+![](GUI_Images/Employee/OrderOU1.png)
+and then he/she presses "Make an Order" button and an alert with a request quantity is shown
+![](GUI_Images/Employee/OrderOU2.png)
+After to have inserted the quantity and confirmed, it will be shown a notification about the order requested
+![](GUI_Images/Employee/OrderOU3.png)
+
+An Employee can also send a notification to Manager to tell that he/she has completed the works about an order. In the window of works, it's present a "Send Summary" button on the right that allows to notify all works completed
+![](GUI_Images/Employee/SendSummaryToManager.png)
+
+A Manager can add a barcode about a product only if the order on the product is completed. To access on completed order, Manager can press "Complete Order" button in Orders Windows
+![](GUI_Images/Manager/CompletedOrder.png)
+The window makes the possibility to add a barcode by selecting the order and then he/she have to click on "Add Barcode" button
+![](GUI_Images/Manager/AddBarcode1.png)
+After this step, the information about order will be shown but they are not editable. The barcode depends on the set of item and it's generated automatically with the bar code reader
+![](GUI_Images/Manager/AddBarcode2.png)
+Finally, he/she can press "Apply Barcode" and an alert will be shown
+![](GUI_Images/Manager/AddBarcode3.png)
+
+To reject an Order, Manager can select Orders windows and then select the order. After he/she has selected the order, the Manager can press "Reject Order" and an allert will be shown to confirm operation
+![](GUI_Images/Manager/RejectOrder.png)
+
+A Manager can also modify informations about products in Warehouse. In particular, the modifications can be made in the products window on selecting the item to modify
+![](GUI_Images/Manager/ChangeInfo1.png)
+After to have selected the item, Manager can press "Change Info" button and a new screen will be shown
+![](GUI_Images/Manager/ChangeInfo2.png)
+After editing the fields of products, Manager can press "Confirm changes" button and an alert will be shown
+![](GUI_Images/Manager/ChangeInfo3.png)
+
+To add a new Product, Manager can access to product screen and then to make right key on the data grid
+![](GUI_Images/Manager/AddProd1.png)
+Then he/she can select the menu item "Add product" and to fill all fields in this new screen
+![](GUI_Images/Manager/AddProd2.png)
+After he/she has completed, Manager can press "Confirm" button and an alert will be shown to confirm the changes
+![](GUI_Images/Manager/AddProd3.png)
+A Manager can also delete a product from the list and, in this case, he/she has to select before the item and then to make right key for selecting "Remove Product"
+![](GUI_Images/Manager/RemoveProd1.png)
+After this, an alert will be shown to confirm the changes to list
+![](GUI_Images/Manager/RemoveProd2.png)
+
+Finally to see space available in Warehouse, the manager can see the window on the left that allows also to edit the information. Another thing that can be usefull to Manager, it's the product list in Warehouse that can be shown with click on products menu
+![](GUI_Images/Manager/AvailableSpaceAndProdList.png)
+
 ### Use case 5, Manage Suppliers
 Manager can see informations about suppliers with the suppliers screen
 ![](GUI_Images/Manager/Suppliers.png)
