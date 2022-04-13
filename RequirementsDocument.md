@@ -67,7 +67,6 @@ Version: 1.0
 		- [Use case 6, Authenticate and Authorize](#use-case-6-authenticate-and-authorize)
 				- [Scenario 6.1](#scenario-61)
 				- [Scenario 6.2](#scenario-62)
-				- [Scenario 6.3](#scenario-63)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -153,11 +152,11 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR1.4 | Delete account |
 |  FR1.5 | Search account |
 |  FR2 | Manage Order |
-|  FR2.1 | Show list of suppliers for item |
+|  FR2.1 | Retrieve catalog |
 |  FR2.2 | Send order request to accounting |
 |  FR2.3 | Check for free space |
-|  FR2.5 | Search for account |
 |  FR2.4 | Update order |
+|  FR2.5 | Show list of suppliers for item |
 |  FR3 | Manage Quality Check Information |
 |  FR3.1 | Add quality check result and comment |
 |  FR3.2 | Issue a reorder for product |
@@ -166,11 +165,11 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |  FR4.2 | Find space for incoming item |
 |  FR4.3 | Notify Warehouse Worker for transfer |
 |  FR4.4 | Confirm transfer |
-|  FR4.5 | Generate barcode |
+|  FR4.5 | Add barcode |
 |  FR4.6 | Reject order |
 |  FR4.7 | Change product info |
-|  FR4.8 | Add product to DB |
-|  FR4.9 | Remove product from DB |
+|  FR4.8 | Add product |
+|  FR4.9 | Remove product |
 |  FR4.10 | Update available warehouse space |
 |  FR4.11 | Retrieve list of items |
 |  FR4.12 | Place internal order |
@@ -375,7 +374,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   Post condition     | Notification to accounting sent  | 
 |   Step#   | Description   | 
 |   1   | Manager M select O | 
-|   2   | Manager M notify accounting to ask for a refund of order O |
+|   2   | Manager M notify accounting to ask for replacement |
 |   3   | Notification sent to accounting |
 
 ### Use case 4, Manage Products
@@ -428,7 +427,7 @@ Every day, including holidays, Giacomo applies quality control processes for his
 
 ##### Scenario 4.4
 
-| Scenario  | Confirm transfer and notify manager  | 
+| Scenario  | Confirm transfer  | 
 | ----------------- |:-----------:|
 |   Precondition     | Warehouse worker W is logged in |  
 |   Post condition     | Notification transfer complete sent | 
@@ -607,6 +606,16 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   2   | U insert his password  |
 |   3   | U logged in |
 
+| Scenario| Wrong Credentials|
+| ------------- |:-------------:| 
+|  Precondition     | Account for user U (Administrator, Quality check employee, Warehouse worker, Manager) existing |
+|  Post condition     | User has access to data |
+| Step#        | Description  |
+|  1           | User enters wrong credentials | 
+|  2           | System does not give access and asks again for credentials |
+| 3            | User types correct credentials |
+| 4 		   | System gives access to user 
+
 ##### Scenario 6.2
 
 | Scenario  |  Logout | 
@@ -617,16 +626,6 @@ Every day, including holidays, Giacomo applies quality control processes for his
 |   1   | U logs out  | 
 |   2   | The system show the login page  |
 
-##### Scenario 6.3
-|Scenario| Wrong Credentials|
-| ------------- |:-------------:| 
-|  Precondition     | Account for user U (Administrator, Quality check employee, Warehouse worker, Manager) existing |
-|  Post condition     | User has access to data |
-| Step#        | Description  |
-|  1           | User enters wrong credentials | 
-|  2           | System does not give access and asks again for credentials |
-| 3            | User types correct credentials |
-| 4 		   | System gives access to user 
 
 
 
