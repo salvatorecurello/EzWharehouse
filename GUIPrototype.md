@@ -72,7 +72,7 @@ The Quality Checker Employee select the menu about 'Add Comment QC' and the wind
 Finally, Quality Checker Employee can apply the comment with 'Save' button or to select 'Turn Back' button to return to initial page. In particular, if the Employee selects 'Save' button, the system will show an alert to confirm the changes:
 ![](GUI_Images/Employee/Quality2.png)
 
-Manager can also sent a request to refund an order to accounting. To make this, he/she accesses to system in the screen about orders and to select the order to refund. Then he/she can click on 'Create New Request' and, in this case, the system understands that's a refund question to accounting and sends an alert to confirm this
+Manager can also sent a request to reorder an item to accounting. To make this, he/she accesses to system in the screen about orders and selects what to reorder. Then he/she can click on 'Create New Request' and, in this case, the system understands that's a reorder question to accounting and sends an alert to confirm this
 ![](GUI_Images/Manager/OrderSelected.png)
 ![](GUI_Images/Manager/RefundAlert.png)
 
