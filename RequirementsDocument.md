@@ -1,14 +1,14 @@
 
  #Requirements Document 
 
-Date: 22 march 2022
+Date: 13 april 2022
 
-Version: 0.0
+Version: 1.0
 
  
 | Version number | Change |
 | ----------------- |:-----------|
-| | | 
+| 1.0 | Finalized requirements document first version | 
 
 
 # Contents
@@ -31,12 +31,43 @@ Version: 0.0
 	- [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
 	- [Use case diagram](#use-case-diagram)
-		- [Use case 1, UC1](#use-case-1-uc1)
+		- [Use case 1, Manage Employees](#use-case-1-manage-employees)
 				- [Scenario 1.1](#scenario-11)
 				- [Scenario 1.2](#scenario-12)
-				- [Scenario 1.x](#scenario-1x)
-		- [Use case 2, UC2](#use-case-2-uc2)
-		- [Use case x, UCx](#use-case-x-ucx)
+				- [Scenario 1.3](#scenario-13)
+				- [Scenario 1.4](#scenario-14)
+				- [Scenario 1.5](#scenario-15)
+		- [Use case 2, Manage Order](#use-case-2-manage-order)
+				- [Scenario 2.1](#scenario-21)
+				- [Scenario 2.2](#scenario-22)
+				- [Scenario 2.3](#scenario-23)
+				- [Scenario 2.4](#scenario-24)
+				- [Scenario 2.5](#scenario-25)
+		- [Use case 3, Manage Quality Check Information](#use-case-3-manage-quality-check-information)
+				- [Scenario 3.1](#scenario-31)
+				- [Scenario 3.2](#scenario-32)
+		- [Use case 4, Manage Products](#use-case-4-manage-products)
+				- [Scenario 4.1](#scenario-41)
+				- [Scenario 4.2](#scenario-42)
+				- [Scenario 4.3](#scenario-43)
+				- [Scenario 4.4](#scenario-44)
+				- [Scenario 4.5](#scenario-45)
+				- [Scenario 4.6](#scenario-46)
+				- [Scenario 4.7](#scenario-47)
+				- [Scenario 4.8](#scenario-48)
+				- [Scenario 4.9](#scenario-49)
+				- [Scenario 4.10](#scenario-410)
+				- [Scenario 4.11](#scenario-411)
+				- [Scenario 4.12](#scenario-412)
+		- [Use case 5, Manage Suppliers](#use-case-5-manage-suppliers)
+				- [Scenario 5.1](#scenario-51)
+				- [Scenario 5.2](#scenario-52)
+				- [Scenario 5.3](#scenario-53)
+				- [Scenario 5.4](#scenario-54)
+		- [Use case 6, Authenticate and Authorize](#use-case-6-authenticate-and-authorize)
+				- [Scenario 6.1](#scenario-61)
+				- [Scenario 6.2](#scenario-62)
+				- [Scenario 6.3](#scenario-63)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -60,7 +91,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Administrator     | Handles economic resources for the company mantains relationship with suppliers| 
+|   Administrator     | Handles economic resources for the company mantains relationship with suppliers, manages employees | 
 |   Quality Office     |Offices that perform quality check on new items             | 
 |   Production Organization Unit     |Area that requests product to warehouse to build something             | 
 |   Packaging OU    |Area that packages items for shipping              | 
@@ -88,6 +119,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Warehouse Worker | GUI | Touchscreen/Barcode scanner |
 | Quality Assurance | GUI | Keyboard+Mouse/Touchscreen |
 | Accounting | E-mail | Keyboard+Mouse |
+| Administrator | GUI | Keyboard+Mouse |
 
 # Stories and personas
 
