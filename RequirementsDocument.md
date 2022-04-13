@@ -1,14 +1,14 @@
 
  #Requirements Document 
 
-Date: 22 march 2022
+Date: 13 april 2022
 
-Version: 0.0
+Version: 1.0
 
  
 | Version number | Change |
 | ----------------- |:-----------|
-| | | 
+| 1.0 | Finalized requirements document first version | 
 
 
 # Contents
@@ -67,6 +67,7 @@ Version: 0.0
 		- [Use case 6, Authenticate and Authorize](#use-case-6-authenticate-and-authorize)
 				- [Scenario 6.1](#scenario-61)
 				- [Scenario 6.2](#scenario-62)
+				- [Scenario 6.3](#scenario-63)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
