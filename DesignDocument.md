@@ -78,12 +78,26 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
+Architecture: client-server application
+
+Architectural pattern: 3-layered 
+
+![](./images/3layered.png)
 
 # Low level design
 
 
 # Verification traceability matrix
 
+|  | Class1 | Class2 | Class3 | Class4 | Class5 | Class6 | Class7 | 
+| ----------------- |-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| FR1 |   |   |   |   |   |   |   |
+| FR2 |   |   |   |   |   |   |   |
+| FR3 |   |   |   |   |   |   |   |
+| FR4 |   |   |   |   |   |   |   |
+| FR5 |   |   |   |   |   |   |   |
+| FR6 |   |   |   |   |   |   |   |
+| FR7 |   |   |   |   |   |   |   |
 
 # Verification sequence diagrams 
 >>>>>>> a7b11f3... pushed template
