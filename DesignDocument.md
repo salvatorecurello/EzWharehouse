@@ -1,15 +1,26 @@
 # Design Document 
 
 
+<<<<<<< HEAD
 Authors: 
 
 Date:
 
 Version:
+=======
+Authors: Group 55
+
+Version: 00
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 00 |   |
+>>>>>>> a7b11f3... pushed template
 
 
 # Contents
 
+<<<<<<< HEAD
 - [High level design](#package-diagram)
 - [Low level design](#class-diagram)
 - [Verification traceability matrix](#verification-traceability-matrix)
@@ -57,4 +68,23 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
+=======
+- [Design Document](#design-document)
+- [Contents](#contents)
+- [High level design](#high-level-design)
+- [Low level design](#low-level-design)
+- [Verification traceability matrix](#verification-traceability-matrix)
+- [Verification sequence diagrams](#verification-sequence-diagrams)
+
+# High level design 
+
+
+# Low level design
+
+
+# Verification traceability matrix
+
+
+# Verification sequence diagrams 
+>>>>>>> a7b11f3... pushed template
 
