@@ -2,12 +2,15 @@
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Authors: 
 
 Date:
 
 Version:
 =======
+=======
+>>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 Authors: Group 55
 
 Version: 00
@@ -15,11 +18,15 @@ Version: 00
 | Version | Changes | 
 | ----------------- |:-----------|
 | 00 |   |
+<<<<<<< HEAD
 >>>>>>> a7b11f3... pushed template
+=======
+>>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 
 
 # Contents
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 - [High level design](#package-diagram)
 - [Low level design](#class-diagram)
@@ -69,6 +76,8 @@ The design must satisfy the Official Requirements document, notably functional a
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 =======
+=======
+>>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 - [Design Document](#design-document)
 - [Contents](#contents)
 - [High level design](#high-level-design)
@@ -100,5 +109,8 @@ Architectural pattern: 3-layered
 | FR7 |   |   |   |   |   |   |   |
 
 # Verification sequence diagrams 
+<<<<<<< HEAD
 >>>>>>> a7b11f3... pushed template
+=======
+>>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 
