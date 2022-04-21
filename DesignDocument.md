@@ -1,16 +1,5 @@
 # Design Document 
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-Authors: 
-
-Date:
-
-Version:
-=======
-=======
->>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 Authors: Group 55
 
 Version: 00
@@ -18,16 +7,10 @@ Version: 00
 | Version | Changes | 
 | ----------------- |:-----------|
 | 00 |   |
-<<<<<<< HEAD
->>>>>>> a7b11f3... pushed template
-=======
->>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
 
 
 # Contents
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 - [High level design](#package-diagram)
 - [Low level design](#class-diagram)
 - [Verification traceability matrix](#verification-traceability-matrix)
@@ -42,10 +25,11 @@ The design must satisfy the Official Requirements document, notably functional a
 <discuss architectural styles used, if any>
 <report package diagram, if needed>
 
+Architecture: client-server application
 
+Architectural pattern: 3-layered 
 
-
-
+![](./images/3layered.png)
 
 # Low level design
 
@@ -63,41 +47,6 @@ The design must satisfy the Official Requirements document, notably functional a
 
 \<for each functional requirement from the requirement document, list which classes concur to implement it>
 
-
-
-
-
-
-
-
-
-
-
-# Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
-=======
-=======
->>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
-- [Design Document](#design-document)
-- [Contents](#contents)
-- [High level design](#high-level-design)
-- [Low level design](#low-level-design)
-- [Verification traceability matrix](#verification-traceability-matrix)
-- [Verification sequence diagrams](#verification-sequence-diagrams)
-
-# High level design 
-
-Architecture: client-server application
-
-Architectural pattern: 3-layered 
-
-![](./images/3layered.png)
-
-# Low level design
-
-
-# Verification traceability matrix
-
 |  | Class1 | Class2 | Class3 | Class4 | Class5 | Class6 | Class7 | 
 | ----------------- |-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | FR1 |   |   |   |   |   |   |   |
@@ -109,8 +58,4 @@ Architectural pattern: 3-layered
 | FR7 |   |   |   |   |   |   |   |
 
 # Verification sequence diagrams 
-<<<<<<< HEAD
->>>>>>> a7b11f3... pushed template
-=======
->>>>>>> e860117e6e99b3226485d220ce5785a0bd238c81
-
+\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
