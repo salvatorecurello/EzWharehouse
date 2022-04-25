@@ -59,3 +59,17 @@ Architectural pattern: 3-layered
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
+
+##### Scenario 9.1
+
+```plantuml
+@startuml
+Warehouse -> InternalOrder: 1: createInternalOrder()
+activate InternalOrder
+InternalOrder -> InternalOrder: 2: addProduct()
+InternalOrder -> InternalOrder: 3: setState()
+Warehouse -> SKU: 4: modifySKU()
+deactivate InternalOrder
+Warehouse -> InternalOrder: 5: modifyInternalOrder()
+@enduml
+```
