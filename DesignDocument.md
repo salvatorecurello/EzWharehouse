@@ -2,11 +2,11 @@
 
 Authors: Group 55
 
-Version: 00
+Version: 1
 
 | Version | Changes | 
 | ----------------- |:-----------|
-| 00 |   |
+| 1.0 | Finalized first version |
 
 
 # Contents
@@ -144,16 +144,14 @@ class TestDescriptor{
 }
 
 class TestResult{
-+ID
-+idTestDescriptor
-+Date
-+Result
++ID :int
++SKUItemID :string
++idTestDescriptor :int
++Date :date
++Result :bool
 
-+void createTestResult(string, integer, string, bool)
-+void modifyTestResult(string, integer, integer, string, bool)
-+TestResult[] retrieveTestResultsForItem(string)
-+TestResult searchTestResult(string, integer)
-+void deleteTestResult(string, integer)
++bool getResult()
++string getSKUItemID()
 }
 
 class ReturnOrder{
@@ -258,6 +256,7 @@ class WarehouseInterface{
 +SKUItem[] retrieveAvailableSKUItemsFromSKU(integer)
 +SKUItem searchSkuItem(string)
 +void deleteSKUItem(string)
++void createTestResult(string, integer, string, bool)
 +void modifyTestResult(string, integer, integer, string, bool)
 +TestResult[] retrieveTestResultsForItem(string)
 +TestResult searchTestResult(string, integer)
@@ -312,8 +311,8 @@ User -- "*" InternalOrder
 | FR2 |   |   | X |   |   |   |   |   |   |   |   | X |
 | FR3 |   |   |   |   | X | X | X |   |   |   |   | X |
 | FR4 | X |   |   |   |   |   |   |   |   |   |   | X |
-| FR5 |   |   |   | X |   |   |   | X | X |   |   | X |
-| FR6 |   | X |   |   |   |   |   |   |   |   |   | X |
+| FR5 |   |   | X | X |   |   | X | X | X |   | X | X |
+| FR6 |   | X | X | X |   |   |   |   |   |   |   | X |
 | FR7 |   |   |   |   |   |   |   |   |   | X | X | X |
 
 
@@ -325,7 +324,7 @@ User -- "*" InternalOrder
 @startuml
 Warehouse -> InternalOrder: 1: createInternalOrder()
 activate InternalOrder
-InternalOrder -> InternalOrder: 2: addProduct()
+InternalOrder -> InternalOrder: 2: setProducts()
 InternalOrder -> InternalOrder: 3: setState()
 Warehouse -> SKU: 4: modifySKU()
 deactivate InternalOrder
@@ -339,9 +338,10 @@ Warehouse -> InternalOrder: 5: modifyInternalOrder()
 @startuml
 Warehouse -> RestockOrder: 1: searchRestockOrder()
 activate RestockOrder
-RestockOrder -> SKUItem: 2: getProductList()
-SKUItem -> SKUItem: 3: setRFID()
-RestockOrder -> RestockOrder: 4: setState()
+RestockOrder -> Warehouse: 2: getSKUItemIDList()
+Warehouse -> SKUItem : 3: searchSKUItem()
+SKUItem -> SKUItem: 4: setRFID()
+RestockOrder -> RestockOrder: 5: setState()
 deactivate RestockOrder
 @enduml
 ```
@@ -352,8 +352,8 @@ deactivate RestockOrder
 @startuml
 Warehouse -> RestockOrder: 1: searchRestockOrder()
 activate RestockOrder
-RestockOrder -> SKUItem: 2: getProductList()
-SKUItem -> TestResult: 3: createTestResult()
+RestockOrder -> Warehouse: 2: getSKUItemIDList()
+Warehouse -> TestResult: 3: createTestResult()
 RestockOrder -> RestockOrder: 4: setState()
 deactivate RestockOrder 
 @enduml
@@ -363,9 +363,12 @@ deactivate RestockOrder
 
 ```plantuml
 @startuml
-Warehouse -> RestockOrder: 1: getItemsToReturn()
-Warehouse -> ReturnORder: 2: CreateReturnOrder()
-ReturnOrder -> ReturnOrder: 3: addProduct()
-ReturnOrder -> SKU: 4: modifySKU()
+Warehouse -> ReturnOrder: 1: CreateReturnOrder()
+Warehouse -> SKUItem: 2: getItemsToReturn()
+ReturnOrder -> ReturnOrder: 3: setProducts()
+ReturnOrder -> SKUItem: 4: setAvailable()
+ReturnOrder -> SKU: 5: setAvailableQuantity()
+ReturnOrder -> Position: 6: setOccupiedWeight()
+ReturnOrder -> Position: 7: setOccupiedVolume()
 @enduml
 ```
