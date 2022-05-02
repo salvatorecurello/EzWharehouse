@@ -1,3 +1,6 @@
+const DAO = require("../../db.js");
+db=new DAO();
+
 module.exports = function(app){
 
     app.get('/api/userinfo', function(req, res){
@@ -8,8 +11,9 @@ module.exports = function(app){
         return res.status(200);
     });
 
-    app.get('/api/users', function(req, res){
-        return res.status(200);
+    app.get('/api/users', async function(req, res){
+        const data = await db.getUsers();
+        return res.status(200).json(data);
     });
 
     app.post('/api/newUser', function(req, res){
