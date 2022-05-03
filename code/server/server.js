@@ -1,6 +1,8 @@
 'use strict';
 const express = require('express');
 const DAO = require('./db.js');
+const session = require('express-session');
+
 // init express
 const app = new express();
 const port = 3001;
@@ -9,6 +11,12 @@ const db = new DAO();
 db.createTables()
 
 app.use(express.json());
+
+app.use(session({
+  secret: 'justkeepthissecret',
+  resave: true,
+  saveUninitialized: true
+}));
 
 require('./classes/InternalOrder/InternalOrderAPI.js')(app);
 require('./classes/Item/ItemAPI.js')(app);
