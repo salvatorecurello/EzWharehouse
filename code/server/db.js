@@ -103,6 +103,105 @@ class DAO {
 
         });
     }
+
+    getSuppliers(){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE TYPE=="Supplier"';
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const names = rows.map((r) => (
+                    {  
+                        id:r.ID,
+                        name : r.NAME,
+                        surname : r.SURNAME,
+                        email: r.EMAIL
+                    }
+                ));
+                resolve(names);
+            });
+        });
+    }
+
+    login(username, password, type){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE TYPE==? AND EMAIL==? AND PASSWORD==?';
+            this.db.all(sql, [type, username, crypto.createHash('md5').update(password).digest("hex")], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if(rows.length==1){
+                    resolve(rows[0]);
+                }else{
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    getUserFromId(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE ID==?';
+            this.db.all(sql, [id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if(rows.length==1){
+                    resolve(rows[0]);
+                }else{
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    getUserFromEmail(email){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE EMAIL==?';
+            this.db.all(sql, [email], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if(rows.length==1){
+                    resolve(rows[0]);
+                }else{
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    updateUser(id, newType){
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE User SET TYPE = ? WHERE ID==?';
+            this.db.all(sql, [newType, id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    }
+
+    deleteUser(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM User WHERE ID ==?';
+            this.db.all(sql, [id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    }
+
 }
 
 module.exports = DAO;
