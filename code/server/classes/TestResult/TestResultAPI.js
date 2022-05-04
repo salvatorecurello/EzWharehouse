@@ -1,13 +1,13 @@
 const TestResultDAO = require("./TestResultDAO.js");
 const TestResult = require("./TestResult.js");
-db=new TestResultDAO();
+TestResultdao=new TestResultDAO();
 module.exports = function(app){
 
     app.get('/api/skuitems/:rfid/testResults', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             const rfid = req.params.rfid;
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid)){
-                const testresults = await db.getTestResultBySKUITEMID(rfid);
+                const testresults = await TestResultdao.getTestResultBySKUITEMID(rfid);
                 if(length(data)>0){
                     const data = testresults.map((r)=>(r.toJson()));
                     return res.status(200).json(data);
@@ -25,7 +25,7 @@ module.exports = function(app){
             const rfid = req.params.rfid;
             const id = req.params.id;
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id){
-                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
                     return res.status(200).json(testresult.toJson());
                 }
@@ -40,8 +40,8 @@ module.exports = function(app){
     app.post('/api/skuitems/testResult', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             if(req.body.rfid && req.body.rfid.length==32 && /^\d+$/.test(req.body.rfid) && req.body.idTestDescriptor && req.body.Date && req.body.Result){
-                if(await db.isRFIDValid(req.body.rfid) && await db.isTestIdValid(req.body.idTestDescriptor)){
-                    await db.storeTestResult(req.body);
+                if(await TestResultdao.isRFIDValid(req.body.rfid) && await TestResultdao.isTestIdValid(req.body.idTestDescriptor)){
+                    await TestResultdao.storeTestResult(req.body);
                     return res.sendStatus(201);
                 }
                 return res.sendStatus(404);
@@ -57,10 +57,10 @@ module.exports = function(app){
             const rfid = req.params.rfid;
             const id = req.params.id;
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id && req.body.newIdTestDescriptor && req.body.newDate && req.body.newResult){
-                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
-                    if(await db.isTestIdValid(req.body.newIdTestDescriptor)){
-                        await db.updateTestResult(req.body, id, rfid);
+                    if(await TestResultdao.isTestIdValid(req.body.newIdTestDescriptor)){
+                        await TestResultdao.updateTestResult(req.body, id, rfid);
                         return res.sendStatus(200);
                     }
                     return res.sendStatus(404);
@@ -78,9 +78,9 @@ module.exports = function(app){
             const rfid = req.params.rfid;
             const id = req.params.id;
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id){
-                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
-                    await db.deleteTestResult(id, rfid);
+                    await TestResultdao.deleteTestResult(id, rfid);
                     return res.sendStatus(204);
                 }
                 return res.sendStatus(404);
