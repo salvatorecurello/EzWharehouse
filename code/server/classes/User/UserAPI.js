@@ -1,7 +1,7 @@
 const { use } = require("chai");
-const DAO = require("../../db.js");
+const UserDAO = require("./UserDAO.js");
 const User = require("./User.js");
-db=new DAO();
+db=new UserDAO();
 
 module.exports = function(app){
 
