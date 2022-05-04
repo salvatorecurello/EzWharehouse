@@ -1,23 +1,94 @@
+const TestResultDAO = require("./TestResultDAO.js");
+const TestResult = require("./TestResult.js");
+db=new TestResultDAO();
 module.exports = function(app){
 
-    app.get('/api/skuitems/:rfid/testResults', function(req, res){
-        return res.sendStatus(200);
+    app.get('/api/skuitems/:rfid/testResults', async function(req, res){
+        if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            const rfid = req.params.rfid;
+            if(rfid && rfid.length==32 && /^\d+$/.test(rfid)){
+                const testresults = await db.getTestResultBySKUITEMID(rfid);
+                if(length(data)>0){
+                    const data = testresults.map((r)=>(r.toJson()));
+                    return res.status(200).json(data);
+                }
+                return res.sendStatus(404);
+            }
+            return res.sendStatus(422);
+        }else{
+            return res.sendStatus(401);
+        }
     });
 
-    app.get('/api/skuitems/:rfid/testResults/:id', function(req, res){
-        return res.sendStatus(200);
+    app.get('/api/skuitems/:rfid/testResults/:id', async function(req, res){
+        if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            const rfid = req.params.rfid;
+            const id = req.params.id;
+            if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id){
+                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                if(testresult!=null){
+                    return res.status(200).json(testresult.toJson());
+                }
+                return res.sendStatus(404);
+            }
+            return res.sendStatus(422);
+        }else{
+            return res.sendStatus(401);
+        }
     });
 
-    app.post('/api/skuitems/testResult', function(req, res){
-        return res.sendStatus(200);
+    app.post('/api/skuitems/testResult', async function(req, res){
+        if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            if(req.body.rfid && req.body.rfid.length==32 && /^\d+$/.test(req.body.rfid) && req.body.idTestDescriptor && req.body.Date && req.body.Result){
+                if(await db.isRFIDValid(req.body.rfid) && await db.isTestIdValid(req.body.idTestDescriptor)){
+                    await db.storeTestResult(req.body);
+                    return res.sendStatus(201);
+                }
+                return res.sendStatus(404);
+            }
+            return res.sendStatus(422);
+        }else{
+            return res.sendStatus(401);
+        }
     });
 
-    app.put('/api/skuitems/:rfid/testResult/:id', function(req, res){
-        return res.sendStatus(200);
+    app.put('/api/skuitems/:rfid/testResult/:id', async function(req, res){
+        if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            const rfid = req.params.rfid;
+            const id = req.params.id;
+            if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id && req.body.newIdTestDescriptor && req.body.newDate && req.body.newResult){
+                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                if(testresult!=null){
+                    if(await db.isTestIdValid(req.body.newIdTestDescriptor)){
+                        await db.updateTestResult(req.body, id, rfid);
+                        return res.sendStatus(200);
+                    }
+                    return res.sendStatus(404);
+                }
+                return res.sendStatus(404);
+            }
+            return res.sendStatus(422);
+        }else{
+            return res.sendStatus(401);
+        }
     });
 
-    app.delete('/api/skuitems/:rfid/testResult/:id', function(req, res){
-        return res.sendStatus(200);
+    app.delete('/api/skuitems/:rfid/testResult/:id', async function(req, res){
+        if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            const rfid = req.params.rfid;
+            const id = req.params.id;
+            if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id){
+                const testresult = await db.getTestResultBySKUITEMIDAndID(rfid, id);
+                if(testresult!=null){
+                    await db.deleteTestResult(id, rfid);
+                    return res.sendStatus(204);
+                }
+                return res.sendStatus(404);
+            }
+            return res.sendStatus(422);
+        }else{
+            return res.sendStatus(401);
+        }
     });
 
 }
