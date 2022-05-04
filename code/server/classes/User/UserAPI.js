@@ -1,4 +1,3 @@
-const { use } = require("chai");
 const UserDAO = require("./UserDAO.js");
 const User = require("./User.js");
 db=new UserDAO();
@@ -45,7 +44,7 @@ module.exports = function(app){
                     const exists = await db.getUserFromEmail(req.body.username);
                     if(exists == null){
                         const data = await db.storeUser(req.body);
-                        return res.status(200).json(data);
+                        return res.status(201).json(data);
                     }
                     return res.sendStatus(409);
                 }
