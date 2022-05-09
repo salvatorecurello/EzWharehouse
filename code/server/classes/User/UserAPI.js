@@ -16,7 +16,7 @@ module.exports = function(app){
             }
             return res.status(200).json(data);
         }
-        return res.sendStatus(200);
+        return res.status(200).end();
     });
 
     app.get('/api/suppliers', async function(req, res){
@@ -24,7 +24,7 @@ module.exports = function(app){
             const data = await Userdao.getSuppliers();
             return res.status(200).json(data);
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -33,7 +33,7 @@ module.exports = function(app){
             const data = await Userdao.getUsers();
             return res.status(200).json(data);
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -46,19 +46,19 @@ module.exports = function(app){
                         const data = await Userdao.storeUser(req.body);
                         return res.status(201).json(data);
                     }
-                    return res.sendStatus(409);
+                    return res.status(409).end();
                 }
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
     
     app.post('/api/managerSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "manager");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -73,14 +73,14 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/customerSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "customer");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -95,14 +95,14 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/supplierSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "supplier");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -117,14 +117,14 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/clerkSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "clerk");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -139,14 +139,14 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/qualityEmployeeSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "qualityEmployee");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -161,14 +161,14 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/deliveryEmployeeSessions', async function(req, res){
         if(req.body.username && req.body.password){
             const user = await Userdao.login(req.body.username, req.body.password, "deliveryEmployee");
             if(user==null){
-                return res.sendStatus(401);
+                return res.status(401).end();
             }else{
                 req.session.loggedin=true;
                 req.session.user={
@@ -183,13 +183,13 @@ module.exports = function(app){
                 return res.status(200).json(data);
             }
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.post('/api/logout', function(req, res){
         req.session.loggedin=false;
         req.session.user={};
-        return res.sendStatus(200);
+        return res.status(200).end();
     });
 
     app.put('/api/users/:username',async function(req, res){
@@ -201,20 +201,20 @@ module.exports = function(app){
                     if(user.TYPE==req.body.oldType){
                         if (["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(req.body.newType)){
                             await Userdao.updateUser(user.ID, req.body.newType);
-                            return res.sendStatus(200);
+                            return res.status(200).end();
                         }else{
-                            return res.sendStatus(422);
+                            return res.status(422).end();
                         }
                     }else{
-                        return res.sendStatus(422);
+                        return res.status(422).end();
                     }
                 }else{
-                    return res.sendStatus(404);
+                    return res.status(404).end();
                 }
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
     app.delete('/api/users/:username/:type', async function(req, res){
@@ -226,13 +226,13 @@ module.exports = function(app){
                 if(user!=null){
                     if (user.TYPE==type && type!="manager"){
                         await Userdao.deleteUser(user.ID);
-                        return res.sendStatus(204);
+                        return res.status(204).end();
                     }
                 }
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }
-        return res.sendStatus(401);
+        return res.status(401).end();
     });
 
 }
