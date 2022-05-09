@@ -1,6 +1,6 @@
 const TestDescriptorDAO = require("./TestDescriptorDAO.js");
 const TestDescriptor = require("./TestDescriptor.js");
-TestDescriptordao=new TestDescriptorDAO();
+const TestDescriptordao=new TestDescriptorDAO();
 module.exports = function(app){
 
     app.get('/api/testDescriptors', async function(req, res){
@@ -14,8 +14,9 @@ module.exports = function(app){
 
     app.get('/api/testDescriptors/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
-            if(req.params.id){
-                const testdescriptor = await TestDescriptordao.getTestDescriptorsByID();
+            const id = parseInt(req.params.id);
+            if(id){
+                const testdescriptor = await TestDescriptordao.getTestDescriptorsByID(id);
                 if(testdescriptor!=null){
                     return res.status(200).json(testdescriptor);
                 }
@@ -44,10 +45,11 @@ module.exports = function(app){
 
     app.put('/api/testDescriptor/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
-            if(req.params.id && req.body.newName && req.body.newProcedureDescription && req.body.newIdSKU){
-                if(await TestDescriptordao.getTestDescriptorsByID(req.params.id)!=null){
+            const id = parseInt(req.params.id);
+            if(id && req.body.newName && req.body.newProcedureDescription && req.body.newIdSKU){
+                if(await TestDescriptordao.getTestDescriptorsByID(id)!=null){
                     if(await TestDescriptordao.isSKUidValid(req.body.newIdSKU)){
-                        await TestDescriptordao.updateTestDescriptor(req.body, req.params.id);
+                        await TestDescriptordao.updateTestDescriptor(req.body, id);
                         return res.sendStatus(200);
                     }
                     return res.sendStatus(404);
@@ -62,10 +64,11 @@ module.exports = function(app){
 
     app.delete('/api/testDescriptor/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
-            if(req.params.id){
+            const id = parseInt(req.params.id);
+            if(id){
                 const testdescriptor = await TestDescriptordao.getTestDescriptorsByID();
                 if(testdescriptor!=null){
-                    await TestDescriptordao.deleteTestDescriptor(req.params.id);
+                    await TestDescriptordao.deleteTestDescriptor(id);
                     return res.sendStatus(204);
                 }
                 return res.sendStatus(422);
