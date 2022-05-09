@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const ReturnOrderDAO = require("./ReturnOrderDAO.js");
 const RoDAO = new ReturnOrderDAO();
 
@@ -76,6 +77,24 @@ module.exports = function(app){
         }
         else
             return res.sendStatus(401);
+=======
+module.exports = function(app){
+
+    app.get('/api/returnOrders', function(req, res){
+        return res.sendStatus(200);
+    });
+
+    app.get('/api/returnOrders/:id', function(req, res){
+        return res.sendStatus(200);
+    });
+
+    app.post('/api/returnOrder', function(req, res){
+        return res.sendStatus(200);
+    });
+
+    app.delete('/api/returnOrder/:id', function(req, res){
+        return res.sendStatus(200);
+>>>>>>> 0fefbabff9391c2f03ae7fe136e1f8adcddec1f3
     });
 
 }
