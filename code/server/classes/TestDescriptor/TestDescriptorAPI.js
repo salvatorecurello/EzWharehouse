@@ -8,7 +8,7 @@ module.exports = function(app){
             const testdescriptors = await TestDescriptordao.getTestDescriptors();
             return res.status(200).json(testdescriptors);
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -20,11 +20,11 @@ module.exports = function(app){
                 if(testdescriptor!=null){
                     return res.status(200).json(testdescriptor);
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -33,13 +33,13 @@ module.exports = function(app){
             if(req.body.name && req.body.procedureDescription && req.body.idSKU){
                 if(await TestDescriptordao.isSKUidValid(req.body.idSKU)){
                     await TestDescriptordao.storeTestDescriptor(req.body);
-                    return res.sendStatus(201);
+                    return res.status(201).end();
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -50,15 +50,15 @@ module.exports = function(app){
                 if(await TestDescriptordao.getTestDescriptorsByID(id)!=null){
                     if(await TestDescriptordao.isSKUidValid(req.body.newIdSKU)){
                         await TestDescriptordao.updateTestDescriptor(req.body, id);
-                        return res.sendStatus(200);
+                        return res.status(200).end();
                     }
-                    return res.sendStatus(404);
+                    return res.status(404).end();
                 }
-                return res.sendStatus(422);
+                return res.status(422).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -69,13 +69,13 @@ module.exports = function(app){
                 const testdescriptor = await TestDescriptordao.getTestDescriptorsByID();
                 if(testdescriptor!=null){
                     await TestDescriptordao.deleteTestDescriptor(id);
-                    return res.sendStatus(204);
+                    return res.status(204).end();
                 }
-                return res.sendStatus(422);
+                return res.status(422).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 

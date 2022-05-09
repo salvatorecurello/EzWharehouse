@@ -12,11 +12,11 @@ module.exports = function(app){
                     const data = testresults.map((r)=>(r.toJson()));
                     return res.status(200).json(data);
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -29,11 +29,11 @@ module.exports = function(app){
                 if(testresult!=null){
                     return res.status(200).json(testresult.toJson());
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -42,13 +42,13 @@ module.exports = function(app){
             if(req.body.rfid && req.body.rfid.length==32 && /^\d+$/.test(req.body.rfid) && req.body.idTestDescriptor && req.body.Date && req.body.Result){
                 if(await TestResultdao.isRFIDValid(req.body.rfid) && await TestResultdao.isTestIdValid(req.body.idTestDescriptor)){
                     await TestResultdao.storeTestResult(req.body);
-                    return res.sendStatus(201);
+                    return res.status(201).end();
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -61,15 +61,15 @@ module.exports = function(app){
                 if(testresult!=null){
                     if(await TestResultdao.isTestIdValid(req.body.newIdTestDescriptor)){
                         await TestResultdao.updateTestResult(req.body, id, rfid);
-                        return res.sendStatus(200);
+                        return res.status(200).end();
                     }
-                    return res.sendStatus(404);
+                    return res.status(404).end();
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
@@ -81,13 +81,13 @@ module.exports = function(app){
                 const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
                     await TestResultdao.deleteTestResult(id, rfid);
-                    return res.sendStatus(204);
+                    return res.status(204).end();
                 }
-                return res.sendStatus(404);
+                return res.status(404).end();
             }
-            return res.sendStatus(422);
+            return res.status(422).end();
         }else{
-            return res.sendStatus(401);
+            return res.status(401).end();
         }
     });
 
