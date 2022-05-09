@@ -1,6 +1,6 @@
 const TestResultDAO = require("./TestResultDAO.js");
 const TestResult = require("./TestResult.js");
-TestResultdao=new TestResultDAO();
+const TestResultdao=new TestResultDAO();
 module.exports = function(app){
 
     app.get('/api/skuitems/:rfid/testResults', async function(req, res){
@@ -55,7 +55,7 @@ module.exports = function(app){
     app.put('/api/skuitems/:rfid/testResult/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             const rfid = req.params.rfid;
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id && req.body.newIdTestDescriptor && req.body.newDate && req.body.newResult){
                 const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
@@ -76,7 +76,7 @@ module.exports = function(app){
     app.delete('/api/skuitems/:rfid/testResult/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             const rfid = req.params.rfid;
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
             if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && id){
                 const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
                 if(testresult!=null){
