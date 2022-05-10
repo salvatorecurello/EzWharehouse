@@ -6,7 +6,7 @@ module.exports = function(app){
 
     app.get('/api/items', async function(req, res){
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Supplier')
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'supplier')
             return res.status(401).end();
         
         const result = await ItemDao.getItems();
@@ -16,7 +16,7 @@ module.exports = function(app){
 
     app.get('/api/items/:id', async function(req, res){
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' )
             return res.status(401).end();
         
         const id = req.params.id;
@@ -32,7 +32,7 @@ module.exports = function(app){
 
     app.post('/api/item', async function(req, res){
 
-        if(!req.session.loggedin || !req.session.user.type == 'Supplier')
+        if(!req.session.loggedin || !req.session.user.type == 'supplier')
             return req.status(401).end();
     
         const description = req.body.description;
@@ -52,7 +52,7 @@ module.exports = function(app){
 
     app.put('/api/item/:id', async function(req, res){
 
-        if(!req.session.loggedin || !req.session.user.type == 'Supplier')
+        if(!req.session.loggedin || !req.session.user.type == 'supplier')
             return req.status(401).end();
     
 
@@ -92,7 +92,7 @@ module.exports = function(app){
 
     app.delete('/api/items/:id', async function(req, res){
 
-        if(!req.session.loggedin || !req.session.user.type == 'Supplier')
+        if(!req.session.loggedin || !req.session.user.type == 'supplier')
             return req.status(401).end();
 
         const itemId = req.params.id;
