@@ -6,7 +6,7 @@ module.exports = function (app) {
 
     app.get('/api/internalOrders', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager')
+        if(!req.session.loggedin || !req.session.user.type == 'manager')
             return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
@@ -36,7 +36,7 @@ module.exports = function (app) {
 
     app.get('/api/internalOrdersIssued', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer')
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer')
             return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
@@ -59,7 +59,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/internalOrdersAccepted', async function (req, res) {
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer' || !req.session.user.type == 'Customer')
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer' || !req.session.user.type == 'Customer')
             return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
@@ -83,7 +83,7 @@ module.exports = function (app) {
 
     app.get('/api/internalOrders/:id', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Delivery Employee' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'deliveryEmployee' )
             return res.status(401).end();
         if(req.params.id == undefined) {
             return res.status(422).end();
@@ -111,7 +111,7 @@ module.exports = function (app) {
 
     app.post('/api/internalOrders', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer' )
             return res.status(401).end();
 
         const date = req.body.issueDate;
@@ -132,7 +132,7 @@ module.exports = function (app) {
 
     app.put('/api/internalOrders/:id', async function (req, res) {
         
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Delivery Employee'|| !req.session.user.type == 'Internal Customer' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'deliveryEmployee'|| !req.session.user.type == 'Internal Customer' )
             return res.status(401).end();
 
 
@@ -158,7 +158,7 @@ module.exports = function (app) {
 
     app.delete('/api/internalOrders/:id', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' )
             return res.status(401).end();
 
         const id = req.params.id;

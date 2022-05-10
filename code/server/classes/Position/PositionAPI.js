@@ -5,7 +5,7 @@ PositionDao = new PositionDAO();
 module.exports = function (app) {
 
     app.get('/api/positions', async function (req, res) {
-        if (req.session.loggedin && (req.session.user.type == 'Manager' ||req.session.user.type == 'Clerk')) {
+        if (req.session.loggedin && (req.session.user.type == 'manager' ||req.session.user.type == 'clerk')) {
             const positions = await PositionDao.getPositions();
             return res.status(200).json(positions)
         } else  {
@@ -15,7 +15,7 @@ module.exports = function (app) {
 
     app.post('/api/position', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' )
+        if(!req.session.loggedin || !req.session.user.type == 'manager' )
             return res.status(401).end();
 
             const col = req.body.col;
@@ -41,7 +41,7 @@ module.exports = function (app) {
 
     app.put('/api/position/:positionID', async function (req, res) {
 
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Clerk')
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'clerk')
             return res.status(401).end();
 
             const old_positionId = req.params.positionID;
@@ -69,7 +69,7 @@ module.exports = function (app) {
 
     app.put('/api/position/:positionID/changeID', async function (req, res) {
         
-        if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Clerk')
+        if(!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'clerk')
             return res.status(401).end();
 
         const old_positionId = req.params.positionID;
@@ -85,7 +85,7 @@ module.exports = function (app) {
     });
 
     app.delete('/api/position/:positionID', async function (req, res) {
-        if(!res.session.loggedin || !req.session.user.type == 'Manager')
+        if(!res.session.loggedin || !req.session.user.type == 'manager')
             return res.status(401).end();
 
         const positionID = req.params.positionID;
