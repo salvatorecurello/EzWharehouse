@@ -5,10 +5,10 @@ module.exports = function (app) {
 
     app.get('/api/returnOrders', async function (req, res) {
         if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.sendStatus(401);
+            return res.status(401).end();
 
         RoDAO.getAll().then((data) => {
-            return res.status(200).json(data.res);
+            return res.status(200).json(data);
         }).catch((data) => {
             console.log(data);
 
@@ -20,7 +20,7 @@ module.exports = function (app) {
         const id = parseInt(req.params.id);
 
         if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.sendStatus(401);
+            return res.status(401).end();
 
         RoDAO.get(id).then((data) => {
             return res.status(200).json(data);
@@ -61,14 +61,14 @@ module.exports = function (app) {
         RoDAO.delete(id).then((data) => {
             console.log(data);
 
-            return res.sendStatus(204);
+            return res.status(204).end();
         }).catch((data) => {
             if (data == "No match")
-                return res.sendStatus(404);
+                return res.status(404).end();
             else if (data == "Wrong data")
-                return res.sendStatus(422);
+                return res.status(422).end();
             else
-                return res.sendStatus(503);
+                return res.status(503).end();
         });
     });
 

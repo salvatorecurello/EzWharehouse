@@ -149,14 +149,14 @@ module.exports = function (app) {
         RoDAO.delete(id).then((data) => {
             console.log(data);
 
-            return res.sendStatus(204);
+            return res.status(204).end();
         }).catch((data) => {
             if (data == "No match")
-                return res.sendStatus(404);
+                return res.status(404).end();
             else if (data == "Wrong data")
-                return res.sendStatus(422);
+                return res.status(422).end();
             else
-                return res.sendStatus(503);
+                return res.status(503).end();
         });
     });
 
