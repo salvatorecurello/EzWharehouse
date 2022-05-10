@@ -101,7 +101,7 @@ class SKUItemDAO {
         });
     }
 
-    RFIDexist(rfid){
+    existingRFID(rfid){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKUItem WHERE RFID=?';
             this.db.all(sql, [rfid], (err, rows) => {

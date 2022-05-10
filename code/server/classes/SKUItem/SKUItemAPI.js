@@ -8,7 +8,6 @@ var d2 = /^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01]) ([0-1]?[0-9]|2[0-3
 
 module.exports = function(app){
 
-    // FUNZIONA
     app.get('/api/skuitems', async function(req, res){
         if(req.session.loggedin && req.session.user.type=="manager"){
             const skuitem = await skuitemdao.getSKUItems();
@@ -18,7 +17,6 @@ module.exports = function(app){
         }
     });
 
-    // FUNZIONA
     app.get('/api/skuitems/sku/:id', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer")){
             if(req.params.id){
@@ -34,7 +32,6 @@ module.exports = function(app){
         }
     });
 
-    // FUNZIONA
     app.get('/api/skuitems/:rfid', async function(req, res){
         if(req.session.loggedin && req.session.user.type=="manager"){
             if(req.params.rfid){
@@ -53,12 +50,18 @@ module.exports = function(app){
     
     app.post('/api/skuitem', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="clerk")){
-            if(req.body.RFID && req.body.SKUId && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == undefined)){
-                if(await skuitemdao.isidSKUValid(req.body.SKUId)){
+            const rfid = req.body.RFID
+            if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == undefined)){
+                if(await skuitemdao.existingRFID(rfid)){
+                    return res.sendStatus(422);
+                }
+                else {
+                    if(await skuitemdao.isidSKUValid(req.body.SKUId)){
                     await skuitemdao.storeSKUItem(req.body);
                     return res.sendStatus(201);
-                }
+                    }
                 return res.sendStatus(404);
+                }
             }
             return res.sendStatus(422);
         }else{
@@ -66,24 +69,31 @@ module.exports = function(app){
         }
     });
 
-    // FUNZIONA CONTROLLO RFID GIA ESISTENTE????
     app.put('/api/skuitems/:rfid', async function(req, res){
         if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.rfid && req.body.newRFID && req.body.newAvailable && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == null)){ 
-                const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
-                if(skuitem!=null){
-                    await skuitemdao.updateSKUItem(req.body, req.params.rfid);
-                    return res.sendStatus(200);
+            const rfid = req.params.rfid
+            const newrfid = req.body.newRFID
+            if(rfid && newrfid && newrfid.length==32 && /^\d+$/.test(newrfid) && req.body.newAvailable && (d1.test(req.body.newDateOfStock) || d2.test(req.body.newDateOfStock) || req.body.newDateOfStock == undefined)){  
+                if(await skuitemdao.existingRFID(newrfid)){
+                    return res.sendStatus(422);
                 }
-                return res.sendStatus(404);
+                else {
+                    const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
+                    if(skuitem!=null){
+                        await skuitemdao.updateSKUItem(req.body, req.params.rfid);
+                        return res.sendStatus(200);
+                    }
+                    return res.sendStatus(404);
+                }
+            }else{
+            return res.sendStatus(422);    
             }
-        return res.sendStatus(422);
+            
         }else{
         return res.sendStatus(401);
         }
     });
 
-    // FUNZIONA
     app.delete('/api/skuitems/:rfid', async function(req, res){
         if(req.session.loggedin && req.session.user.type=="manager"){
             if(req.params.rfid){
