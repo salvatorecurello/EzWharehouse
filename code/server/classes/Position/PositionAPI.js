@@ -16,7 +16,7 @@ module.exports = function (app) {
     app.post('/api/position', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' )
-            return res.status(401);
+            return res.status(401).end();
 
             const col = req.body.col;
             const row = req.body.row;
@@ -26,7 +26,7 @@ module.exports = function (app) {
             const positionID = aisleID + row + col;
 
             if (row.lenght != 4 || aisleID.lenght != 4 || col.lenght != 4)
-                return res.status(422);
+                return res.status(422).end();
 
             const data = { positionID: positionID, col: col, row: row, maxWeight: maxWeight, maxVolume: maxVolume, aisleID: aisleID, occupiedVolume: 0, occupiedWeight: 0 };
             const result = await PositionDao.storePosition(data);
@@ -42,7 +42,7 @@ module.exports = function (app) {
     app.put('/api/position/:positionID', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Clerk')
-            return res.status(401);
+            return res.status(401).end();
 
             const old_positionId = req.params.positionID;
             const col = req.body.newCol;
@@ -57,43 +57,42 @@ module.exports = function (app) {
             const data = { positionID: positionID, col: col, row: row, maxWeight: maxWeight, maxVolume: maxVolume, aisleID: aisleID, occupiedVolume: occupiedVolume, occupiedWeight: occupiedWeight };
             for(x in data) {
                 if (x == undefined)
-                    return res.status(422);
+                    return res.status(422).end();
             }
             const result = await PositionDao.updatePosition(old_positionId, data);
             if(result == 0)
-                return res.status(404);
+                return res.status(404).end();
             
-            return res.send(result);
+            return res.status(200).json(result);
         
     });
 
     app.put('/api/position/:positionID/changeID', async function (req, res) {
         
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Clerk')
-            return res.status(401);
+            return res.status(401).end();
 
         const old_positionId = req.params.positionID;
         const new_positionID = req.body.newPositionID;
         if(old_positionId == undefined || new_positionID == undefined)
-            return res.status(422);
+            return res.status(422).end();
         
         const result = await PositionDao.updatePositionID(old_positionId, new_positionID);
         if(result == 0)
-            return res.status(404);
+            return res.status(404).end();
 
         return res.sendStatus(200);
     });
 
     app.delete('/api/position/:positionID', async function (req, res) {
         if(!res.session.loggedin || !req.session.user.type == 'Manager')
-            return res.status(401);
+            return res.status(401).end();
 
         const positionID = req.params.positionID;
         if( positionID == undefined)
             return res.sendStatus(422);
 
         const result = await PositionDao.deletePosition(positionID);
-        console.log(result);
 
         return res.sendStatus(204);
     });

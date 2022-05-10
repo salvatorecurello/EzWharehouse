@@ -7,7 +7,7 @@ module.exports = function (app) {
     app.get('/api/internalOrders', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager')
-            return res.status(401);
+            return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
@@ -37,7 +37,7 @@ module.exports = function (app) {
     app.get('/api/internalOrdersIssued', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer')
-            return res.status(401);
+            return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
@@ -60,7 +60,7 @@ module.exports = function (app) {
 
     app.get('/api/internalOrdersAccepted', async function (req, res) {
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer' || !req.session.user.type == 'Customer')
-            return res.status(401);
+            return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
@@ -84,14 +84,14 @@ module.exports = function (app) {
     app.get('/api/internalOrders/:id', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Delivery Employee' )
-            return res.status(401);
+            return res.status(401).end();
         if(req.params.id == undefined) {
-            return res.status(422);
+            return res.status(422).end();
         }
             
         let internalOrder = await InternalOrderDao.getInternalOrderByID(req.params.id);
         if(internalOrder == undefined) {
-            return res.status(404);
+            return res.status(404).end();
         } 
         let products = await InternalOrderDao.getProductForInternalOrder(req.params.id);
 
@@ -112,44 +112,44 @@ module.exports = function (app) {
     app.post('/api/internalOrders', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Customer' )
-            return res.status(401);
+            return res.status(401).end();
 
         const date = req.body.issueDate;
         const products = req.body.products;
         const customerID = req.body.customerId;
         if(date == undefined || products == undefined || customerID == undefined)
-            return res.status(422);
+            return res.status(422).end();
 
         await InternalOrderDao.storeInternalOrder({date: date, products: products, customerID: customerID});
-        products.forEach(e => {
-            e.rfid = searchRFID(e.SKUId);
-            storeProducts(e);
+        products.forEach(async function(e) {
+            e.rfid = await searchRFID(e.SKUId);
+            await storeProducts(e);
         });
         
 
-        return res.status(201);
+        return res.status(201).end();
     });
 
     app.put('/api/internalOrders/:id', async function (req, res) {
         
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Delivery Employee'|| !req.session.user.type == 'Internal Customer' )
-            return res.status(401);
+            return res.status(401).end();
 
 
         const newState = req.body.newState;
         const id = req.params.id;
         if(id == undefined || newState == undefined)
-            return res.status(422);
+            return res.status(422).end();
         
         let result = await InternalOrderDao.changeState(id, newState);
         if(result == 0)
-            return res.status(404);
+            return res.status(404).end();
 
         if(newState == 'COMPLETED') {
             let products = req.body.products;
-            products.forEach(e => {
-                e.rfid = searchRFID(e.SKUId);
-                storeProducts(e);
+            products.forEach(async function(e) {
+                e.rfid = await searchRFID(e.SKUId);
+                await storeProducts(e);
             });
         }
             
@@ -159,11 +159,11 @@ module.exports = function (app) {
     app.delete('/api/internalOrders/:id', async function (req, res) {
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' )
-            return res.status(401);
+            return res.status(401).end();
 
         const id = req.params.id;
         if(id == undefined)
-            return res.status(422);
+            return res.status(422).end();
         
         await InternalOrderDao.deleteInternalOrder(id);
 
