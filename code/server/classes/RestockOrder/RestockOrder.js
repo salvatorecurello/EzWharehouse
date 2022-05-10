@@ -1,27 +1,24 @@
 class RestockOrder{
     constructor (data){
-        this.Id = data.id;
-        this.IssueDate = data.issueDate;
-        this.SupplierID = data.supplierId;
-        this.State = data.state;
-        this.ProductsList = [];
-        this.skuItems = [];
-        this.TransportNote = [];
+        this.Id = data.ID;
+        this.IssueDate = data.ISSUEDATE;
+        this.SupplierID = data.SUPPLIERID;
+        this.State = data.STATE;
+        this.Products = [];
+        this.SKUItems = [];
+        this.TransportNote = {};
     }
 
     pushProducts(products){
-        this.ProductsList.push(products);
+        this.Products.push(products);
     }
 
     pushSkuItems(skuItems){
-        this.skuItems.push(skuItems);
+        this.SKUItems.push(skuItems);
     }
 
     setTransportNote(key, note){
-        let data = {};
-        data[key] = note;
-
-        this.TransportNote.push(data);
+        this.TransportNote[key] = note;
     }
 
     setState(state){
@@ -32,14 +29,16 @@ class RestockOrder{
         var data = {
             id: this.Id,
             issueDate: this.IssueDate,
-            supplierId: this.supplierId,
-            state: this.state,
-            products: this.ProductsList
+            supplierId: this.SupplierId,
+            state: this.State,
+            products: this.Products
         };
 
-        if (!["ISSUED", "DELIVERY"].includes(data.state)) {
-            data.transportNote = {transportNote: this.TransportNote};
-            data.skuItems = this.SKUItemsList;
+        if (!["ISSUED"].includes(data.state)) {
+            data.transportNote = this.TransportNote;
+
+            if (!["DELIVERY"].includes(data.state))
+                data.skuItems = this.SKUItemsList;
         }
 
         return data;

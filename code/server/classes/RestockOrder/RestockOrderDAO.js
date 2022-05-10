@@ -23,31 +23,28 @@ class RestockOrderDAO {
 				else
 					resolve(this.lastID);
 			});
-		}).then(async (res) => {
+		}).then((res) => {
 			return new Promise((resolve, reject) => {
 				const sql = 'INSERT INTO Product(ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?);';
 
 				try {
 					data.products.forEach((p) => {
-						if (!parseInt(p.SKUId) || !(p.description instanceof String) || !parseFloat(p.price) || !parseInt(p.qty))
-							return reject({ "reason": "Wrong data", "id": res });
+						if (!parseInt(p.SKUId) || !(typeof p.description == 'string') || !parseFloat(p.price) || !parseInt(p.qty))
+							throw "Wrong data";
 
-						this.db.run(sql, [res, p.SKUId, p.description, p.price, p.qty], (err) => {
+						this.db.run(sql, [res, p.SKUId, p.description, p.price, p.qty], function (err) {
 							if (err)
 								throw err;
 						});
 					});
 				}
 				catch (err) {
-					return reject({ "reason": err, "id": res });
+					this.delete(res).catch((r) => console.log(r));
+
+					return reject(err);
 				}
 
 				return resolve(res);
-			}).catch((res) => {
-				return new Promise((resolve, reject) => {
-					this.delete(res.id);
-					reject(res.reason);
-				});
 			});
 		});
 	}
@@ -83,10 +80,10 @@ class RestockOrderDAO {
 						else if (rows != null)
 							rows.forEach((row) => {
 								order.pushProducts({
-									"SKUId": row.skuid,
-									"description": row.description,
-									"price": row.price,
-									"qty": row.qty
+									SKUId: row.skuid,
+									description: row.description,
+									price: row.price,
+									qty: row.qty
 								});
 							});
 					});
@@ -101,7 +98,7 @@ class RestockOrderDAO {
 	}
 	getDeliveryInfo(orders) {
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT skuId, rfid, key, note FROM SKUItem s, SKUItemsRestockOrder so, TransportNote tn WHERE so.restockOrderId = tn.orderId AND res.rfid = so.skuItemId AND so.restockOrderId = ?;';
+			const sql = 'SELECT skuId, rfid, key, note FROM SKUItem s, SKUItemsRestockOrder so, TransportNote tn WHERE so.restockOrderId = tn.orderId AND s.rfid = so.skuItemId AND so.restockOrderId = ?;';
 
 			try {
 				orders.forEach((order) => {
@@ -111,8 +108,8 @@ class RestockOrderDAO {
 						else if (rows != null)
 							rows.forEach((row) => {
 								order.pushSkuItems({
-									"SKUId": row.skuid,
-									"rfid": row.rfid
+									SKUId: row.skuid,
+									rfid: row.rfid
 								});
 
 								order.setTransportNote(row.key, row.note);
@@ -131,9 +128,7 @@ class RestockOrderDAO {
 		return new Promise((resolve, reject) => {
 			let res = [];
 
-			orders.forEach((order) => {
-				res.push(order.toDict());
-			});
+			orders.forEach((order) => res.push(order.toDict()));
 
 			resolve(res);
 		});
@@ -151,7 +146,9 @@ class RestockOrderDAO {
 					reject(err);
 				else {
 					if (rows != null)
-						rows.forEach((row) => res.push(new RestockOrder(row)));
+						rows.forEach((row) => {
+							console.log(row);
+							res.push(new RestockOrder(row));});
 
 					resolve(res)
 				}
@@ -193,7 +190,10 @@ class RestockOrderDAO {
 			this.getDeliveryInfo(res)
 		).then((res) => {
 			return new Promise((resolve, reject) => {
-				resolve(res.toDict());
+				let data = res.toDict();
+				delete data.id;
+
+				resolve(data);
 			});
 		}
 		);
@@ -259,7 +259,7 @@ class RestockOrderDAO {
 					skuItems.forEach((s) => {
 						let skuId = parseInt(s.SKUId);
 
-						if (!(s.rfid instanceof String) || !skuId)
+						if (!(s.rfid instanceof string) || !skuId)
 							throw "Wrong data";
 
 						this.db.get(sql, [s.rfid, skuId], (err, row) => {
@@ -325,10 +325,10 @@ class RestockOrderDAO {
 	}
 
 	//DELETE
-	delete(id) {
+	delete(data) {
 		return new Promise((resolve, reject) => {
 			const sql = 'DELETE FROM RestockOrder WHERE id = ?; DELETE FROM SKUItemsRestockOrder WHERE restockOrderId = ?; DELETE FROM Product WHERE orderId = ?; DELETE FROM TransportNote WHERE orderId = ?';
-			id = parseInt(id);
+			let id = parseInt(data);
 
 			if (!id)
 				return reject("Wrong data");
