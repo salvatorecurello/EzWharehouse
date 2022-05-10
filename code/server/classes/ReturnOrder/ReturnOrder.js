@@ -1,17 +1,21 @@
 class ReturnOrder{
-    constructor (id, returnDate, products, restockOrderId){
-        this.ID = id;
+    constructor (id, returnDate, restockOrderId){
+        this.Id = id;
         this.ReturnDate = returnDate;
-        this.ProductsList = products;
-        this.RestockOrderID = restockOrderId;
+        this.ProductsList = [];
+        this.RestockOrderId = restockOrderId;
     }
 
-    toMap(){
+    pushProducts(products){
+        this.ProductsList.push(products);
+    }
+
+    toDict(){
         return {
-            "id": this.ID,
-            "returnDate": this.ReturnDate,
-            "restockOrderId": this.restockOrderId,
-            "products": this.products
+            id: this.Id,
+            returnDate: this.ReturnDate,
+            restockOrderId: this.restockOrderId,
+            products: this.products
         }
     }
 }
