@@ -7,7 +7,7 @@ module.exports = function(app){
     app.get('/api/items', async function(req, res){
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' || !req.session.user.type == 'Supplier')
-            return res.status(401);
+            return res.status(401).end();
         
         const result = await ItemDao.getItems();
 
@@ -17,15 +17,15 @@ module.exports = function(app){
     app.get('/api/items/:id', async function(req, res){
 
         if(!req.session.loggedin || !req.session.user.type == 'Manager' )
-            return res.status(401);
+            return res.status(401).end();
         
         const id = req.params.id;
         if(id == undefined) {
-            return res.status(422);
+            return res.status(422).end();
         }
         const result = await ItemDao.getItemByID(id);
         if(result == undefined)
-            return res.status(404);
+            return res.status(404).end();
 
         return res.status(200).json(result);
     });
@@ -33,7 +33,7 @@ module.exports = function(app){
     app.post('/api/item', async function(req, res){
 
         if(!req.session.loggedin || !req.session.user.type == 'Supplier')
-            return req.status(401);
+            return req.status(401).end();
     
         const description = req.body.description;
         const price = req.body.price;
@@ -42,25 +42,25 @@ module.exports = function(app){
         const item = {description: description, price: price, skuid: skuid, supplierID: supplierID};
         for(x in item)
             if( x == undefined)
-                return res.status(422);
+                return res.status(422).end();
         
         const result = await ItemDao.storeItem(item);
         if(result == 0) 
-            return res.status(422);
+            return res.status(422).end();
         return res.sendStatus(201);
     });
 
     app.put('/api/item/:id', async function(req, res){
 
         if(!req.session.loggedin || !req.session.user.type == 'Supplier')
-            return req.status(401);
+            return req.status(401).end();
     
 
         const id = req.params.id;
         const itemSelected = await ItemDao.getItemByID(id);
 
         if(itemSelected == undefined)
-            return res.status(404);
+            return res.status(404).end();
         
         const new_price = req.body.newPrice;
         const newDescription = req.body.newDescription;
@@ -80,7 +80,7 @@ module.exports = function(app){
             c++;
         }
         if(c == 3)
-            return res.status(422)
+            return res.status(422).end()
         
         const new_item = {id: itemSelected.ID, description: itemSelected.DESCRIPTION, price: itemSelected.PRICE, skuid: itemSelected.SKUID, supplierID: itemSelected.SUPPLIERID};
         await ItemDao.deleteItem(id);
@@ -93,11 +93,11 @@ module.exports = function(app){
     app.delete('/api/items/:id', async function(req, res){
 
         if(!req.session.loggedin || !req.session.user.type == 'Supplier')
-            return req.status(401);
+            return req.status(401).end();
 
         const itemId = req.params.id;
         if(itemId == undefined)
-            res.status(422);
+            res.status(422).end();
         
         const result = await ItemDao.deleteItem(itemId);
 
