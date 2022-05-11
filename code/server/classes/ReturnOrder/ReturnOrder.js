@@ -1,13 +1,18 @@
 class ReturnOrder{
-    constructor (id, returnDate, restockOrderId){
-        this.Id = id;
-        this.ReturnDate = returnDate;
+    constructor (data){
+        this.Id = data.ID;
+        this.ReturnDate = data.RETURNDATE;
         this.ProductsList = [];
-        this.RestockOrderId = restockOrderId;
+        this.RestockOrderId = data.RESTOCKORDERID;
     }
 
     pushProducts(products){
-        this.ProductsList.push(products);
+        this.ProductsList.push({
+            SKUId: products.SKUID,
+            description: products.DESCRIPTION,
+            price: products.PRICE,
+            RFID: products.RFID
+        });
     }
 
     toDict(){

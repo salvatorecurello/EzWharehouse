@@ -1,20 +1,30 @@
 class RestockOrder{
+    static states = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
+
     constructor (data){
         this.Id = data.ID;
         this.IssueDate = data.ISSUEDATE;
         this.SupplierID = data.SUPPLIERID;
-        this.State = data.STATE;
+        this.State = data.STATE - 1;
         this.Products = [];
         this.SKUItems = [];
         this.TransportNote = {};
     }
 
     pushProducts(products){
-        this.Products.push(products);
+        this.Products.push({
+            SKUId: products.SKUID,
+            description: products.DESCRIPTION,
+            price: products.PRICE,
+            qty: products.QTY
+        });
     }
 
     pushSkuItems(skuItems){
-        this.SKUItems.push(skuItems);
+        this.SKUItems.push({
+            SKUId: skuItems.SKUID,
+            rfid: skuItems.RFID
+        });
     }
 
     setTransportNote(key, note){
@@ -30,14 +40,14 @@ class RestockOrder{
             id: this.Id,
             issueDate: this.IssueDate,
             supplierId: this.SupplierId,
-            state: this.State,
+            state: RestockOrder.states[this.State],
             products: this.Products
         };
 
-        if (!["ISSUED"].includes(data.state)) {
+        if (this.State > 0) {
             data.transportNote = this.TransportNote;
 
-            if (!["DELIVERY"].includes(data.state))
+            if (this.State > 1)
                 data.skuItems = this.SKUItemsList;
         }
 

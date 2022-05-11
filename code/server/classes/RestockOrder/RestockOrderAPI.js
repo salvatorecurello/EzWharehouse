@@ -9,8 +9,6 @@ module.exports = function (app) {
         RoDAO.getAll().then((data) => {
             return res.status(200).json(data);
         }).catch((data) => {
-            console.log(data);
-
             return res.status(500).end();
         });
     });
@@ -22,8 +20,6 @@ module.exports = function (app) {
         RoDAO.getIssued().then((data) => {
             return res.status(200).json(data);
         }).catch((data) => {
-            console.log(data);
-
             return res.status(500).end();
         });
     });
@@ -69,8 +65,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.store(req.body).then((data) => {
-            console.log(data);
-
             return res.status(201).end();
         }).catch((data) => {
             if (data == "Wrong data")
@@ -87,8 +81,6 @@ module.exports = function (app) {
             return res.sendStatus(401);
 
         RoDAO.setState(id, body.newState).then((data) => {
-            console.log(data);
-
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -107,8 +99,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.setSkuItems(id, body.skuItems).then((data) => {
-            console.log(data);
-
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -127,8 +117,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.setTransportNote(id, body.transportNote).then((data) => {
-            console.log(data);
-
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -147,8 +135,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.delete(id).then((data) => {
-            console.log(data);
-
             return res.status(204).end();
         }).catch((data) => {
             if (data == "No match")
