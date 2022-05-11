@@ -306,17 +306,16 @@ class RestockOrderDAO {
 	setState(id, state) {
 		return new Promise((resolve, reject) => {
 			const sql = 'UPDATE RestockOrder SET state = ? WHERE ID = ?;';
-			let s = -1;
+			let i;
 
-			for (let i = 0; i < RestockOrder.states.length && state != RestockOrder.states[i]; i++)
-				s = i + 1;
+			for (i = 0; i < RestockOrder.states.length && state != RestockOrder.states[i]; i++);
 
 			id = parseInt(id);
 
-			if (!id || s == -1)
+			if (!id || i >= RestockOrder.states.length)
 				return reject("Wrong data");
 
-			this.db.run(sql, [s, id], function (err) {
+			this.db.run(sql, [i + 1, id], function (err) {
 				if (err)
 					reject(err);
 				else if (this.changes == 0)

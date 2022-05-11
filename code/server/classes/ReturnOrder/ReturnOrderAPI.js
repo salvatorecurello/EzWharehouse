@@ -10,8 +10,6 @@ module.exports = function (app) {
         RoDAO.getAll().then((data) => {
             return res.status(200).json(data);
         }).catch((data) => {
-            console.log(data);
-
             return res.status(500).end();
         });
     });
@@ -39,8 +37,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.store(req.body).then((data) => {
-            console.log(data);
-
             return res.status(201).end();
         }).catch((data) => {
             if (data == "No match")
@@ -59,8 +55,6 @@ module.exports = function (app) {
             return res.status(401).end();
 
         RoDAO.delete(id).then((data) => {
-            console.log(data);
-
             return res.status(204).end();
         }).catch((data) => {
             if (data == "No match")

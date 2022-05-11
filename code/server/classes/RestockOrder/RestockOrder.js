@@ -4,7 +4,7 @@ class RestockOrder{
     constructor (data){
         this.Id = data.ID;
         this.IssueDate = data.ISSUEDATE;
-        this.SupplierID = data.SUPPLIERID;
+        this.SupplierId = data.SUPPLIERID;
         this.State = data.STATE - 1;
         this.Products = [];
         this.SKUItems = [];
