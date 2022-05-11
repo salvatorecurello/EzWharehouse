@@ -21,18 +21,6 @@ class SKUDAO {
         });
     }
 
-    isSKUidValid(skuid){
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM SKU where ID = ?';
-            this.db.all(sql, [skuid], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows.length);
-            });
-        });
-    }
     
     getSkus() {
         return new Promise((resolve, reject) => {
@@ -82,9 +70,9 @@ class SKUDAO {
         });
     }
 
-    updateSKUWeightVolume(position, weight, volume){
+    updatePositionWeightVolume(position, weight, volume){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE POSITION SET OCCUPAIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE ID = ?';
+            const sql = 'UPDATE POSITION SET OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE ID = ?';
             this.db.all(sql, [weight, volume, position], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -95,9 +83,22 @@ class SKUDAO {
         });
     }
 
+    existingPosition(position){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM POSITION WHERE ID = ?';
+            this.db.all(sql, [position], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.length);
+            });
+        });
+    }
+
     modifySKUPosition(position, id){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE POSITION SET ID=? WHERE ID =?';
+            const sql = 'UPDATE SKU SET POSITION=? WHERE ID =?';
             this.db.all(sql, [position, parseInt(id)], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -119,12 +120,25 @@ class SKUDAO {
                 resolve(this.lastID);
             });
         });
-
     }
+
+    existingSKUItem(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM SKUItem WHERE SKUID = ?';
+            this.db.all(sql, [parseInt(id)], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.length);
+            });
+        });
+    }
+
     deleteSKU(id){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM SKU WHERE ID=?';
-            this.db.all(sql, [id], (err, rows) => {
+            this.db.all(sql, [parseInt(id)], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
