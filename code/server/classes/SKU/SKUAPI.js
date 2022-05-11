@@ -7,6 +7,10 @@ module.exports = function(app){
     app.get('/api/skus', async function(req, res){
         if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer" || req.session.user.type=="clerk")){
             const skus = await skudao.getSkus();
+            for(let sku of skus){
+                sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
+            }
+            
             return res.status(200).json(skus);
         }else{
             return res.sendStatus(401);
@@ -18,6 +22,7 @@ module.exports = function(app){
             if(req.params.id){
                 const sku = await skudao.getSKUByID(req.params.id);
                 if(sku!=null){
+                    sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
                     return res.status(200).json(sku);
                 }
                 return res.sendStatus(404);

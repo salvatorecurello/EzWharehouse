@@ -1,6 +1,6 @@
 const ItemDAO = require("./ItemDao.js");
 const Item = require("./Item.js");
-ItemDao = new ItemDAO();
+const ItemDao = new ItemDAO();
 
 module.exports = function(app){
 

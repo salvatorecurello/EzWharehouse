@@ -1,13 +1,13 @@
 class Position{
     constructor (position){
-        this.ID = position.ID;
-        this.AISLEID = position.AISLEID;
-        this.ROW = position.ROW;
-        this.COL = position.COL;
-        this.MAXWEIGHT = position.MAXWEIGHT;
-        this.MAXVOLUME = position.MAXVOLUME;
-        this.OCCUPIEDWEIGHT = position.OCCUPIEDWEIGHT;
-        this.OCCUPIEDVOLUME = position.OCCUPIEDVOLUME;
+        this.positionID = position.ID;
+        this.aisleID = position.AISLEID;
+        this.row = position.ROW;
+        this.col = position.COL;
+        this.maxWeight = position.MAXWEIGHT;
+        this.maxVolume = position.MAXVOLUME;
+        this.occupiedWeight = position.OCCUPIEDWEIGHT;
+        this.occupiedVolume = position.OCCUPIEDVOLUME;
 
     }
 }

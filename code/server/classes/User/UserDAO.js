@@ -42,7 +42,7 @@ class UserDAO {
 
     getSuppliers(){
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM User WHERE TYPE=="Supplier"';
+            const sql = 'SELECT * FROM User WHERE TYPE=="supplier"';
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);

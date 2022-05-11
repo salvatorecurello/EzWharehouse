@@ -1,4 +1,4 @@
-const InternalOrder = require('./internalOrder.js');
+const InternalOrder = require('./InternalOrder.js');
 
 class InternalOrderDAO {
     sqlite = require('sqlite3');
@@ -61,7 +61,7 @@ class InternalOrderDAO {
 
     getProducts() {
         return new Promise((resolve, reject) => {
-            const sql_products = 'SELECT SKUID,DESCRIPTION,PRICE, RFID, QTY, ORDERID FROM PRODUCT';
+            const sql_products = 'SELECT SKUID,DESCRIPTION,PRICE, QTY, ORDERID FROM PRODUCT';
             const products = [];
 
             this.db.all(sql_products, [], (err, rows) => {
@@ -69,7 +69,7 @@ class InternalOrderDAO {
                     reject(err);
                     return;
                 }
-                rows.forEach((e) => {products.push({id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, rfid: e.RFID, qty: e.QTY, orderID: e.ORDERID})});
+                rows.forEach((e) => {products.push({id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID})});
                 resolve(products);
             });
         });
