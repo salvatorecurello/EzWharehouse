@@ -54,7 +54,7 @@ class TestDescriptorDAO {
 
     getTestDescriptorsByID(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TestDescriptor ID = ?';
+            const sql = 'SELECT * FROM TestDescriptor WHERE ID = ?';
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -63,7 +63,7 @@ class TestDescriptorDAO {
                 if(rows.length==1){
                     resolve(new TestDescriptor(rows[0]));
                 }else{
-                    resulve(null);
+                    resolve(null);
                 }
             });
         });
@@ -72,7 +72,7 @@ class TestDescriptorDAO {
 
     updateTestDescriptor(data, id){
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE TestDescriptor SET  NAME=? PROCEDURE=? SKUID=? where ID = ?';
+            const sql = 'UPDATE TestDescriptor SET  NAME=?, PROCEDURE=?, SKUID=? where ID = ?';
             this.db.all(sql, [data.newName, data.newProcedureDescription, data.newIdSKU, id], (err, rows) => {
                 if (err) {
                     reject(err);

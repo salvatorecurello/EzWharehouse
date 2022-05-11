@@ -1,10 +1,10 @@
 class Item{
     constructor (item){
-        this.ID = item.ID;
-        this.DESCRIPTION = item.DESCRIPTION;
-        this.PRICE = item.PRICE;
-        this.SKUID = item.SKUID;
-        this.SUPPLIERID = item.SUPPLIERID;
+        this.id = item.ID;
+        this.description = item.DESCRIPTION;
+        this.price = item.PRICE;
+        this.SKUId = item.SKUID;
+        this.supplierId = item.SUPPLIERID;
     }
 }
 

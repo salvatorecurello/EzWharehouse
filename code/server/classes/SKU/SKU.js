@@ -4,13 +4,18 @@ class SKU{
         this.description = data.DESCRIPTION;
         this.weight = data.WEIGHT;
         this.volume = data.VOLUME;
-        this.notes = data.NOTES;
+        this.notes = data.NOTE;
         this.position = data.POSITION;
         this.availableQuantity = data.AVAILABLEQUANTITY;
         this.price = data.PRICE;
         this.testDescriptorIDList = data.TESTDESCRIPTORIDLIST; 
 
     }
+
+    setTestDescriptorIDList(list){
+        this.testDescriptorIDList=list;
+    }
+
 }
 
 module.exports=SKU
