@@ -25,6 +25,7 @@ class DAO {
     }
     createTables() {
         const sql = [];
+        
         sql.push('CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR, SURNAME VARCHAR, TYPE VARCHAR, PASSWORD VARCHAR, EMAIL VARCHAR UNIQUE)');
         sql.push('CREATE TABLE IF NOT EXISTS SKU (ID INTEGER PRIMARY KEY AUTOINCREMENT,DESCRIPTION VARCHAR, WEIGHT INTEGER, VOLUME INTEGER, POSITION VARCHAR, AVAILABLEQUANTITY INTEGER, PRICE FLOAT, NOTE VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS TransportNote (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, KEY VARCHAR, NOTE VARCHAR)');
@@ -38,6 +39,10 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS TestDescriptor (ID INTEGER PRIMARY KEY, NAME VARCHAR, PROCEDURE VARCHAR, SKUID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS RestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUEDATE INTEGER, STATE INTEGER, SUPPLIERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS SKUItemsRestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RESTOCKORDERID INTEGER, SKUITEMID VARCHAR)');
+        // sql.push('DROP Table InternalOrder');
+        // sql.push('DROP Table Product');
+        // sql.push('DROP Table SKUItem');
+
 
         return this.createTablesR(sql, 0).then(() => {
             return new Promise((resolve, reject) => {
@@ -45,8 +50,18 @@ class DAO {
                 const sql_Position = 'INSERT or IGNORE INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
                 const sql_Items = 'INSERT or IGNORE INTO Item(DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?,?)';
                 const sql_InternalOrders = 'INSERT or IGNORE INTO InternalOrder(ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
+                
                 const sql_SKU = 'INSERT or IGNORE INTO Sku(DESCRIPTION, WEIGHT, VOLUME, POSITION, AVAILABLEQUANTITY, PRICE, NOTE) VALUES(?, ?, ?, ?, ?, ?, ?)';
                 const sql_Product = 'INSERT or IGNORE INTO Product(ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?)';
+                
+                const sql_SkuItem = 'INSERT or IGNORE INTO SKUItem(RFID, SKUID , AVAILABLE, DATEOFSTOCK ) VALUES(?, ?, ?, ?)';
+
+                let skuItems = [];
+                skuItems.push({ rfid: 'rfid1', skuid: 1, available: 20, dateofstock: '20/05/22'});
+                skuItems.push({ rfid: 'rfid2', skuid: 2, available: 40, dateofstock: '20/05/22'});
+                skuItems.push({ rfid: 'rfid3', skuid: 2, available: 30, dateofstock: '20/05/22'});
+                skuItems.push({ rfid: 'rfid4', skuid: 3, available: 25, dateofstock: '20/05/22'});
+                skuItems.push({ rfid: 'rfid5', skuid: 1, available: 10, dateofstock: '20/05/22'});
 
                 let users = [];
                 const password = crypto.createHash('md5').update('testpassword').digest("hex");
@@ -78,6 +93,7 @@ class DAO {
                 ords.push({ issueDate: 'issueDateEx3', state: states['COMPLETED'], customerID: 1 });
                 ords.push({ issueDate: 'issueDateEx4', state: states['ACCEPTED'], customerID: 1 });
                 ords.push({ issueDate: 'issueDateEx5', state: states['ISSUED'], customerID: 1 });
+                
 
                 let skus = [];
                 skus.push({ description: 'description1', weight: 10, volume: 10, position: 1, availableQuantity: 10, price: 2.00, note: 'note1' });
@@ -92,7 +108,15 @@ class DAO {
                 prods.push({ orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
                 prods.push({ orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
                 prods.push({ orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
-
+                
+                skuItems.forEach((skuItem) => {
+                    this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
+                        if (err)
+                            reject(err);
+                        else
+                            resolve();
+                    });
+                });
 
                 users.forEach((user) => {
                     this.db.run(sql_User, [user.name, user.surname, user.type, user.password, user.email], (err) => {
@@ -122,13 +146,15 @@ class DAO {
                 });
 
                 ords.forEach((ord) => {
-                    this.db.run(sql_InternalOrders, [ord.id, ord.issueDate, ord.state, ord.customerID], (err) => {
+                    this.db.run(sql_InternalOrders, [ord.issueDate, ord.state, ord.customerID], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
                 });
+
+                
 
                 skus.forEach((sku) => {
                     this.db.run(sql_SKU, [sku.description, sku.weight, sku.volume, sku.position, sku.availableQuantity, sku.price, sku.note], (err) => {
@@ -147,6 +173,7 @@ class DAO {
                             resolve();
                     });
                 });
+                
             });
         });
     }
