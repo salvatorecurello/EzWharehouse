@@ -14,7 +14,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/restockOrdersIssued', async function (req, res) {
-        if (!req.session.loggedin || !["manager", "supplier"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "supplier", "clerk"].includes(req.session.user.type))
             return res.status(401).end();
 
         RoDAO.getIssued().then((data) => {
@@ -76,11 +76,10 @@ module.exports = function (app) {
 
     app.put('/api/restockOrder/:id', async function (req, res) {
         const id = parseInt(req.params.id);
-
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.sendStatus(401);
 
-        RoDAO.setState(id, body.newState).then((data) => {
+        RoDAO.setState(id, req.body.newState).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -95,10 +94,10 @@ module.exports = function (app) {
     app.put('/api/restockOrder/:id/skuItems', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.status(401).end();
 
-        RoDAO.setSkuItems(id, body.skuItems).then((data) => {
+        RoDAO.setSkuItems(id, req.body.skuItems).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -113,10 +112,10 @@ module.exports = function (app) {
     app.put('/api/restockOrder/:id/transportNote', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.status(401).end();
 
-        RoDAO.setTransportNote(id, body.transportNote).then((data) => {
+        RoDAO.setTransportNote(id, req.body.transportNote).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")

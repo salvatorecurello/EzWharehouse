@@ -1,11 +1,11 @@
 class User{
     constructor (data){
-        this.ID = data.ID;
-        this.NAME = data.NAME;
-        this.SURNAME = data.SURNAME;
-        this.TYPE = data.TYPE;
-        this.PASSWORD = data.PASSWORD;
-        this.EMAIL = data.EMAIL;
+        this.id = data.ID;
+        this.name = data.NAME;
+        this.surname = data.SURNAME;
+        this.type = data.TYPE;
+        this.password = data.PASSWORD;
+        this.email = data.EMAIL;
     }
 }
 

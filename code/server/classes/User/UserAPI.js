@@ -8,11 +8,11 @@ module.exports = function(app){
         if(req.session.loggedin){
             const user = await Userdao.getUserFromId(req.session.user.id);
             const data = {
-                id: user.ID,
-                username: user.EMAIL,
-                name: user.NAME,
-                surname: user.SURNAME,
-                type: user.TYPE
+                id: user.id,
+                username: user.email,
+                name: user.name,
+                surname: user.surname,
+                type: user.type
             }
             return res.status(200).json(data);
         }
@@ -62,13 +62,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "manager"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -84,13 +84,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "customer"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -106,13 +106,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "supplier"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -128,13 +128,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "clerk"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -150,13 +150,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "qualityEmployee"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -172,13 +172,13 @@ module.exports = function(app){
             }else{
                 req.session.loggedin=true;
                 req.session.user={
-                    id: user.ID,
+                    id: user.id,
                     type: "deliveryEmployee"
                 }
                 const data = {
-                    id: user.ID,
-                    username: user.EMAIL,
-                    name: user.NAME
+                    id: user.id,
+                    username: user.email,
+                    name: user.name
                 }
                 return res.status(200).json(data);
             }
@@ -198,9 +198,9 @@ module.exports = function(app){
             if(username && req.body.oldType && req.body.newType && req.body.newType!="manager"){
                 const user = await Userdao.getUserFromEmail(username);
                 if(user!=null){
-                    if(user.TYPE==req.body.oldType){
+                    if(user.type==req.body.oldType){
                         if (["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(req.body.newType)){
-                            await Userdao.updateUser(user.ID, req.body.newType);
+                            await Userdao.updateUser(user.id, req.body.newType);
                             return res.status(200).end();
                         }else{
                             return res.status(422).end();
@@ -224,8 +224,8 @@ module.exports = function(app){
             if (username && type){
                 const user = await Userdao.getUserFromEmail(username);
                 if(user!=null){
-                    if (user.TYPE==type && type!="manager"){
-                        await Userdao.deleteUser(user.ID);
+                    if (user.type==type && type!="manager"){
+                        await Userdao.deleteUser(user.id);
                         return res.status(204).end();
                     }
                 }
