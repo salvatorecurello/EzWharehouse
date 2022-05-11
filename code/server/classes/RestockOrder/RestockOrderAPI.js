@@ -14,7 +14,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/restockOrdersIssued', async function (req, res) {
-        if (!req.session.loggedin || !["manager", "supplier"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "supplier", "clerk"].includes(req.session.user.type))
             return res.status(401).end();
 
         RoDAO.getIssued().then((data) => {
@@ -95,7 +95,7 @@ module.exports = function (app) {
     app.put('/api/restockOrder/:id/skuItems', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.status(401).end();
 
         RoDAO.setSkuItems(id, req.body.skuItems).then((data) => {
@@ -113,7 +113,7 @@ module.exports = function (app) {
     app.put('/api/restockOrder/:id/transportNote', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.status(401).end();
 
         RoDAO.setTransportNote(id, req.body.transportNote).then((data) => {
