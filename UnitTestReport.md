@@ -22,28 +22,22 @@ Version:
     class and method name that contains the test case>
     <Jest tests  must be in code/server/unit_test  >
 
- ### **Class *class_name* - method *name***
+ ### **Class *PositionDAO* - method *storePosition***
 
-
-
-**Criteria for method *name*:**
+**Criteria for method *storePosition*:**
 	
 
- - 
- - 
+ - Validity object Position
+ - Position with unique id in database
 
-
-
-
-
-**Predicates for method *name*:**
+**Predicates for method *storePosition*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
+| Validity object Position         |   Yes        |
+|          |     No      |
+|  Position with unique id in database         |   Yes        |
+|         |      No     |
 
 
 
@@ -61,15 +55,48 @@ Version:
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
+| Validity object Position | Position with unique id in database | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidPosition; True)|||
+|Yes|No|Invalid|T2(ValidPosition; False)|||
+|No|Yes|Invalid|T3(NullPosition; False)|||
+|No|No|Invalid|T4(NullPosition; False)|||
+
+### **Class *PositionDAO* - method *getPositions***
+
+**Criteria for method *getPositions*:**
+	
+
+ - There are Positions in DB
+
+**Predicates for method *getPositions*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| There are Positions in DB         |   Yes        |
+|          |     No      |
 
 
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| There are Positions in DB | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1((); ListPositions)||
+|No|Invalid|T2((); EmptyList)||
 
 
 # White Box Unit Tests
