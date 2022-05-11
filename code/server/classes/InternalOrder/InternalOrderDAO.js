@@ -16,39 +16,41 @@ class InternalOrderDAO {
                     reject(err);
                     return;
                 }
-                resolve(rows[0]);
+                resolve(true);
             });
         });
     }
-
 
     storeInternalOrder(internalOrder) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO InternalOrder(ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
+            
             this.db.run(sql, [internalOrder.date, 0,internalOrder.customerID], (err) => {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                resolve(internalOrder);
+                resolve(true);
             });
+            
         });
     }
 
     searchRFID(skuId) {
+        return new Promise((resolve, reject) => {
         const sql_rfid = 'SELECT RFID FROM SKUITEM WHERE SKUID == ?';
-            this.db.run(sql_rfid, [skuId], (err) => {
+            this.db.run(sql_rfid, [skuId], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                resolve(rows[0]);
+                resolve(rows);
             });
+        });
     }
 
     storeProducts(prod) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO Product(RFID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
+            const sql = 'INSERT INTO Product(SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?)';
                 this.db.run(sql, [prod.rfid, prod.SKUId, prod.description,prod.price,prod.qty], (err) => {
                     if (err) {
                         reject(err);
@@ -61,7 +63,7 @@ class InternalOrderDAO {
 
     getProducts() {
         return new Promise((resolve, reject) => {
-            const sql_products = 'SELECT SKUID,DESCRIPTION,PRICE, QTY, ORDERID FROM PRODUCT';
+            const sql_products = 'SELECT P.*, S.RFID FROM PRODUCT P, SKUITEM S WHERE S.SKUID == P.SKUID';
             const products = [];
 
             this.db.all(sql_products, [], (err, rows) => {
@@ -69,7 +71,7 @@ class InternalOrderDAO {
                     reject(err);
                     return;
                 }
-                rows.forEach((e) => {products.push({id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID})});
+                rows.forEach((e) => {products.push({skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
                 resolve(products);
             });
         });
@@ -107,24 +109,6 @@ class InternalOrderDAO {
 
     }
 
-    getProductForInternalOrder(id) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Product WHERE ORDERID = ?';
-            this.db.all(sql, [id], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                
-                const productList = rows.map(e =>  {
-                    let d = {id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, rfid: e.RFID, qty: e.QTY};
-                    return d;
-                });
-
-                resolve(productList);
-            });
-        });
-    }
 
     deleteInternalOrder(InternalOrderId) {
         return new Promise((resolve, reject) => {
