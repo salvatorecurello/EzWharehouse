@@ -11,6 +11,11 @@ class SKU{
         this.testDescriptorIDList = data.TESTDESCRIPTORIDLIST; 
 
     }
+
+    setTestDescriptorIDList(list){
+        this.testDescriptorIDList=list;
+    }
+
 }
 
 module.exports=SKU
