@@ -9,44 +9,77 @@ class ReturnOrderDAO {
 		});
 	}
 
-	///CREATE
+	//Ausiliary functions
+	checkProductsR(orderId, issueDate, products, i) {
+		if (i >= products.length)
+			return new Promise((resolve, reject) => {
+				resolve(issueDate);
+			});
+
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT COUNT(*) as num FROM Product WHERE orderId = ? AND skuId = ?;';
+
+			this.db.get(sql, [orderId, products[i].SKUId], (err, row) => {
+				if (err)
+					reject(err);
+				else if (row.NUM == 0)
+					reject("Wrong data");
+				else
+					resolve();
+			});
+		}).then(() => this.checkProductsR(orderId, issueDate, products, i + 1));
+	}
+	getReturnItemsR(orders, i) {
+		if(i >= orders.length)
+			return new Promise((resolve, reject) => {
+				let res = [];
+
+				orders.forEach((order) => {
+					res.push(order.toDict())
+				});
+
+				resolve(res);
+			});
+
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
+
+			this.db.all(sql, [orders[i].restockOrderId], (err, rows) => {
+				let res = [];
+
+				if (err)
+					reject(err);
+				else {
+					if (rows != null)
+						rows.forEach((row) => {
+							orders[i].pushProducts(row);
+						});
+					
+					resolve();
+				}
+			});
+		}).then(() => this.getReturnItemsR(orders, i + 1));
+	}
+
+	//CREATE
 	async store(data) {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT issueDate FROM RestockOrder WHERE id = ?;';
-			let id = parseInt(data.restockOrderId);
 
-			if (!id)
+			if (!data.restockOrderId || !data.products)
 				return reject("Wrong data");
 
-			this.db.get(sql, [id], (err, row) => {
+			this.db.get(sql, [data.restockOrderId], (err, row) => {
 				if (err)
 					reject(err);
 				else if (row == null)
 					reject("No match");
 				else
-					resolve(row.issuedate);
+					resolve(row.ISSUEDATE);
 			});
-		}).then((res) => {
-			return new Promise((resolve, reject) => {
-				const sql = 'SELECT restockOrderId, skuItemId, skuId FROM Product p, SKUItemsRestockOrder so WHERE p.orderId = so.restockOrderId AND skuId = ? AND so.restockOrderId = ?;';
-				
-				try{
-					data.products.forEach((p) => {
-						this.db.all(sql, [data.restockOrderId, p.SKUId], (err, rows) => {
-							if (err)
-								throw err;
-							else if (rows == null)
-								throw "Wrong data";
-						});
-					});
-				}
-				catch(err){
-					return reject(err);
-				}
-
-				return resolve(res);
-			});
-		}).then((res) => {
+		}).then((res) =>
+			this.checkProductsR(data.restockOrderId, res, data.products, 0)
+		).then((res) => {
 			return new Promise((resolve, reject) => {
 				const sql = 'INSERT INTO ReturnOrder(RETURNDATE, RESTOCKORDERID) VALUES(?, ?);';
 				const returnDate = dayjs(data.returnDate);
@@ -84,33 +117,9 @@ class ReturnOrderDAO {
 					resolve(res);
 				}
 			});
-		}).then((res) => {
-			return new Promise((resolve, reject) => {
-				const sql = 'SELECT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
-				let data = [];
-
-				try {
-					res.forEach((order) => {
-						this.db.all(sql, [order.restockOrderId], (err, rows) => {
-							if (err)
-								throw err;
-							else
-								if (rows != null)
-									rows.forEach((row) => {
-										order.pushProducts(row);
-
-										data.push(order.toDict());
-									});
-						});
-					});
-				}
-				catch (err) {
-					return reject(err);
-				}
-
-				return resolve(data);
-			});
-		});
+		}).then((res) =>
+			this.getReturnItemsR(res, 0)
+		);
 	}
 	async get(id) {
 		return new Promise((resolve, reject) => {
@@ -138,14 +147,9 @@ class ReturnOrderDAO {
 					else {
 						if (rows != null)
 							rows.forEach((row) => {
-								order.pushProducts({
-									SKUId: row.skuid,
-									description: row.description,
-									price: row.price,
-									RFID: row.rfid
-								});
+								order.pushProducts(row);
 							});
-						
+
 						resolve(order.toDict());
 					}
 				});
@@ -153,7 +157,7 @@ class ReturnOrderDAO {
 		});
 	}
 
-
+	//DELETE
 	delete(id) {
 		return new Promise((resolve, reject) => {
 			const sql = 'DELETE FROM ReturnOrder WHERE id = ?;';

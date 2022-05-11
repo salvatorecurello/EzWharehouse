@@ -8,7 +8,7 @@ const app = new express();
 const port = 3001;
 
 const db = new DAO();
-db.createTables()
+db.createTables().catch((err) => { throw err; });
 
 app.use(express.json());
 
