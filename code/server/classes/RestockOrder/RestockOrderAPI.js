@@ -78,9 +78,9 @@ module.exports = function (app) {
         const id = parseInt(req.params.id);
 
         if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
-            return res.sendStatus(401);
+            return res.status(401).end();
 
-        RoDAO.setState(id, body.newState).then((data) => {
+        RoDAO.setState(id, req.body.newState).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -98,7 +98,7 @@ module.exports = function (app) {
         if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
             return res.status(401).end();
 
-        RoDAO.setSkuItems(id, body.skuItems).then((data) => {
+        RoDAO.setSkuItems(id, req.body.skuItems).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")
@@ -116,7 +116,7 @@ module.exports = function (app) {
         if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
             return res.status(401).end();
 
-        RoDAO.setTransportNote(id, body.transportNote).then((data) => {
+        RoDAO.setTransportNote(id, req.body.transportNote).then((data) => {
             return res.status(200).end();
         }).catch((data) => {
             if (data == "No match")

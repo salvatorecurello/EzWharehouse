@@ -66,7 +66,7 @@ class ReturnOrderDAO {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT issueDate FROM RestockOrder WHERE id = ?;';
 
-			if (!data.restockOrderId || !data.products)
+			if (!parseInt(data.restockOrderId) || !data.products)
 				return reject("Wrong data");
 
 			this.db.get(sql, [data.restockOrderId], (err, row) => {
@@ -161,6 +161,10 @@ class ReturnOrderDAO {
 	delete(id) {
 		return new Promise((resolve, reject) => {
 			const sql = 'DELETE FROM ReturnOrder WHERE id = ?;';
+			id = parseInt(id);
+
+			if (!id)
+				return reject("Wrong data");
 
 			this.db.run(sql, [id], (err) => {
 				if (err)
