@@ -101,6 +101,18 @@ class SKUDAO {
         });
     }
 
+    PositionOccupied(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM SKU WHERE POSITION = ?';
+            this.db.all(sql, [id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.lenght)
+            });
+        });
+    }
     existingPosition(position){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM POSITION WHERE ID = ?';
@@ -109,7 +121,11 @@ class SKUDAO {
                     reject(err);
                     return;
                 }
-                resolve(rows.length);
+                if (rows.lenght==0){
+                    resolve(undefined)
+                }else{ 
+                resolve(rows[0]);
+                }
             });
         });
     }
