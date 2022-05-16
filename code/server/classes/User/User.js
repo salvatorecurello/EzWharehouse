@@ -1,5 +1,5 @@
-class User{
-    constructor (data){
+class User {
+    constructor(data) {
         this.id = data.ID;
         this.name = data.NAME;
         this.surname = data.SURNAME;
@@ -9,4 +9,4 @@ class User{
     }
 }
 
-module.exports=User
+module.exports = User

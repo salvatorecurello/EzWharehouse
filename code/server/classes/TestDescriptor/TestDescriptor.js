@@ -1,5 +1,5 @@
-class TestDescriptor{
-    constructor (data){
+class TestDescriptor {
+    constructor(data) {
         this.id = data.ID;
         this.name = data.NAME;
         this.procedureDescription = data.PROCEDURE;
@@ -7,4 +7,4 @@ class TestDescriptor{
     }
 }
 
-module.exports=TestDescriptor
+module.exports = TestDescriptor

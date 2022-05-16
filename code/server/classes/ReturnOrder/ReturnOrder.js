@@ -1,7 +1,9 @@
+const dayjs = require('dayjs');
+
 class ReturnOrder{
     constructor (data){
         this.Id = data.ID;
-        this.ReturnDate = data.RETURNDATE;
+        this.ReturnDate = dayjs.unix(data.RETURNDATE);
         this.ProductsList = [];
         this.RestockOrderId = data.RESTOCKORDERID;
     }

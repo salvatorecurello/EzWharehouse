@@ -17,17 +17,33 @@ class RestockOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'INSERT INTO Product(ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?);';
+			const sql = 'SELECT id FROM SKU WHERE id = ?';
 			let p = products[i];
 
-			if (!parseInt(p.SKUId) || !(typeof p.description == 'string') || !parseFloat(p.price) || !parseInt(p.qty))
+			if (!parseInt(p.SKUId))
 				return reject("Wrong data");
 
-			this.db.run(sql, [orderId, p.SKUId, p.description, p.price, p.qty], function (err) {
+			this.db.get(sql, [p.SKUId], (err, row) => {
 				if (err)
 					reject(err);
+				else if (row.NUM == 0)
+					reject("Wrong data");
 				else
-					resolve();
+					resolve(p);
+			});
+		}).then((p) => {
+			return new Promise((resolve, reject) => {
+				const sql = 'INSERT INTO Product(ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?);';
+
+				if (!(typeof p.description == 'string') || !parseFloat(p.price) || !parseInt(p.qty))
+					return reject("Wrong data");
+
+				this.db.run(sql, [orderId, p.SKUId, p.description, p.price, p.qty], function (err) {
+					if (err)
+						reject(err);
+					else
+						resolve();
+				});
 			});
 		}).then(() => this.insertProductsR(orderId, products, i + 1));
 	}
@@ -117,15 +133,16 @@ class RestockOrderDAO {
 				resolve(orderId);
 			});
 
+		const s = skuItems[i];
+
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT COUNT(*) as num FROM SKUItem WHERE rfid = ? AND skuId = ?;';
-			let s = skuItems[i];
+			const sql = 'SELECT COUNT(*) as num FROM SKU WHERE id = ?;';
 			let skuId = parseInt(s.SKUId);
 
-			if (!(typeof s.rfid == 'string') || !skuId)
+			if (!skuId)
 				reject("Wrong data");
 
-			this.db.get(sql, [s.rfid, skuId], (err, row) => {
+			this.db.get(sql, [skuId], (err, row) => {
 				if (err)
 					reject(err);
 				else if (row.NUM == 0)
@@ -133,15 +150,41 @@ class RestockOrderDAO {
 				else
 					resolve();
 			});
+		}).then(() => {
+			return new Promise((resolve, reject) => {
+				const sql = 'SELECT COUNT(*) as num FROM SKUItem WHERE rfid = ?';
+
+				if (!(typeof s.rfid == 'string'))
+					return reject("Wrong data");
+
+				this.db.get(sql, [skuId], (err, row) => {
+					if (err)
+						reject(err);
+					else if (row.NUM != 0)
+						reject("Wrong data");
+					else
+						resolve();
+				});
+			});
 		}).then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
 	}
 	checkSKUItems(order, skuItems) {
-		if (order.State < 2)
-			return new Promise((resolve, reject) => {
-				reject("Wrong data");
-			});
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT id FROM User WHERE type = "supplier" AND id = ?';
+			let supplierId = parseInt(order.supplierId);
 
-		return this.checkSKUItemsR(order.Id, skuItems, 0);
+			if (order.State != 2 || !supplierId)
+				reject("Wrong data");
+
+			this.db.get(sql, [supplierrId], (err, row) => {
+				if (err)
+					reject(err);
+				else if (row.NUM == 0)
+					reject("Wrong data");
+				else
+					resolve();
+			});
+		}).then(() => this.checkSKUItemsR(order.Id, skuItems, 0));
 	}
 	insertSKUItemsR(orderId, skuItems, i) {
 		if (i >= skuItems.length)
@@ -193,13 +236,14 @@ class RestockOrderDAO {
 
 	//CREATE
 	async store(data) {
+		//check suppliers
 		return new Promise((resolve, reject) => {
 			const sql = 'INSERT INTO RestockOrder(ISSUEDATE, STATE, SUPPLIERID) VALUES(?, 1, ?);';
 
 			if (!dayjs(data.issueDate).isValid() || !parseInt(data.supplierId) || !data.products)
 				return reject("Wrong data");
 
-			this.db.run(sql, [data.issueDate, data.supplierId], function (err) {
+			this.db.run(sql, [dayjs(data.issueDate).unix(), data.supplierId], function (err) {
 				if (err)
 					reject(err);
 				else
@@ -275,7 +319,7 @@ class RestockOrderDAO {
 	async getReturnItems(id) {
 		return this.getOrder(id).then((order) => {
 			return new Promise((resolve, reject) => {
-				const sql = 'SELECT rfid, skuId FROM SKUItem s, TestResult t, SKUItemsRestockOrder so WHERE s.rfid = t.skuItemId AND s.rfid = so.skuItemId AND orderId = ? AND result = 0;';
+				const sql = 'SELECT DISTINCT rfid, skuId FROM SKUItem s, TestResult t, SKUItemsRestockOrder so WHERE s.rfid = t.skuItemId AND s.rfid = so.skuItemId AND orderId = ? AND result = 0;';
 
 				if (order.state != 4)
 					return reject("Wrong data");
