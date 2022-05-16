@@ -8,16 +8,39 @@ class ItemDAO {
         });
     }
 
+    updateItem(item) {
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE Item SET ID = ?, DESCRIPTION = ?, PRICE = ?, SKUID = ?, SUPPLIERID = ? WHERE ID == ?';
+            this.db.all(sql, [item.id, item.description, item.price, item.skuid, item.supplierID, item.id], function(err) {
+                if (err) {
+                    reject(err);
+                }
+                resolve(this);
+            });
+        });
+    }
+
+    retrieveSku(skuID) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM SKUItem WHERE SKUID == ?';
+            this.db.all(sql, [skuID], function(err,rows) {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    }
+
 
     storeItem(item) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO Item(ID, DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?, ?, ?)';
-            this.db.run(sql, [item.id, item.description, item.price, item.skuid, item.supplierID], (err) => {
+            this.db.run(sql, [item.id, item.description, item.price, item.skuid, item.supplierID], function(err) {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                resolve(item);
+                resolve(this);
             });
         });
     }
@@ -32,7 +55,6 @@ class ItemDAO {
                 }
                 
                 const items = rows.map((p) => (new Item(p)));
-                console.log(items);
                 resolve(items);
             });
         });
@@ -41,14 +63,11 @@ class ItemDAO {
     getItemByID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM Item WHERE ID = ?';
-            this.db.all(sql, [id], (err, rows) => {
+            this.db.all(sql, [id], function(err, rows) {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                const item = new Item(rows[0]);
-                
-                resolve(item);
+                resolve(rows[0]);
             });
         });
 
@@ -57,12 +76,11 @@ class ItemDAO {
     deleteItem(itemID) {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM Item WHERE ID == ?';
-            this.db.run(sql, [itemID], (err) => {
+            this.db.run(sql, [itemID], function(err) {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                resolve(itemID);
+                resolve(this);
 
             });
         });

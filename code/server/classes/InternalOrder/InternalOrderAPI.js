@@ -6,9 +6,6 @@ module.exports = function (app) {
 
     app.get('/api/internalOrders', async function (req, res) {
 
-        if (!req.session.loggedin || !req.session.user.type == 'manager')
-            return res.status(401).end();
-
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
 
@@ -36,9 +33,6 @@ module.exports = function (app) {
 
     app.get('/api/internalOrdersIssued', async function (req, res) {
 
-        if (!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer')
-            return res.status(401).end();
-
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
         let productsToOrder = [];
@@ -62,8 +56,6 @@ module.exports = function (app) {
     });
 
     app.get('/api/internalOrdersAccepted', async function (req, res) {
-        if (!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer' || !req.session.user.type == 'Customer')
-            return res.status(401).end();
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
@@ -88,8 +80,6 @@ module.exports = function (app) {
 
     app.get('/api/internalOrders/:id', async function (req, res) {
 
-        if (!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'deliveryEmployee')
-            return res.status(401).end();
         if (req.params.id == undefined) {
             return res.status(422).end();
         }
@@ -119,62 +109,55 @@ module.exports = function (app) {
 
     app.post('/api/internalOrders', async function (req, res) {
 
-        // if (!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'customer')
-        //     return res.status(401).end();
-
+        
         const date = req.body.issueDate;
         const products = req.body.products;
         const customerID = req.body.customerId;
-        // if (date == undefined || products == undefined || customerID == undefined)
-        //     return res.status(422).end();
+        if (date == undefined || products == undefined || customerID == undefined)
+            return res.status(422).end();
         
-        const id = await InternalOrderDao.storeInternalOrder({ date: date, products: products, customerID: customerID });
-        
+        const id = await InternalOrderDao.storeInternalOrder({ date: date, state: 0, customerID: customerID });
+    
         products.forEach(async function (e) {
-            e.rfid = await InternalOrderDao.searchRFID(e.SKUId);
+            e.orderID = id;
             await InternalOrderDao.storeProducts(e);
         });
 
 
-        return res.status(201).json(id);
+        return res.end();
     });
 
-    app.put('/api/internalOrders/:id', async function (req, res) {
 
-        if (!req.session.loggedin || !req.session.user.type == 'manager' || !req.session.user.type == 'deliveryEmployee' || !req.session.user.type == 'Internal Customer')
-            return res.status(401).end();
+     app.put('/api/internalOrders/:id', async function (req, res) {
 
-
-        const newState = req.body.newState;
-        const id = req.params.id;
-        if (id == undefined || newState == undefined)
-            return res.status(422).end();
-
-        let result = await InternalOrderDao.changeState(id, newState);
-        if (result == 0)
+         const newState = req.body.newState;
+         const id = req.params.id;
+         if (id == undefined || newState == undefined)
+             return res.status(422).end();
+        let order = await InternalOrderDao.getInternalOrderByID(id);
+        if(order==undefined){
             return res.status(404).end();
-
-        if (newState == 'COMPLETED') {
-            let products = req.body.products;
-            products.forEach(async function (e) {
-                e.rfid = await InternalOrderDao.searchRFID(e.SKUId);
-                await InternalOrderDao.storeProducts(e);
-            });
         }
+         await InternalOrderDao.changeState(id, newState);
+         if (newState == 'COMPLETED') {
+             let products = req.body.products;
+             products.forEach(async function (e) {
+                 await InternalOrderDao.storeSKUItem(e.SkuID, e.RFID)
+             });
+         }
 
-        return res.sendStatus(200);
-    });
+         return res.sendStatus(200);
+     });
 
     app.delete('/api/internalOrders/:id', async function (req, res) {
-
-        if (!req.session.loggedin || !req.session.user.type == 'manager')
-            return res.status(401).end();
 
         const id = req.params.id;
         if (id == undefined)
             return res.status(422).end();
 
-        await InternalOrderDao.deleteInternalOrder(id);
+        const result = await InternalOrderDao.deleteInternalOrder(id);
+        if(!result)
+            return res.sendStatus(503);
 
         return res.sendStatus(204);
     });
