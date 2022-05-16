@@ -17,9 +17,9 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT COUNT(*) as num FROM Product WHERE orderId = ? AND skuId = ?;';
+			const sql = 'SELECT COUNT(*) as num FROM SKUItem s, SKUItemsRestockOrder so WHERE s.rfid = so.skuItemId AND orderId = ? AND skuId = ? AND rfid = ?;';
 
-			this.db.get(sql, [orderId, products[i].SKUId], (err, row) => {
+			this.db.get(sql, [orderId, products[i].SKUId, products[i].rfid], (err, row) => {
 				if (err)
 					reject(err);
 				else if (row.NUM == 0)
@@ -42,7 +42,7 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
+			const sql = 'SELECT DISTINCT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
 
 			this.db.all(sql, [orders[i].restockOrderId], (err, rows) => {
 				let res = [];
@@ -88,7 +88,7 @@ class ReturnOrderDAO {
 				if (!returnDate || returnDate.isBefore(issueDate))
 					return reject("Wrong data");
 
-				this.db.run(sql, [data.returnDate, data.restockOrderId], (err) => {
+				this.db.run(sql, [returnDate.unix(), data.restockOrderId], (err) => {
 					if (err)
 						reject(err);
 					else
@@ -166,9 +166,11 @@ class ReturnOrderDAO {
 			if (!id)
 				return reject("Wrong data");
 
-			this.db.run(sql, [id], (err) => {
+			this.db.run(sql, [id], function (err) {
 				if (err)
 					reject(err);
+				else if (this.changes == 0)
+					reject("No match");
 				else
 					resolve(this.changes);
 			});

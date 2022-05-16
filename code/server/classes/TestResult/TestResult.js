@@ -1,15 +1,15 @@
 dayjs = require('dayjs');
 
-class TestResult{
-    constructor (data){
-        this.ID=data.ID;
+class TestResult {
+    constructor(data) {
+        this.ID = data.ID;
         this.SKUITEMID = data.SKUITEMID;
         this.IDTESTDESCRIPTOR = data.IDTESTDESCRIPTOR;
         this.DATE = data.DATE;
         this.RESULT = data.RESULT;
     }
 
-    toJson(){
+    toJson() {
         const data = {
             id: this.ID,
             idTestDescriptor: this.IDTESTDESCRIPTOR,
@@ -20,4 +20,4 @@ class TestResult{
     }
 }
 
-module.exports=TestResult
+module.exports = TestResult
