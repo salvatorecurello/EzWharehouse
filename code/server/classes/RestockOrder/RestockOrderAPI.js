@@ -83,7 +83,7 @@ module.exports = function (app) {
     app.put('/api/restockOrder/:id', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
+        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
             return res.status(401).end();
 
         RoDAO.setState(id, req.body.newState).then((data) => {

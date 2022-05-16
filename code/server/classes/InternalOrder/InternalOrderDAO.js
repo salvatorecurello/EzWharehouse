@@ -1,5 +1,5 @@
 const InternalOrder = require('./InternalOrder.js');
-
+const dayjs = require('dayjs');
 class InternalOrderDAO {
     sqlite = require('sqlite3');
     constructor() {
@@ -14,54 +14,42 @@ class InternalOrderDAO {
             this.db.run(sql, [state, id], (err) => {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                resolve(rows[0]);
+                resolve(true);
             });
         });
     }
-
 
     storeInternalOrder(internalOrder) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO InternalOrder(ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
-            this.db.run(sql, [internalOrder.date, 0,internalOrder.customerID], (err) => {
+            
+            this.db.run(sql, [internalOrder.date, 0,internalOrder.customerID], function(err) {
                 if (err) {
                     reject(err);
-                    return;
-                }
-                resolve(internalOrder);
+                } 
+                resolve(this.lastID);
             });
+            
         });
-    }
-
-    searchRFID(skuId) {
-        const sql_rfid = 'SELECT RFID FROM SKUITEM WHERE SKUID == ?';
-            this.db.run(sql_rfid, [skuId], (err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows[0]);
-            });
     }
 
     storeProducts(prod) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO Product(RFID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
-                this.db.run(sql, [prod.rfid, prod.SKUId, prod.description,prod.price,prod.qty], (err) => {
+            const sql = 'INSERT INTO Product(ORDERID,SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?)';
+                this.db.run(sql, [prod.orderID, prod.SKUId, prod.description,prod.price,prod.qty], (err, rows) => {
                     if (err) {
                         reject(err);
-                        return;
                     }
-                    resolve(prod);
+                    resolve(true);
                 });
         });
     }
 
+
     getProducts() {
         return new Promise((resolve, reject) => {
-            const sql_products = 'SELECT SKUID,DESCRIPTION,PRICE, QTY, ORDERID FROM PRODUCT';
+            const sql_products = 'SELECT P.*, S.RFID FROM PRODUCT P, SKUITEM S WHERE S.SKUID == P.SKUID';
             const products = [];
 
             this.db.all(sql_products, [], (err, rows) => {
@@ -69,7 +57,7 @@ class InternalOrderDAO {
                     reject(err);
                     return;
                 }
-                rows.forEach((e) => {products.push({id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID})});
+                rows.forEach((e) => {products.push({skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
                 resolve(products);
             });
         });
@@ -84,7 +72,6 @@ class InternalOrderDAO {
             this.db.all(sql_internalOrder, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return;
                 }
                 rows.forEach((e) => {internalOrders.push({id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID})});
                 resolve(internalOrders);
@@ -98,33 +85,18 @@ class InternalOrderDAO {
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return;
                 }
-                const internalOrd = new InternalOrder({id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: rows[0].STATE, customerID: rows[0].CUSTOMERID, products: []});
-                resolve(internalOrd);
+                if(rows.length==0){
+                    resolve(undefined);
+                }else{
+                    const internalOrd = new InternalOrder({id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: rows[0].STATE, customerID: rows[0].CUSTOMERID, products: []});
+                    resolve(internalOrd);
+                }
             });
         });
 
     }
 
-    getProductForInternalOrder(id) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Product WHERE ORDERID = ?';
-            this.db.all(sql, [id], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                
-                const productList = rows.map(e =>  {
-                    let d = {id: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, rfid: e.RFID, qty: e.QTY};
-                    return d;
-                });
-
-                resolve(productList);
-            });
-        });
-    }
 
     deleteInternalOrder(InternalOrderId) {
         return new Promise((resolve, reject) => {
@@ -132,13 +104,37 @@ class InternalOrderDAO {
             this.db.run(sql, [InternalOrderId], (err) => {
                 if (err) {
                     reject(err);
-                    return;
                 }
                 resolve(InternalOrderId);
 
             });
         });
 
+    }
+
+    searchProductForSkuID(skuId) {
+        return new Promise((resolve, reject) => {
+        const sql_rfid = 'SELECT RFID FROM SKUItem WHERE SKUID == ?';
+            this.db.run(sql_rfid, [skuId], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    }
+
+    storeSKUItem(SkuID, RFID) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, ?, ?)';
+            this.db.run(sql, [RFID, SkuID, 1, dayjs().unix()], (err) => {
+                if (err) {
+                  reject(err);
+                }
+                resolve(this.lastID);
+            });
+
+        });
     }
 }
 
