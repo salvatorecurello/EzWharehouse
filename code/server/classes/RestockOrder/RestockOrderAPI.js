@@ -1,3 +1,9 @@
+/*
+    Date:		11/05/2022
+    Version:	1.0v
+    Author:		Riela Giovanni
+*/
+
 const RestockOrderDAO = require("./RestockOrderDAO.js");
 const RoDAO = new RestockOrderDAO();
 
@@ -76,14 +82,9 @@ module.exports = function (app) {
 
     app.put('/api/restockOrder/:id', async function (req, res) {
         const id = parseInt(req.params.id);
-<<<<<<< HEAD
 
         if (!req.session.loggedin || !["manager", "clerk"].includes(req.session.user.type))
             return res.status(401).end();
-=======
-        if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
-            return res.sendStatus(401);
->>>>>>> a5345dd77c294606109ec1e2b7c80ca00e3e301d
 
         RoDAO.setState(id, req.body.newState).then((data) => {
             return res.status(200).end();

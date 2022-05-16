@@ -1,3 +1,9 @@
+/*
+    Date:		11/05/2022
+    Version:	1.0v
+    Author:		Riela Giovanni
+*/
+
 class RestockOrder{
     static states = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
 
