@@ -15,9 +15,10 @@ class PositionDAO {
             this.db.run(sql, [position.positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume], (err) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    resolve(position);
                 }
-                resolve(position);
+                
             });
         });
     }
@@ -28,10 +29,27 @@ class PositionDAO {
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    const positions = rows.map((p) => (new Position(p)));
+                    resolve(positions);
                 }
-                const positions = rows.map((p) => (new Position(p)));
-                resolve(positions);
+                
+            });
+        });
+    }
+
+    getPositionByID(id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM Position WHERE ID=?';
+            this.db.all(sql, [id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                if(rows.length==0){
+                    resolve(undefined)
+                }else{
+                    resolve(rows[0]);
+                }
             });
         });
     }
@@ -39,13 +57,13 @@ class PositionDAO {
     updatePosition(old_positionId, position) {
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE Position SET ID = ?, AISLEID = ?, ROW = ?, COL = ?, MAXWEIGHT = ?, MAXVOLUME = ?, OCCUPIEDWEIGHT = ?, OCCUPIEDVOLUME = ? WHERE ID == ?';
-            console.log(position);
             this.db.run(sql, [position.positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume, old_positionId], (err) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    resolve();
                 }
-                resolve(position);
+                
 
             });
         });
@@ -62,9 +80,10 @@ class PositionDAO {
             this.db.run(sql, [new_positionID, aisleID, row, col, old_positionID], (err) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    resolve();
                 }
-                resolve(new_positionID);
+                
 
             });
         });
@@ -77,9 +96,10 @@ class PositionDAO {
             this.db.run(sql, [positionID], (err) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    resolve(positionID);
                 }
-                resolve(positionID);
+                
 
             });
         });

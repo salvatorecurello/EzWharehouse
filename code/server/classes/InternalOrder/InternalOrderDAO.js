@@ -14,8 +14,10 @@ class InternalOrderDAO {
             this.db.run(sql, [state, id], (err) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(true);
                 }
-                resolve(true);
+                
             });
         });
     }
@@ -27,8 +29,10 @@ class InternalOrderDAO {
             this.db.run(sql, [internalOrder.date, 0,internalOrder.customerID], function(err) {
                 if (err) {
                     reject(err);
-                } 
-                resolve(this.lastID);
+                } else {
+                    resolve(this.lastID);
+                }
+                
             });
             
         });
@@ -40,8 +44,9 @@ class InternalOrderDAO {
                 this.db.run(sql, [prod.orderID, prod.SKUId, prod.description,prod.price,prod.qty], (err, rows) => {
                     if (err) {
                         reject(err);
+                    } else {
+                        resolve(true);
                     }
-                    resolve(true);
                 });
         });
     }
@@ -55,10 +60,11 @@ class InternalOrderDAO {
             this.db.all(sql_products, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    rows.forEach((e) => {products.push({skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
+                    resolve(products);
                 }
-                rows.forEach((e) => {products.push({skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
-                resolve(products);
+                
             });
         });
 
@@ -72,9 +78,11 @@ class InternalOrderDAO {
             this.db.all(sql_internalOrder, [], (err, rows) => {
                 if (err) {
                     reject(err);
+                } else {
+                    rows.forEach((e) => {internalOrders.push({id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID})});
+                    resolve(internalOrders);
                 }
-                rows.forEach((e) => {internalOrders.push({id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID})});
-                resolve(internalOrders);
+                
             });
         });
     }
@@ -104,8 +112,10 @@ class InternalOrderDAO {
             this.db.run(sql, [InternalOrderId], (err) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(InternalOrderId);
                 }
-                resolve(InternalOrderId);
+                
 
             });
         });
@@ -118,8 +128,10 @@ class InternalOrderDAO {
             this.db.run(sql_rfid, [skuId], (err, rows) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(rows);
                 }
-                resolve(rows);
+                
             });
         });
     }
@@ -130,10 +142,28 @@ class InternalOrderDAO {
             this.db.run(sql, [RFID, SkuID, 1, dayjs().unix()], (err) => {
                 if (err) {
                   reject(err);
+                } else {
+                    resolve(this.lastID);
                 }
-                resolve(this.lastID);
+                
             });
 
+        });
+    }
+
+    getUserByID(id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM user WHERE ID = ? and type = ?';
+            this.db.all(sql, [id, 'customer'], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                if(rows.length==0){
+                    resolve(undefined);
+                }else{
+                    resolve(true);
+                }
+            });
         });
     }
 }

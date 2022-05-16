@@ -14,8 +14,10 @@ class ItemDAO {
             this.db.all(sql, [item.id, item.description, item.price, item.skuid, item.supplierID, item.id], function(err) {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(this);
                 }
-                resolve(this);
+                
             });
         });
     }
@@ -26,8 +28,10 @@ class ItemDAO {
             this.db.all(sql, [skuID], function(err,rows) {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(rows);
                 }
-                resolve(rows);
+                
             });
         });
     }
@@ -39,8 +43,10 @@ class ItemDAO {
             this.db.run(sql, [item.id, item.description, item.price, item.skuid, item.supplierID], function(err) {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(this);
                 }
-                resolve(this);
+                
             });
         });
     }
@@ -51,11 +57,28 @@ class ItemDAO {
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return;
+                } else {
+                    const items = rows.map((p) => (new Item(p)));
+                    resolve(items);
                 }
                 
-                const items = rows.map((p) => (new Item(p)));
-                resolve(items);
+               
+            });
+        });
+    }
+
+    getItemsBySupplier(supplierID) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM Item WHERE SUPPLIERID = ?';
+            this.db.all(sql, [supplierID], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const items = rows.map((p) => (new Item(p)));
+                    resolve(items);
+                }
+                
+               
             });
         });
     }
@@ -67,10 +90,32 @@ class ItemDAO {
                 if (err) {
                     reject(err);
                 }
-                resolve(rows[0]);
+                if(rows.length==0){
+                    resolve(undefined);
+                }else{
+                    resolve(rows[0]);
+                }
+                
             });
         });
 
+    }
+
+    searchSupplier(supplierId) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE ID = ? and type = ?';
+            this.db.all(sql, [id, 'supplier'], function(err, rows) {
+                if (err) {
+                    reject(err);
+                }
+                if(rows.length==0){
+                    resolve(undefined);
+                }else{
+                    resolve(rows[0]);
+                }
+                
+            });
+        });
     }
 
     deleteItem(itemID) {
@@ -79,8 +124,10 @@ class ItemDAO {
             this.db.run(sql, [itemID], function(err) {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve();
                 }
-                resolve(this);
+                
 
             });
         });

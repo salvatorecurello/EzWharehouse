@@ -8,7 +8,7 @@ class SKU{
         this.position = data.POSITION;
         this.availableQuantity = data.AVAILABLEQUANTITY;
         this.price = data.PRICE;
-        this.testDescriptorIDList = data.TESTDESCRIPTORIDLIST; 
+        this.testDescriptors = data.TESTDESCRIPTORIDLIST; 
 
     }
 

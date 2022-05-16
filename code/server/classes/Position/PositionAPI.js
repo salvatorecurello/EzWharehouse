@@ -21,8 +21,10 @@ module.exports = function (app) {
         const aisleID = req.body.aisleID;
         const positionID = aisleID + row + col;
 
-        if (row.lenght != 4 || aisleID.lenght != 4 || col.lenght != 4)
+        if (row.lenght != 4 || aisleID.lenght != 4 || col.lenght != 4 || positionID!=req.body.positionID)
             return res.status(422).end();
+        
+
 
         const data = { positionID: positionID, col: col, row: row, maxWeight: maxWeight, maxVolume: maxVolume, aisleID: aisleID, occupiedVolume: 0, occupiedWeight: 0 };
         const result = await PositionDao.storePosition(data);
@@ -53,9 +55,12 @@ module.exports = function (app) {
             if (x == undefined)
                 return res.status(422).end();
         }
-        const result = await PositionDao.updatePosition(old_positionId, data);
-        if (result == 0)
+
+        if(await PositionDao.getPositionByID(old_positionId)==undefined){
             return res.status(404).end();
+        }
+        
+        await PositionDao.updatePosition(old_positionId, data);
 
         return res.status(200).json(result);
 
@@ -69,23 +74,29 @@ module.exports = function (app) {
         const new_positionID = req.body.newPositionID;
         if (old_positionId == undefined || new_positionID == undefined)
             return res.status(422).end();
-
-        const result = await PositionDao.updatePositionID(old_positionId, new_positionID);
-        if (result == 0)
+        
+        if(await PositionDao.getPositionByID(old_positionId)==undefined){
             return res.status(404).end();
+        }
+        
+        await PositionDao.updatePositionID(old_positionId, new_positionID);
 
-        return res.sendStatus(200);
+        return res.status(200).end();
     });
 
     app.delete('/api/position/:positionID', async function (req, res) {
 
         const positionID = req.params.positionID;
         if (positionID == undefined)
-            return res.sendStatus(422);
+            return res.status(422).end();
+        
+        if(await PositionDao.getPositionByID(positionID)==undefined){
+            return res.status(422).end();
+        }
 
-        const result = await PositionDao.deletePosition(positionID);
+        await PositionDao.deletePosition(positionID);
 
-        return res.sendStatus(204);
+        return res.status(204).end();
     });
 
 

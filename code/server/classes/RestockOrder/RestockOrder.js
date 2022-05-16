@@ -1,9 +1,11 @@
+const dayjs = require('dayjs');
+
 class RestockOrder{
     static states = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
 
     constructor (data){
         this.Id = data.ID;
-        this.IssueDate = data.ISSUEDATE;
+        this.IssueDate = dayjs.unix(data.ISSUEDATE);
         this.SupplierId = data.SUPPLIERID;
         this.State = data.STATE - 1;
         this.Products = [];
