@@ -50,7 +50,7 @@ class TestResultDAO {
                 if (rows.length == 1) {
                     resolve(new TestResult(rows[0]));
                 } else {
-                    resulve(null);
+                    resolve(null);
                 }
             });
         });
@@ -84,7 +84,7 @@ class TestResultDAO {
 
     updateTestResult(data, id, rfid) {
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE TestResult SET  IDTESTDESCRIPTOR=? DATE=? RESULT=? where ID = ? and SKUITEMID=?';
+            const sql = 'UPDATE TestResult SET  IDTESTDESCRIPTOR=?, DATE=?, RESULT=? where ID = ? and SKUITEMID=?';
             this.db.all(sql, [data.newIdTestDescriptor, dayjs(data.newDate).unix(), data.newResult == true ? 1 : 0, id, rfid], (err, rows) => {
                 if (err) {
                     reject(err);

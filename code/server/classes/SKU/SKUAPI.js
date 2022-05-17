@@ -19,7 +19,7 @@ module.exports = function(app){
 
     app.get('/api/skus/:id', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.id){
+            if(req.params.id!=undefined){
                 const sku = await skudao.getSKUByID(req.params.id);
                 if(sku!=null){
                     sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
@@ -35,7 +35,7 @@ module.exports = function(app){
 
     app.post('/api/sku', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.body.description && req.body.weight && req.body.volume && req.body.notes && req.body.price && req.body.availableQuantity){
+            if(req.body.description!=undefined && req.body.weight!=undefined && req.body.volume!=undefined && req.body.notes!=undefined && req.body.price!=undefined && req.body.availableQuantity!=undefined){
                 await skudao.storeSKU(req.body);
                 return res.status(201).end();
             }
@@ -47,7 +47,7 @@ module.exports = function(app){
 
     app.put('/api/sku/:id', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.id && req.body.newDescription && req.body.newWeight && req.body.newVolume && req.body.newNotes && req.body.newPrice && req.body.newAvailableQuantity){
+            if(req.params.id!=undefined && req.body.newDescription!=undefined && req.body.newWeight!=undefined && req.body.newVolume!=undefined && req.body.newNotes!=undefined && req.body.newPrice!=undefined && req.body.newAvailableQuantity!=undefined){
                 const sku = await skudao.getSKUByID(req.params.id);
                 if(sku!=null){
                     if(sku.availableQuantity!=req.body.newAvailableQuantity){
@@ -76,7 +76,7 @@ module.exports = function(app){
 
     app.put('/api/sku/:id/position', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.id && req.body.position){
+            if(req.params.id!=undefined && req.body.position!=undefined){
                 const sku = await skudao.getSKUByID(req.params.id)
                 if(sku!=null){
                     const weight = sku.availableQuantity * sku.weight;
@@ -109,7 +109,7 @@ module.exports = function(app){
 
     app.delete('/api/skus/:id', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.id){
+            if(req.params.id!=undefined){
                 const sku = await skudao.getSKUByID(req.params.id);
                 if(sku!=null){
                     if(await skudao.existingSKUItem(req.params.id)){

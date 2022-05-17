@@ -121,7 +121,11 @@ module.exports = function (app) {
         if(!d1.test(date) && !d2.test(date)){
             return res.status(422).end();
         }
-        
+        let dayjsdate = dayjs(date);
+        if(!dayjsdate.isValid()){
+            return res.status(422).end();
+        }
+        dayjsdate=dayjsdate.unix();
         let user = await InternalOrderDao.getUserByID(customerID);
         if(user == undefined) {
             return res.status(422).end();
@@ -138,7 +142,7 @@ module.exports = function (app) {
             return res.status(422).end();
         }
 
-        const id = await InternalOrderDao.storeInternalOrder({ date: date, state: 0, customerID: customerID });
+        const id = await InternalOrderDao.storeInternalOrder({ date: dayjsdate, state: 0, customerID: customerID });
     
         products.forEach(async function (e) {
             e.orderID = id;
