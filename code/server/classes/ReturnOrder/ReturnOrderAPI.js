@@ -10,8 +10,8 @@ const RoDAO = new ReturnOrderDAO();
 module.exports = function (app) {
 
     app.get('/api/returnOrders', async function (req, res) {
-        if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.status(401).end();
+        //if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
+        //    return res.status(401).end();
 
         RoDAO.getAll().then((data) => {
             return res.status(200).json(data);
@@ -23,8 +23,8 @@ module.exports = function (app) {
     app.get('/api/returnOrders/:id', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.status(401).end();
+        //if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
+        //    return res.status(401).end();
 
         RoDAO.get(id).then((data) => {
             return res.status(200).json(data);
@@ -39,8 +39,8 @@ module.exports = function (app) {
     });
 
     app.post('/api/returnOrder', async function (req, res) {
-        if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.status(401).end();
+        //if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
+        //    return res.status(401).end();
 
         RoDAO.store(req.body).then((data) => {
             return res.status(201).end();
@@ -57,8 +57,8 @@ module.exports = function (app) {
     app.delete('/api/returnOrder/:id', async function (req, res) {
         const id = parseInt(req.params.id);
 
-        if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
-            return res.status(401).end();
+        //if (!req.session.loggedin || !["manager"].includes(req.session.user.type))
+        //    return res.status(401).end();
 
         RoDAO.delete(id).then((data) => {
             return res.status(204).end();

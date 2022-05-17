@@ -40,7 +40,7 @@ module.exports = function (app) {
 
     app.post('/api/newUser', async function (req, res) {
         //if(req.session.loggedin && req.session.user.type=="manager"){
-        if (req.body.username && req.body.name && req.body.surname && req.body.password && req.body.type) {
+        if (req.body.username!=undefined && req.body.name!=undefined && req.body.surname!=undefined && req.body.password!=undefined && req.body.type!=undefined) {
             if (["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(req.body.type) && req.body.password.length >= 8) {
                 const exists = await Userdao.getUserFromEmail(req.body.username);
                 if (exists == null) {
@@ -196,7 +196,7 @@ module.exports = function (app) {
     app.put('/api/users/:username', async function (req, res) {
         //if(req.session.loggedin && req.session.user.type=="manager"){
         const username = req.params.username;
-        if (username && req.body.oldType && req.body.newType && req.body.newType != "manager") {
+        if (username!=undefined && req.body.oldType!=undefined && req.body.newType!=undefined && req.body.newType != "manager") {
             const user = await Userdao.getUserFromEmail(username);
             if (user != null) {
                 if (user.type == req.body.oldType) {
@@ -222,7 +222,7 @@ module.exports = function (app) {
         //if(req.session.loggedin && req.session.user.type=="manager"){
         const username = req.params.username;
         const type = req.params.type;
-        if (username && type) {
+        if (username!=undefined && type!=undefined) {
             const user = await Userdao.getUserFromEmail(username);
             if (user != null) {
                 if (user.type == type && type != "manager") {

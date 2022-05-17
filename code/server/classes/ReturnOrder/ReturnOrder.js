@@ -3,7 +3,7 @@ const dayjs = require('dayjs');
 class ReturnOrder{
     constructor (data){
         this.Id = data.ID;
-        this.ReturnDate = dayjs.unix(data.RETURNDATE);
+        this.ReturnDate = dayjs.unix(data.RETURNDATE).format('YYYY/MM/DD HH:mm');
         this.ProductsList = [];
         this.RestockOrderId = data.RESTOCKORDERID;
     }
