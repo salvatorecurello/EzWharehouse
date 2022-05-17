@@ -13,7 +13,7 @@ class TestResult {
         const data = {
             id: this.ID,
             idTestDescriptor: this.IDTESTDESCRIPTOR,
-            Date: dayjs.unix(this.DATE),
+            Date: dayjs.unix(this.DATE).format('YYYY/MM/DD HH:mm'),
             Result: this.RESULT == 0 ? false : true
         }
         return data;

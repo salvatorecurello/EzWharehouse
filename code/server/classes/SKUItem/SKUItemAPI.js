@@ -19,7 +19,7 @@ module.exports = function(app){
 
     app.get('/api/skuitems/sku/:id', async function(req, res){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer")){
-            if(req.params.id){
+            if(req.params.id!=undefined){
                 // Se non esiste SKU con id => 404 return res.status(404).end();
                 const skuitem = await skuitemdao.getArraySKUItemByID(req.params.id);
                 return res.status(200).json(skuitem);
@@ -33,7 +33,7 @@ module.exports = function(app){
 
     app.get('/api/skuitems/:rfid', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.rfid){
+            if(req.params.rfid!=undefined){
                 const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
                 if(skuitem!=null){
                     return res.status(200).json(skuitem);
@@ -50,7 +50,7 @@ module.exports = function(app){
     app.post('/api/skuitem', async function(req, res){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="clerk")){
             const rfid = req.body.RFID
-            if(rfid && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == undefined)){
+            if(rfid!=undefined && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId!=undefined && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == undefined)){
                 if(await skuitemdao.existingRFID(rfid)){
                     return res.status(422).end();
                 }
@@ -72,7 +72,7 @@ module.exports = function(app){
         //if(req.session.loggedin && req.session.user.type=="manager"){
             const rfid = req.params.rfid
             const newrfid = req.body.newRFID
-            if(rfid && newrfid && newrfid.length==32 && /^\d+$/.test(newrfid) && req.body.newAvailable && (d1.test(req.body.newDateOfStock) || d2.test(req.body.newDateOfStock) || req.body.newDateOfStock == undefined)){  
+            if(rfid!=undefined && newrfid && newrfid.length==32 && /^\d+$/.test(newrfid) && req.body.newAvailable!=undefined && (d1.test(req.body.newDateOfStock) || d2.test(req.body.newDateOfStock) || req.body.newDateOfStock == undefined)){  
                 if(await skuitemdao.existingRFID(newrfid)){
                     return res.status(422).end();
                 }
@@ -95,7 +95,7 @@ module.exports = function(app){
 
     app.delete('/api/skuitems/:rfid', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.rfid){
+            if(req.params.rfid!=undefined){
                 const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
                 if(skuitem!=null){
                     await skuitemdao.deleteSKUItem(req.params.rfid);
