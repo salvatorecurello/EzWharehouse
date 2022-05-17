@@ -13,7 +13,7 @@ module.exports = function(app){
 
     app.get('/api/items/:id', async function(req, res){
         
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         if(id < 0 || id==undefined ) {
             return res.status(422).end();
         }
@@ -67,7 +67,7 @@ module.exports = function(app){
 
     app.put('/api/item/:id', async function(req, res){
 
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         const itemSelected = await ItemDao.getItemByID(id);
 
         if(itemSelected == undefined)
@@ -91,7 +91,7 @@ module.exports = function(app){
 
     app.delete('/api/items/:id', async function(req, res){
         
-        const itemId = req.params.id;
+        const itemId = parseInt(req.params.id);
         if(itemId == undefined );
             res.status(422).end();
         const itemSelected = await ItemDao.getItemByID(itemId);

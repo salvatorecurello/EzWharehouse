@@ -23,7 +23,7 @@ module.exports = function (app) {
     app.get('/api/skuitems/:rfid/testResults/:id', async function (req, res) {
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
         const rfid = req.params.rfid;
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         if (rfid && rfid.length == 32 && /^\d+$/.test(rfid) && id) {
             const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
             if (testresult != null) {
