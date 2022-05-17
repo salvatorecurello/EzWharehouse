@@ -8,6 +8,9 @@ module.exports = function(app){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer" || req.session.user.type=="clerk")){
             const skus = await skudao.getSkus();
             for(let sku of skus){
+                // const t = await skudao.getTestDescriptorsBySKUID(sku.id)
+                // (Object.keys(t).map(function(_) { return t[_]; })
+                // ??????
                 sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
             }
             
@@ -19,7 +22,7 @@ module.exports = function(app){
 
     app.get('/api/skus/:id', async function(req, res){
         //if(req.session.loggedin && req.session.user.type=="manager"){
-            if(req.params.id!=undefined){
+            if(req.params.id!=undefined){ 
                 const sku = await skudao.getSKUByID(req.params.id);
                 if(sku!=null){
                     sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
