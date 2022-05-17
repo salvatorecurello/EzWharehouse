@@ -84,7 +84,7 @@ module.exports = function (app) {
             return res.status(422).end();
         }
 
-        let internalOrder = await InternalOrderDao.getInternalOrderByID(req.params.id);
+        let internalOrder = await InternalOrderDao.getInternalOrderByID(parseInt(req.params.id));
         if (internalOrder == undefined) {
             return res.status(404).end();
         }
@@ -153,7 +153,7 @@ module.exports = function (app) {
      app.put('/api/internalOrders/:id', async function (req, res) {
 
          const newState = req.body.newState;
-         const id = req.params.id;
+         const id = parseInt(req.params.id);
          if (id == undefined || newState == undefined)
              return res.status(422).end();
         
@@ -178,7 +178,7 @@ module.exports = function (app) {
 
     app.delete('/api/internalOrders/:id', async function (req, res) {
 
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         if (id == undefined)
             return res.status(422).end();
         
