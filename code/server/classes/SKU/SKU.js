@@ -13,7 +13,7 @@ class SKU{
     }
 
     setTestDescriptorIDList(list){
-        this.testDescriptorIDList=list;
+        this.testDescriptor=list;
     }
 
 }
