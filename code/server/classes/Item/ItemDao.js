@@ -104,7 +104,7 @@ class ItemDAO {
     searchSupplier(supplierId) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM User WHERE ID = ? and type = ?';
-            this.db.all(sql, [id, 'supplier'], function(err, rows) {
+            this.db.all(sql, [supplierId, 'supplier'], function(err, rows) {
                 if (err) {
                     reject(err);
                 }

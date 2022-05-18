@@ -8,24 +8,25 @@ module.exports = function (app) {
 
         let internalOrders = await InternalOrderDao.getInternalOrders();
         let products = await InternalOrderDao.getProducts();
+        console.log(products);
 
         let productsToOrder = [];
 
-
         internalOrders.forEach(e => {
-            if (e.state != 4) {
+            if (e.state != 'COMPLETED') {
                 products.forEach(p => {
-                    if (e.id == p.orderID)
+                    if (e.id == p.orderID) {
                         productsToOrder.push({ skuid: p.skuid, description: p.description, price: p.price, qty: p.qty });
+                    }       
                 });
             } else {
                 products.forEach(p => {
                     if (e.id == p.orderID)
                         productsToOrder.push({ skuid: p.skuid, description: p.description, price: p.price, rfid: p.rfid });
                 });
-                e.products = productsToOrder;
-                productsToOrder = [];
             }
+            e.products = productsToOrder;
+            productsToOrder = [];
         });
 
         return res.status(200).json(internalOrders);
@@ -39,7 +40,7 @@ module.exports = function (app) {
         internalOrdersIssued = [];
 
         internalOrders.forEach(e => {
-            if (e.state == 0) {
+            if (e.state == 'ISSUED') {
                 products.forEach(p => {
                     if (e.id == p.orderID)
                         productsToOrder.push({ skuid: p.skuid, description: p.description, price: p.price, qty: p.qty });
@@ -63,7 +64,7 @@ module.exports = function (app) {
         internalOrdersAccepted = [];
 
         internalOrders.forEach(e => {
-            if (e.state == 1) {
+            if (e.state == 'ACCEPTED') {
                 products.forEach(p => {
                     if (e.id == p.orderID)
                         productsToOrder.push({ skuid: p.skuid, description: p.description, price: p.price, qty: p.qty });
@@ -91,7 +92,7 @@ module.exports = function (app) {
         let products = await InternalOrderDao.getProducts();
         let productsToOrder = [];
 
-        if (internalOrder.state != 4) {
+        if (internalOrder.state != 'COMPLETED') {
             products.forEach(p => {
                 if (internalOrder.id == p.orderID)
                     productsToOrder.push({ skuid: p.skuid, description: p.description, price: p.price, qty: p.qty });
@@ -154,12 +155,20 @@ module.exports = function (app) {
 
          const newState = req.body.newState;
          const id = req.params.id;
-         if (id == undefined || newState == undefined)
-             return res.status(422).end();
-        
-
-        if(newState!= 'COMPLETED' || newState!= 'ACCEPTED' || newState!= 'ISSUED' || newState!= 'REFUSED' || newState!= 'CANCELED')
+         if (id == undefined || newState == undefined){
             return res.status(422).end();
+         }
+
+        let flag = false;
+         const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
+         for(let x in states) {
+            if(newState == x)
+                flag = true;
+         }
+        if(!flag) {
+            return res.status(422).end();
+        }
+            
 
         let order = await InternalOrderDao.getInternalOrderByID(id);
         if(order==undefined){
