@@ -59,7 +59,7 @@ class SKUDAO {
 
     getTestDescriptorsBySKUID(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT ID FROM TestDescriptor WHERE SKUID = ?'; // SELECT ID FROM TestDescriptor WHERE SKUID = ?
+            const sql = 'SELECT ID FROM TestDescriptor WHERE SKUID = ?';
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
