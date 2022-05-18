@@ -21,10 +21,9 @@ module.exports = function (app) {
         const aisleID = req.body.aisleID;
         const positionID = aisleID + row + col;
 
-        if (row.lenght != 4 || aisleID.lenght != 4 || col.lenght != 4 || positionID!=req.body.positionID)
+        if (row.length != 4 || aisleID.length != 4 || col.length != 4 || positionID != req.body.positionID) {
             return res.status(422).end();
-        
-
+        }
 
         const data = { positionID: positionID, col: col, row: row, maxWeight: maxWeight, maxVolume: maxVolume, aisleID: aisleID, occupiedVolume: 0, occupiedWeight: 0 };
         const result = await PositionDao.storePosition(data);
@@ -32,7 +31,7 @@ module.exports = function (app) {
         if (result == undefined)
             return res.status(503).json({ error: 'Invalid Position' });
 
-        return res.status(201).json(result);
+        return res.status(201).end();
 
 
     });
@@ -62,7 +61,7 @@ module.exports = function (app) {
         
         await PositionDao.updatePosition(old_positionId, data);
 
-        return res.status(200).json(result);
+        return res.status(200).end();
 
     });
 

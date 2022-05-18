@@ -10,8 +10,9 @@ class InternalOrderDAO {
 
     changeState(id, state){
         return new Promise((resolve, reject) => {
+            const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
             const sql = 'UPDATE InternalOrder SET STATE = ? WHERE ID = ?';
-            this.db.run(sql, [state, id], (err) => {
+            this.db.run(sql, [states[state], id], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -90,6 +91,7 @@ class InternalOrderDAO {
     getInternalOrderByID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM InternalOrder WHERE ID = ?';
+            const states = { 0: 'ISSUED',  1: 'ACCEPTED', 2: 'REFUSED', 3 : 'CANCELED', 4 : 'COMPLETED' };
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -97,7 +99,7 @@ class InternalOrderDAO {
                 if(rows.length==0){
                     resolve(undefined);
                 }else{
-                    const internalOrd = new InternalOrder({id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: rows[0].STATE, customerID: rows[0].CUSTOMERID, products: []});
+                    const internalOrd = new InternalOrder({id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: states[rows[0].STATE], customerID: rows[0].CUSTOMERID, products: []});
                     resolve(internalOrd);
                 }
             });
