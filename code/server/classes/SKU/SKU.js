@@ -13,7 +13,10 @@ class SKU{
     }
 
     setTestDescriptorIDList(list){
-        this.testDescriptorIDList=list;
+        this.testDescriptors=[];
+        for(let x of list){
+            this.testDescriptors.push(x.ID)
+        }
     }
 
 }

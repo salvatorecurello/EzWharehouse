@@ -1,9 +1,3 @@
-/*
-    Date:		11/05/2022
-    Version:	1.0v
-    Author:		Riela Giovanni
-*/
-
 const RestockOrderDAO = require("./RestockOrderDAO.js");
 const RoDAO = new RestockOrderDAO();
 
