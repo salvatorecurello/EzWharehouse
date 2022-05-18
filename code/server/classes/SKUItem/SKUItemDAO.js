@@ -114,6 +114,19 @@ class SKUItemDAO {
         });
     }
 
+    existingSKU(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM SKU WHERE ID=?';
+            this.db.all(sql, [parseInt(id)], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.length);
+            });
+        });
+    }
+
     deleteSKUItem(rfid){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM SKUItem where RFID=?';

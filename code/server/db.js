@@ -8,6 +8,24 @@ class DAO {
         });
     }
 
+    deleteAll(){
+        const sql = [];
+        sql.push("DELETE FROM User");
+        sql.push("DELETE FROM SKU");
+        sql.push("DELETE FROM TransportNote");
+        sql.push("DELETE FROM InternalOrder");
+        sql.push("DELETE FROM Product");
+        sql.push("DELETE FROM Item");
+        sql.push("DELETE FROM SKUItem");
+        sql.push("DELETE FROM ReturnOrder");
+        sql.push("DELETE FROM Position");
+        sql.push("DELETE FROM TestResult");
+        sql.push("DELETE FROM TestDescriptor");
+        sql.push("DELETE FROM RestockOrder");
+        sql.push("DELETE FROM SKUItemsRestockOrder");
+        return this.createTablesR(sql, 0).then(()=>{});
+    }
+
     createTablesR(sql, i) {
         if (i >= sql.length)
             return new Promise((resolve, reject) => {
@@ -110,14 +128,14 @@ class DAO {
                 prods.push({ orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
                 prods.push({ orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
                 
-                skuItems.forEach((skuItem) => {
+                /*skuItems.forEach((skuItem) => {
                     this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
 
                 users.forEach((user) => {
                     this.db.run(sql_User, [user.name, user.surname, user.type, user.password, user.email], (err) => {
@@ -128,52 +146,52 @@ class DAO {
                     });
                 });
 
-                positions.forEach((pos) => {
+                /*positions.forEach((pos) => {
                     this.db.run(sql_Position, [pos.id, pos.aisleId, pos.row, pos.col, pos.maxwei, pos.maxvol, pos.occupiedWei, pos.occupiedVol], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
 
-                items.forEach((item) => {
+                /*items.forEach((item) => {
                     this.db.run(sql_Items, [item.description, item.price, item.skuid, item.supplierid], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
 
-                ords.forEach((ord) => {
+                /*ords.forEach((ord) => {
                     this.db.run(sql_InternalOrders, [ord.issueDate, ord.state, ord.customerID], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
 
                 
 
-                skus.forEach((sku) => {
+                /*skus.forEach((sku) => {
                     this.db.run(sql_SKU, [sku.description, sku.weight, sku.volume, sku.position, sku.availableQuantity, sku.price, sku.note], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
 
-                prods.forEach((prod) => {
+                /*prods.forEach((prod) => {
                     this.db.run(sql_Product, [prod.orderid, prod.skuid, prod.description, prod.price, prod.qty], (err) => {
                         if (err)
                             reject(err);
                         else
                             resolve();
                     });
-                });
+                });*/
                 
             });
         });

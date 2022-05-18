@@ -5,7 +5,7 @@ class RestockOrder{
 
     constructor (data){
         this.Id = data.ID;
-        this.IssueDate = dayjs.unix(data.ISSUEDATE);
+        this.IssueDate = dayjs.unix(data.ISSUEDATE).format('YYYY/MM/DD HH:mm');
         this.SupplierId = data.SUPPLIERID;
         this.State = data.STATE - 1;
         this.Products = [];

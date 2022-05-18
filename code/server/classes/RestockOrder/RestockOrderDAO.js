@@ -1,9 +1,3 @@
-/*
-	Date:		11/05/2022
-	Version:	1.0v
-	Author:		Riela Giovanni
-*/
-
 const RestockOrder = require('./RestockOrder');
 const sqlite = require('sqlite3');
 const dayjs = require('dayjs');
@@ -242,19 +236,34 @@ class RestockOrderDAO {
 
 	//CREATE
 	async store(data) {
-		//check suppliers
 		return new Promise((resolve, reject) => {
-			const sql = 'INSERT INTO RestockOrder(ISSUEDATE, STATE, SUPPLIERID) VALUES(?, 1, ?);';
+			const sql = 'SELECT id FROM User WHERE type = "supplier" and id = ?';
 
-			if (!dayjs(data.issueDate).isValid() || !parseInt(data.supplierId) || !data.products)
+			if (!parseInt(data.supplierId))
 				return reject("Wrong data");
 
-			this.db.run(sql, [dayjs(data.issueDate).unix(), data.supplierId], function (err) {
+			this.db.get(sql, [data.supplierId], (err, row) => {
 				if (err)
 					reject(err);
+				else if (row == null)
+					reject("Wrong data");
 				else
-					resolve(this.lastID);
+					resolve();
 			});
+		}).then(() => {
+			return new Promise((resolve, reject) => {
+				const sql = 'INSERT INTO RestockOrder(ISSUEDATE, STATE, SUPPLIERID) VALUES(?, 1, ?);';
+
+				if (!dayjs(data.issueDate).isValid() || !data.products)
+					return reject("Wrong data");
+
+				this.db.run(sql, [dayjs(data.issueDate).unix(), data.supplierId], function (err) {
+					if (err)
+						reject(err);
+					else
+						resolve(this.lastID);
+				});
+			})
 		}).then((res) => this.insertProductsR(res, data.products, 0));
 	}
 
