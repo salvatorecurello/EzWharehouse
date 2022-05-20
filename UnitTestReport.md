@@ -25,7 +25,6 @@ Version:
  ### **Class *PositionDAO* - method *storePosition***
 
 **Criteria for method *storePosition*:**
-	
 
  - Validity object Position
  - Position with unique id in database
@@ -38,10 +37,6 @@ Version:
 |          |     No      |
 |  Position with unique id in database         |   Yes        |
 |         |      No     |
-
-
-
-
 
 **Boundaries**:
 
@@ -57,7 +52,7 @@ Version:
 
 | Validity object Position | Position with unique id in database | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidPosition; True)|||
+|Yes|Yes|Valid|T1(ValidPosition; True)|testNewPosition||
 |Yes|No|Invalid|T2(ValidPosition; False)|||
 |No|Yes|Invalid|T3(NullPosition; False)|||
 |No|No|Invalid|T4(NullPosition; False)|||

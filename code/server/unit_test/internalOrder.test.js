@@ -50,6 +50,7 @@ function getInternalOrders() {
 
 function getItemFromInternalOrderFromID() {
     test('get InternalOrdrder from  ID', async () => {
+        
         let idx = Math.floor(Math.random() * 2);
         let internalOrders = await IODao.getInternalOrders();
         expect(internalOrders).not.toBeNull();
@@ -90,8 +91,6 @@ function getProducts() {
         expect(res).not.toStrictEqual(null);
     });
 }
-
-
 
 function changeStateOfInternalOrder(state) {
     test('change state of internal order', async () => {
