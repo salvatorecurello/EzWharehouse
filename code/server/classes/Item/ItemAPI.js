@@ -1,6 +1,9 @@
 const ItemDAO = require("./ItemDao.js");
-const Item = require("./Item.js");
+const SkuDAO = require("../SKU/SKUDAO");
+const UserDAO = require("../User/UserDAO");
 const ItemDao = new ItemDAO();
+const SkuDao = new SkuDAO();
+const UserDao = new UserDAO();
 
 module.exports = function(app){
 
@@ -32,16 +35,19 @@ module.exports = function(app){
         const id = req.body.id;
         
 
-        let supp = await ItemDao.searchSupplier(supplierID);
+        //Change with UserDao
+        let supp = await UserDao.getUserFromId(supplierID);
         if(supp == undefined)
             return res.status(422).end();
 
         let i = await ItemDao.getItemByID(id);
-        if(i != undefined)
+        if(i != undefined) 
             return res.status(422).end();
 
         var valid = true;
+
         let items = await ItemDao.getItemsBySupplier(supplierID);
+
         items.forEach(e => {
             if(e.SKUID == skuid)
                 valid = false;
@@ -50,12 +56,14 @@ module.exports = function(app){
         if(!valid)
             return res.status(422).end();
         
-        
         const item = {id: id, description: description, price: price, skuid: skuid, supplierID: supplierID};
         for(x in item)
             if( x == undefined)
                 return res.status(422).end();
-        const res1 = await ItemDao.retrieveSku(skuid);
+        
+        //Retrieve with SkuDAO
+        const res1 = await SkuDao.getSKUByID(skuid);
+
         if(res1 == undefined) {
             return res.status(404).end();
         }
