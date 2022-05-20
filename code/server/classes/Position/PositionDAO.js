@@ -44,9 +44,10 @@ class PositionDAO {
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
-                if(rows.length==0){
-                    resolve(undefined)
+                if(rows.length == 0){
+                    resolve(null); 
                 }else{
                     resolve(rows[0]);
                 }
@@ -97,7 +98,7 @@ class PositionDAO {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(positionID);
+                    resolve();
                 }
                 
 
