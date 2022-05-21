@@ -42,11 +42,11 @@ class InternalOrderDAO {
     storeProducts(prod) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO Product(ORDERID,SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?)';
-                this.db.run(sql, [prod.orderID, prod.SKUId, prod.description,prod.price,prod.qty], (err, rows) => {
+                this.db.run(sql, [prod.orderID, prod.SKUId, prod.description,prod.price,prod.qty], function(err) {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(true);
+                        resolve(this.lastID);
                     }
                 });
         });
@@ -62,7 +62,7 @@ class InternalOrderDAO {
                 if (err) {
                     reject(err);
                 } else {
-                    rows.forEach((e) => {products.push({skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
+                    rows.forEach((e) => {products.push({id: e.ID, skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
                     resolve(products);
                 }
                 
@@ -124,50 +124,50 @@ class InternalOrderDAO {
 
     }
 
-    searchProductForSkuID(skuId) {
-        return new Promise((resolve, reject) => {
-        const sql_rfid = 'SELECT RFID FROM SKUItem WHERE SKUID == ?';
-            this.db.run(sql_rfid, [skuId], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
+    // searchProductForSkuID(skuId) {
+    //     return new Promise((resolve, reject) => {
+    //     const sql_rfid = 'SELECT RFID FROM SKUItem WHERE SKUID == ?';
+    //         this.db.run(sql_rfid, [skuId], (err, rows) => {
+    //             if (err) {
+    //                 reject(err);
+    //             } else {
+    //                 resolve(rows);
+    //             }
                 
-            });
-        });
-    }
+    //         });
+    //     });
+    // }
 
-    storeSKUItem(SkuID, RFID) {
-        return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, ?, ?)';
-            this.db.run(sql, [RFID, SkuID, 1, dayjs().unix()], (err) => {
-                if (err) {
-                  reject(err);
-                } else {
-                    resolve(this.lastID);
-                }
+    // storeSKUItem(SkuID, RFID) {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, ?, ?)';
+    //         this.db.run(sql, [RFID, SkuID, 1, dayjs().unix()], (err) => {
+    //             if (err) {
+    //               reject(err);
+    //             } else {
+    //                 resolve(this.lastID);
+    //             }
                 
-            });
+    //         });
 
-        });
-    }
+    //     });
+    // }
 
-    getUserByID(id) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM user WHERE ID = ? and type = ?';
-            this.db.all(sql, [id, 'customer'], (err, rows) => {
-                if (err) {
-                    reject(err);
-                }
-                if(rows.length==0){
-                    resolve(undefined);
-                }else{
-                    resolve(true);
-                }
-            });
-        });
-    }
+    // getUserByID(id) {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'SELECT * FROM user WHERE ID = ? and type = ?';
+    //         this.db.all(sql, [id, 'customer'], (err, rows) => {
+    //             if (err) {
+    //                 reject(err);
+    //             }
+    //             if(rows.length==0){
+    //                 resolve(undefined);
+    //             }else{
+    //                 resolve(true);
+    //             }
+    //         });
+    //     });
+    // }
 }
 
 module.exports = InternalOrderDAO;

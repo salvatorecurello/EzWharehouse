@@ -1,6 +1,10 @@
 const InternalOrderDAO = require("./InternalOrderDAO.js");
-const InternalOrder = require("./InternalOrder.js");
-InternalOrderDao = new InternalOrderDAO();
+const UserDAO = require("../User/UserDAO");
+const SkuItemDAO = require("../SKUItem/SKUItemDAO");
+const dayjs = require("dayjs");
+const SkuItemDao = new SkuItemDAO();
+const InternalOrderDao = new InternalOrderDAO();
+const UserDao = new UserDAO();
 
 module.exports = function (app) {
 
@@ -127,17 +131,29 @@ module.exports = function (app) {
             return res.status(422).end();
         }
         dayjsdate=dayjsdate.unix();
-        let user = await InternalOrderDao.getUserByID(customerID);
+
+        //Use UserDao
+        let user = await UserDao.getUserFromId(customerID);
+
         if(user == undefined) {
             return res.status(422).end();
         }
 
-        var valid=true;
+        let skuItems = await SkuItemDao.getSKUItems();
+
+        let valid=true;
         products.forEach(async function(e){
-            let a = await InternalOrderDao.searchProductForSkuID(e.SKUId);
-            if(a == undefined || e.description == undefined || e.price == undefined || e.qty == undefined) {
-                valid=false;
-            }
+            //SkuItemDAO
+            let a;
+            skuItems.forEach(g => {
+                if(g.SKUId == e.SKUId) {
+                    a = g;
+                    if(a == undefined || e.description == undefined || e.price == undefined || e.qty == undefined) {
+                        valid=false;
+                    }
+                }
+            })
+            
         } )
         if(!valid){
             return res.status(422).end();
@@ -159,6 +175,7 @@ module.exports = function (app) {
 
          const newState = req.body.newState;
          const id = req.params.id;
+         
          if (id == undefined || newState == undefined){
             return res.status(422).end();
          }
@@ -182,7 +199,12 @@ module.exports = function (app) {
          if (newState == 'COMPLETED') {
              let products = req.body.products;
              products.forEach(async function (e) {
-                 await InternalOrderDao.storeSKUItem(e.SkuID, e.RFID)
+                let a = await SkuItemDao.existingRFID(e.RFID);
+                if(a != undefined || a != null) {
+                    await SkuItemDao.updateSKUItem({newRFID: e.RFID, newAvailable: 1, newDateOfStock: dayjs().format('YYYY/MM/DD')})
+                } else {
+                    await SkuItemDao.storeSKUItem({RFID: e.RFID, SKUId: e.SkuID, DateOfStock: dayjs().format('YYYY/MM/DD')}, 1);
+                }
              });
          }
 

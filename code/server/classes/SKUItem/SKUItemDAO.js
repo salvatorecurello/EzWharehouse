@@ -74,7 +74,7 @@ class SKUItemDAO {
         });
     }
 
-    storeSKUItem(data) {
+    storeSKUItem(data, qty = 0) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, 0, ?)';
             this.db.run(sql, [data.RFID, data.SKUId, data.DateOfStock], (err) => {
