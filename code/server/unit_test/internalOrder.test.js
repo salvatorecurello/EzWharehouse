@@ -7,8 +7,7 @@ const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPL
 
 describe('test InternalOrders', () => {
     beforeAll(async () => {
-        const db = new mainDB();
-        await db.deleteAll();
+
         await IODao.storeInternalOrder({date: '22/04/2022 18:40', state: states['ACCEPTED'], customerID: 1 });
         await IODao.storeProducts({ orderID: 1, SKUId: 1, description: 'description1', price: 50.00, qty: 40 });
         await skudao.storeSKUItem({ RFID: 'rfid1', SKUId: 1, DateOfStock: '20/05/22'});
