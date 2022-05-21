@@ -78,19 +78,11 @@ class DAO {
                 const sql_testResult = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
 
                 let skuItems = [];
-<<<<<<< HEAD
-                skuItems.push({ rfid: 'rfid1', skuid: 1, available: 20, dateofstock: '20/05/22' });
-                skuItems.push({ rfid: 'rfid2', skuid: 2, available: 40, dateofstock: '20/05/22' });
-                skuItems.push({ rfid: 'rfid3', skuid: 2, available: 30, dateofstock: '20/05/22' });
-                skuItems.push({ rfid: 'rfid4', skuid: 3, available: 25, dateofstock: '20/05/22' });
-                skuItems.push({ rfid: 'rfid5', skuid: 1, available: 10, dateofstock: '20/05/22' });
-=======
                 skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix()});
                 skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix()});
                 skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix()});
                 skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix()});
                 skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix()});
->>>>>>> d1730850924169312efe6bc57ee0d52dd2140075
 
                 let users = [];
                 const password = crypto.createHash('md5').update('testpassword').digest("hex");
@@ -117,21 +109,12 @@ class DAO {
 
                 let ords = [];
                 const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
-<<<<<<< HEAD
                 ords.push({ id: 1, issueDate: 'issueDateEx1', state: states['COMPLETED'], customerID: 1 });
                 ords.push({ id: 2, issueDate: 'issueDateEx2', state: states['ACCEPTED'], customerID: 1 });
                 ords.push({ id: 3, issueDate: 'issueDateEx3', state: states['COMPLETED'], customerID: 1 });
                 ords.push({ id: 4, issueDate: 'issueDateEx4', state: states['ACCEPTED'], customerID: 1 });
                 ords.push({ id: 5, issueDate: 'issueDateEx5', state: states['ISSUED'], customerID: 1 });
 
-=======
-                ords.push({ issueDate: '20/05/2022', state: states['COMPLETED'], customerID: 1 });
-                ords.push({ issueDate: '20/05/2022', state: states['ACCEPTED'], customerID: 1 });
-                ords.push({ issueDate: '20/05/2022', state: states['COMPLETED'], customerID: 1 });
-                ords.push({ issueDate: '20/05/2022', state: states['ACCEPTED'], customerID: 1 });
-                ords.push({ issueDate: '20/05/2022', state: states['ISSUED'], customerID: 1 });
-                
->>>>>>> d1730850924169312efe6bc57ee0d52dd2140075
 
                 let skus = [];
                 skus.push({ id: 1, description: 'description1', weight: 10, volume: 10, position: 1, availableQuantity: 10, price: 2.00, note: 'note1' });
@@ -141,7 +124,6 @@ class DAO {
                 skus.push({ id: 5, description: 'description5', weight: 20, volume: 7, position: 4, availableQuantity: 15, price: 8.00, note: 'note5' });
 
                 let prods = [];
-<<<<<<< HEAD
                 prods.push({ id: 1, orderid: 1, skuid: 1, description: 'description1', price: 50.00, qty: 40 });
                 prods.push({ id: 2, orderid: 2, skuid: 2, description: 'description2', price: 70.00, qty: 50 });
                 prods.push({ id: 3, orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
@@ -149,31 +131,6 @@ class DAO {
                 prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
 
                 /*skuItems.forEach((skuItem) => {
-=======
-                prods.push({ orderid: 1, skuid: 1, description: 'description1', price: 50.00, qty: 40 });
-                prods.push({ orderid: 2, skuid: 2, description: 'description2', price: 70.00, qty: 50 });
-                prods.push({ orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
-                prods.push({ orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
-                prods.push({ orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
-
-                let testdescriptors = [];
-                testdescriptors.push({name:"testdescriptor1", procedureDescription:"proceduredescription1", idSKU: 0})
-                testdescriptors.push({name:"testdescriptor2", procedureDescription:"proceduredescription2", idSKU: 1})
-                testdescriptors.push({name:"testdescriptor3", procedureDescription:"proceduredescription3", idSKU: 2})
-                testdescriptors.push({name:"testdescriptor4", procedureDescription:"proceduredescription4", idSKU: 3})
-                testdescriptors.push({name:"testdescriptor5", procedureDescription:"proceduredescription5", idSKU: 4})
-
-                let testresults = [];
-                testresults.push({rfid:"11111111111111111111111111111111", idTestDescriptor: 0, Date:dayjs('2021/11/28').unix(), Result:true})
-                testresults.push({rfid:"22222222222222222222222222222222", idTestDescriptor: 1, Date:dayjs('2021/11/28').unix(), Result:true})
-                testresults.push({rfid:"33333333333333333333333333333333", idTestDescriptor: 2, Date:dayjs('2021/11/28').unix(), Result:false})
-                testresults.push({rfid:"44444444444444444444444444444444", idTestDescriptor: 3, Date:dayjs('2021/11/28').unix(), Result:true})
-                testresults.push({rfid:"55555555555555555555555555555555", idTestDescriptor: 4, Date:dayjs('2021/11/28').unix(), Result:false})
-                
-
-                
-                skuItems.forEach((skuItem) => {
->>>>>>> d1730850924169312efe6bc57ee0d52dd2140075
                     this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
                         if (err)
                             reject(err);
@@ -218,15 +175,8 @@ class DAO {
                     });
                 });
 
-<<<<<<< HEAD
                 skus.forEach((sku) => {
                     this.db.run(sql_SKU, [sku.id, sku.description, sku.weight, sku.volume, sku.position, sku.availableQuantity, sku.price, sku.note], (err) => {
-=======
-                
-
-                skus.forEach((sku) => {
-                    this.db.run(sql_SKU, [sku.description, sku.weight, sku.volume, sku.position, sku.availableQuantity, sku.price, sku.note], (err) => {
->>>>>>> d1730850924169312efe6bc57ee0d52dd2140075
                         if (err)
                             reject(err);
                         else
@@ -241,30 +191,7 @@ class DAO {
                         else
                             resolve();
                     });
-<<<<<<< HEAD
                 });*/
-=======
-                });
-                
-                testdescriptors.forEach((testdescriptor) => {
-                    this.db.run(sql_testdescriptor, [testdescriptor.name, testdescriptor.procedureDescription, testdescriptor.idSKU], (err) => {
-                        if (err)
-                            reject(err);
-                        else
-                            resolve();
-                    });
-                });
-
-                testresults.forEach((testresult) => {
-                    this.db.run(sql_testResult, [testresult.rfid, testresult.idTestDescriptor, testresult.Date, testresult.Result], (err) => {
-                        if (err)
-                            reject(err);
-                        else
-                            resolve();
-                    });
-                });
-
->>>>>>> d1730850924169312efe6bc57ee0d52dd2140075
 
             });
         });
