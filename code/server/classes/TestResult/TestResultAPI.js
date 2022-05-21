@@ -1,7 +1,11 @@
 const TestResultDAO = require("./TestResultDAO.js");
+const TestDescriptorDAO = require("../TestDescriptor/TestDescriptorDAO.js");
+const SKUItemDAO = require("../SKUItem/SKUItemDAO.js");
 const TestResult = require("./TestResult.js");
 const dayjs = require("dayjs");
 const TestResultdao = new TestResultDAO();
+const TestDescriptordao = new TestDescriptorDAO();
+const SKUItemdao = new SKUItemDAO();
 module.exports = function (app) {
 
     app.get('/api/skuitems/:rfid/testResults', async function (req, res) {
@@ -41,7 +45,7 @@ module.exports = function (app) {
     app.post('/api/skuitems/testResult', async function (req, res) {
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
         if (req.body.rfid!=undefined && req.body.rfid.length == 32 && /^\d+$/.test(req.body.rfid) && req.body.idTestDescriptor!=undefined && req.body.Date!=undefined && dayjs(req.body.Date).isValid() && req.body.Result!=undefined) {
-            if (await TestResultdao.isRFIDValid(req.body.rfid) && await TestResultdao.isTestIdValid(req.body.idTestDescriptor)) {
+            if (await SKUItemdao.existingRFID(req.body.rfid) && await TestDescriptordao.getTestDescriptorsByID(req.body.idTestDescriptor)!=undefined) {
                 await TestResultdao.storeTestResult(req.body);
                 return res.status(201).end();
             }
@@ -60,7 +64,7 @@ module.exports = function (app) {
         if (rfid!=undefined && rfid.length == 32 && /^\d+$/.test(rfid) && id!=undefined && req.body.newIdTestDescriptor!=undefined && req.body.newDate!=undefined && dayjs(req.body.Date).isValid() && req.body.newResult!=undefined) {
             const testresult = await TestResultdao.getTestResultBySKUITEMIDAndID(rfid, id);
             if (testresult != null) {
-                if (await TestResultdao.isTestIdValid(req.body.newIdTestDescriptor)) {
+                if (await TestDescriptordao.getTestDescriptorsByID(req.body.newIdTestDescriptor)!=undefined) {
                     await TestResultdao.updateTestResult(req.body, id, rfid);
                     return res.status(200).end();
                 }

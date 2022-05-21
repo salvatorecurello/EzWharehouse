@@ -199,8 +199,12 @@ module.exports = function (app) {
          if (newState == 'COMPLETED') {
              let products = req.body.products;
              products.forEach(async function (e) {
-                //Check SkuItemDAo
-                await SkuItemDao.storeSKUItem({RFID: e.RFID, SKUId: e.SkuID, DateOfStock: dayjs().format('YYYY/MM/DD')});
+                let a = await SkuItemDao.existingRFID(e.RFID);
+                if(a != undefined || a != null) {
+                    await SkuItemDao.updateSKUItem({newRFID: e.RFID, newAvailable: 1, newDateOfStock: dayjs().format('YYYY/MM/DD')})
+                } else {
+                    await SkuItemDao.storeSKUItem({RFID: e.RFID, SKUId: e.SkuID, DateOfStock: dayjs().format('YYYY/MM/DD')}, 1);
+                }
              });
          }
 

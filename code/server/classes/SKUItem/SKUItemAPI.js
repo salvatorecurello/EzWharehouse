@@ -52,7 +52,7 @@ module.exports = function(app){
     app.post('/api/skuitem', async function(req, res){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="clerk")){
             const rfid = req.body.RFID
-            if(rfid!=undefined && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId!=undefined && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == undefined)){
+            if(rfid!=undefined && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId!=undefined && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == null)){
                 if(await skuitemdao.existingRFID(rfid)){
                     return res.status(422).end();
                 }
@@ -75,17 +75,17 @@ module.exports = function(app){
             const rfid = req.params.rfid
             const newrfid = req.body.newRFID
             if(rfid!=undefined && newrfid && newrfid.length==32 && /^\d+$/.test(newrfid) && req.body.newAvailable!=undefined && (d1.test(req.body.newDateOfStock) || d2.test(req.body.newDateOfStock) || req.body.newDateOfStock == undefined)){  
-                if(await skuitemdao.existingRFID(newrfid)){
-                    return res.status(422).end();
-                }
-                else {
-                    const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
-                    if(skuitem!=null){
-                        await skuitemdao.updateSKUItem(req.body, req.params.rfid);
-                        return res.status(200).end();
+                if (rfid != newrfid){
+                    if(await skuitemdao.existingRFID(newrfid)){
+                        return res.status(422).end();
                     }
-                    return res.status(404).end();
                 }
+                const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
+                if(skuitem!=null){
+                    await skuitemdao.updateSKUItem(req.body, req.params.rfid);
+                    return res.status(200).end();
+                }
+                return res.status(404).end();
             }else{
             return res.status(422).end();    
             }

@@ -11,7 +11,7 @@ class SKUDAO {
     storeSKU(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO SKU(DESCRIPTION, WEIGHT, VOLUME, NOTE, PRICE, AVAILABLEQUANTITY) VALUES(?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [data.description, data.weight, data.volume, data.notes, data.price, data.availableQuantity], (err) => {
+            this.db.run(sql, [data.description, data.weight, data.volume, data.notes, data.price, data.availableQuantity], function(err) {
                 if (err) {
                   reject(err);
                   return;
@@ -109,10 +109,15 @@ class SKUDAO {
                     reject(err);
                     return;
                 }
-                resolve(rows.lenght)
+                if(rows.length==0){
+                    resolve(undefined)
+                }else{
+                    resolve(rows[0]);
+                }
             });
         });
     }
+    
     existingPosition(position){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM POSITION WHERE ID = ?';
@@ -159,6 +164,19 @@ class SKUDAO {
     existingSKUItem(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKUItem WHERE SKUID = ?';
+            this.db.all(sql, [parseInt(id)], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.length);
+            });
+        });
+    }
+
+    existingTestDescriptor(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM TestDescriptor WHERE SKUID = ?';
             this.db.all(sql, [parseInt(id)], (err, rows) => {
                 if (err) {
                     reject(err);

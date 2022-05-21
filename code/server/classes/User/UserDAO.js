@@ -12,7 +12,7 @@ class UserDAO {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO User(NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?)';
             data.password = crypto.createHash('md5').update(data.password).digest("hex");
-            this.db.run(sql, [data.name, data.surname, data.type, data.password, data.username], (err) => {
+            this.db.run(sql, [data.name, data.surname, data.type, data.password, data.username], function(err){
                 if (err) {
                     reject(err);
                     return;
@@ -111,9 +111,10 @@ class UserDAO {
 
     updateUser(id, newType) {
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE User SET TYPE = ? WHERE ID==?';
+            const sql = 'UPDATE User SET TYPE = ? WHERE ID=?';
             this.db.all(sql, [newType, id], (err, rows) => {
                 if (err) {
+                    console.log(err);
                     reject(err);
                     return;
                 }

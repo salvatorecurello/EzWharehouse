@@ -11,7 +11,7 @@ class TestResultDAO {
     storeTestResult(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
-            this.db.run(sql, [data.rfid, data.idTestDescriptor, dayjs(data.Date).unix(), data.Result == true ? 1 : 0], (err) => {
+            this.db.run(sql, [data.rfid, data.idTestDescriptor, dayjs(data.Date).unix(), data.Result == true ? 1 : 0], function(err) {
                 if (err) {
                     reject(err);
                     return;
@@ -56,32 +56,6 @@ class TestResultDAO {
         });
     }
 
-    isRFIDValid(SKUITEMID) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM SKUItem where RFID = ?';
-            this.db.all(sql, [SKUITEMID], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows.length);
-            });
-        });
-    }
-
-    isTestIdValid(ID) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TestDescriptor where ID = ?';
-            this.db.all(sql, [ID], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows.length);
-            });
-        });
-    }
-
     updateTestResult(data, id, rfid) {
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE TestResult SET  IDTESTDESCRIPTOR=?, DATE=?, RESULT=? where ID = ? and SKUITEMID=?';
@@ -97,7 +71,7 @@ class TestResultDAO {
 
     deleteTestResult(id, rfid) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM TestResult where ID=? AND rfid=?';
+            const sql = 'DELETE FROM TestResult where ID=? AND SKUITEMID=?';
             this.db.all(sql, [id, rfid], (err, rows) => {
                 if (err) {
                     reject(err);
