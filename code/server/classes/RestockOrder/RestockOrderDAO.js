@@ -26,7 +26,7 @@ class RestockOrderDAO {
 			this.db.get(sql, [p.SKUId], (err, row) => {
 				if (err)
 					reject(err);
-				else if (row.NUM == 0)
+				else if (row == null)
 					reject("Wrong data");
 				else
 					resolve(p);
@@ -42,10 +42,19 @@ class RestockOrderDAO {
 					if (err)
 						reject(err);
 					else
-						resolve();
+						resolve(orderId);
 				});
 			});
-		}).then(() => this.insertProductsR(orderId, products, i + 1));
+		}).then((orderId) =>
+			this.insertProductsR(orderId, products, i + 1)
+		).catch((res) => {
+			return new Promise((resolve, reject) => {
+				if (res == "Wrong data")
+					this.delete(orderId).catch(()=>{;});
+
+				reject(res);
+			});
+		});
 	}
 	getOrder(id) {
 		return new Promise((resolve, reject) => {
