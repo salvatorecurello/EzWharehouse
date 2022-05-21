@@ -68,7 +68,7 @@ module.exports = function (app) {
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
         const id = parseInt(req.params.id);
         if (id!=undefined) {
-            const testdescriptor = await TestDescriptordao.getTestDescriptorsByID();
+            const testdescriptor = await TestDescriptordao.getTestDescriptorsByID(id);
             if (testdescriptor != null) {
                 await TestDescriptordao.deleteTestDescriptor(id);
                 return res.status(204).end();
