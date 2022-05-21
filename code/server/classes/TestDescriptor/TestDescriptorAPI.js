@@ -1,5 +1,5 @@
 const TestDescriptorDAO = require("./TestDescriptorDAO.js");
-const SKUDAO = require("./SKU/SKUDAO.js");
+const SKUDAO = require("../SKU/SKUDAO.js");
 const TestDescriptor = require("./TestDescriptor.js");
 const TestDescriptordao = new TestDescriptorDAO();
 const SKUdao = new SKUDAO();

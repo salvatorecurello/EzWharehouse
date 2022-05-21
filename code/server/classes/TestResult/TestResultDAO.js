@@ -11,7 +11,7 @@ class TestResultDAO {
     storeTestResult(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
-            this.db.run(sql, [data.rfid, data.idTestDescriptor, dayjs(data.Date).unix(), data.Result == true ? 1 : 0], (err) => {
+            this.db.run(sql, [data.rfid, data.idTestDescriptor, dayjs(data.Date).unix(), data.Result == true ? 1 : 0], function(err) {
                 if (err) {
                     reject(err);
                     return;
@@ -71,7 +71,7 @@ class TestResultDAO {
 
     deleteTestResult(id, rfid) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM TestResult where ID=? AND rfid=?';
+            const sql = 'DELETE FROM TestResult where ID=? AND SKUITEMID=?';
             this.db.all(sql, [id, rfid], (err, rows) => {
                 if (err) {
                     reject(err);
