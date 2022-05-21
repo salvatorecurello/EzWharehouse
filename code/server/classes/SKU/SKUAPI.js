@@ -8,9 +8,6 @@ module.exports = function(app){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer" || req.session.user.type=="clerk")){
             const skus = await skudao.getSkus();
             for(let sku of skus){
-                // const t = await skudao.getTestDescriptorsBySKUID(sku.id)
-                // (Object.keys(t).map(function(_) { return t[_]; })
-                // ??????
                 sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
             }
             
@@ -86,7 +83,9 @@ module.exports = function(app){
                     const volume = sku.availableQuantity * sku.volume;
                     const pos = await skudao.existingPosition(req.body.position)
                     if (pos!=undefined){ 
-                        if(pos.MAXWEIGHT>= weight && pos.MAXVOLUME>= volume && await skudao.PositionOccupied(pos.ID)==0){
+                        let x = await skudao.PositionOccupied(req.body.position);
+                        console.log(x);
+                        if(pos.MAXWEIGHT>= weight && pos.MAXVOLUME>= volume && x==undefined){ 
                             if(sku.position != null){
                                 await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
@@ -117,9 +116,17 @@ module.exports = function(app){
                 if(sku!=null){
                     if(await skudao.existingSKUItem(req.params.id)){
                         return res.status(422).end();
+                    }
+                    if(await skudao.existingTestDescriptor(req.params.id)) {
+                        return res.status(422).end();
+                    }
+                    if (sku.position != null){
+                        await skudao.updatePositionWeightVolume(sku.position, 0, 0);
+                        await skudao.deleteSKU(req.params.id);
+                        return res.status(204).end();
                     } else {
-                    await skudao.deleteSKU(req.params.id);
-                    return res.status(204).end();
+                        await skudao.deleteSKU(req.params.id);
+                        return res.status(204).end();
                     }
                 }
                 return res.status(422).end();

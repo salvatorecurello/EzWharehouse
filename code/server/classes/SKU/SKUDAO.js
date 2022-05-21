@@ -109,10 +109,15 @@ class SKUDAO {
                     reject(err);
                     return;
                 }
-                resolve(rows.lenght)
+                if(rows.length==0){
+                    resolve(undefined)
+                }else{
+                    resolve(rows[0]);
+                }
             });
         });
     }
+    
     existingPosition(position){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM POSITION WHERE ID = ?';
@@ -159,6 +164,19 @@ class SKUDAO {
     existingSKUItem(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKUItem WHERE SKUID = ?';
+            this.db.all(sql, [parseInt(id)], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.length);
+            });
+        });
+    }
+
+    existingTestDescriptor(id){
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM TestDescriptor WHERE SKUID = ?';
             this.db.all(sql, [parseInt(id)], (err, rows) => {
                 if (err) {
                     reject(err);

@@ -1,4 +1,3 @@
-const dayjs = require('dayjs')
 const SKUItem = require('./SKUItem.js');
 class SKUItemDAO {
     sqlite = require('sqlite3');
@@ -78,7 +77,7 @@ class SKUItemDAO {
     storeSKUItem(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, 0, ?)';
-            this.db.run(sql, [data.RFID, data.SKUId, dayjs(data.DateOfStock).unix()], (err) => {
+            this.db.run(sql, [data.RFID, data.SKUId, data.DateOfStock], (err) => {
                 if (err) {
                   reject(err);
                   return;
@@ -91,7 +90,7 @@ class SKUItemDAO {
     updateSKUItem(data, rfid){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE SKUItem SET RFID=?, AVAILABLE=?, DATEOFSTOCK=? WHERE RFID = ?';
-            this.db.all(sql, [data.newRFID, data.newAvailable, dayjs(data.newDateOfStock).unix(), rfid], (err, rows) => {
+            this.db.all(sql, [data.newRFID, data.newAvailable, data.newDateOfStock, rfid], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
