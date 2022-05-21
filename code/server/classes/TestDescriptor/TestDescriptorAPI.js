@@ -1,6 +1,8 @@
 const TestDescriptorDAO = require("./TestDescriptorDAO.js");
+const SKUDAO = require("./SKU/SKUDAO.js");
 const TestDescriptor = require("./TestDescriptor.js");
 const TestDescriptordao = new TestDescriptorDAO();
+const SKUdao = new SKUDAO();
 module.exports = function (app) {
 
     app.get('/api/testDescriptors', async function (req, res) {
@@ -31,7 +33,7 @@ module.exports = function (app) {
     app.post('/api/testDescriptor', async function (req, res) {
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
         if (req.body.name!=undefined && req.body.procedureDescription!=undefined && req.body.idSKU!=undefined) {
-            if (await TestDescriptordao.isSKUidValid(req.body.idSKU)) {
+            if (await SKUdao.getSKUByID(req.body.idSKU)!=null) {
                 await TestDescriptordao.storeTestDescriptor(req.body);
                 return res.status(201).end();
             }
@@ -48,7 +50,7 @@ module.exports = function (app) {
         const id = parseInt(req.params.id);
         if (id!=undefined && req.body.newName!=undefined && req.body.newProcedureDescription!=undefined && req.body.newIdSKU!=undefined) {
             if (await TestDescriptordao.getTestDescriptorsByID(id) != null) {
-                if (await TestDescriptordao.isSKUidValid(req.body.newIdSKU)) {
+                if (await SKUdao.getSKUByID(req.body.newIdSKU)!=null) {
                     await TestDescriptordao.updateTestDescriptor(req.body, id);
                     return res.status(200).end();
                 }
