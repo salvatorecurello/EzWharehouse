@@ -21,19 +21,6 @@ class TestDescriptorDAO {
         });
     }
 
-    isSKUidValid(skuid) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM SKU where ID = ?';
-            this.db.all(sql, [skuid], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows.length);
-            });
-        });
-    }
-
     getTestDescriptors() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM TestDescriptor';
