@@ -130,7 +130,7 @@ class DAO {
                 prods.push({ id: 4, orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
                 prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
 
-                /*skuItems.forEach((skuItem) => {
+                skuItems.forEach((skuItem) => {
                     this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
                         if (err)
                             reject(err);
@@ -191,7 +191,7 @@ class DAO {
                         else
                             resolve();
                     });
-                });*/
+                });
 
             });
         });
