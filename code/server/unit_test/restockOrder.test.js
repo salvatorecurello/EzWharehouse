@@ -1,9 +1,15 @@
+const dataBase = require('../db.js');
 const RestockOrderDAO = require('../RestockOrder/RestockOrderDAO.js');
+const RoDAO = new RestockOrderDAO();
 
-describe('Test RestockOrders', () => {
+describe('test RestockOrders', () => {
 	beforeAll(async () => {
-		const RoDAO = new RestockOrderDAO();
-		
+		const db = new dataBase();
+		db.deleteAll().then(() =>
+			db.createTables()
+		);
+
+
 	});
 
 
