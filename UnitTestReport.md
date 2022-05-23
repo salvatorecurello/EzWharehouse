@@ -94,6 +94,26 @@ Version:
 |No|Invalid|T2((); EmptyList)||
 
 
+### **Class *RestockOrderDAO* - method *store***
+**Criteria:**
+
+ - Table *RestockOrder* exists
+ - *issueDate* is a valid date
+ - *products* is a list of valid products
+ - *supplierId* is the id of a user of type = 'supplier'
+
+**Predicates:**
+| Criteria | Predicate |
+| -------- | --------- |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+
+**Boundaries:**
+
+**Combination of predicates:**
+
 # White Box Unit Tests
 
 ### Test cases definition
