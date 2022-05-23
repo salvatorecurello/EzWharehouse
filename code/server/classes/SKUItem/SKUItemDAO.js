@@ -80,8 +80,8 @@ class SKUItemDAO {
     // fatta
     storeSKUItem(data, qty = 0) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, 0, ?)';
-            this.db.run(sql, [data.RFID, data.SKUId, data.DateOfStock], (err) => {
+            const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, ?, ?)';
+            this.db.run(sql, [data.RFID, data.SKUId, qty, data.DateOfStock], function(err) {
                 if (err) {
                   reject(err);
                   return;

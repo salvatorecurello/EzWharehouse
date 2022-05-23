@@ -12,11 +12,11 @@ class PositionDAO {
     storePosition(position) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [position.positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume], (err) => {
+            this.db.run(sql, [position.positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume], function(err)  {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(position);
+                    resolve(this.lastID);
                 }
                 
             });
@@ -49,7 +49,7 @@ class PositionDAO {
                 if(rows.length == 0){
                     resolve(null); 
                 }else{
-                    resolve(rows[0]);
+                    resolve(new Position(rows[0]));
                 }
             });
         });

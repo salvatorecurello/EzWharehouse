@@ -9,7 +9,7 @@ const port = 3001;
 
 const db = new DAO();
 db.createTables().catch((err) => { throw err; });
-
+db.createTestItems()
 app.use(express.json());
 
 app.use(session({

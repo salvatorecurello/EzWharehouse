@@ -1,6 +1,8 @@
 const InternalOrderDAO = require("./InternalOrderDAO.js");
 const UserDAO = require("../User/UserDAO");
 const SkuItemDAO = require("../SKUItem/SKUItemDAO");
+const SkuDao = require("../SKU/SKUDAO");
+const skuDao = new SkuDao();
 const dayjs = require("dayjs");
 const SkuItemDao = new SkuItemDAO();
 const InternalOrderDao = new InternalOrderDAO();
@@ -156,22 +158,22 @@ module.exports = function (app) {
 
             let valid = true;
             products.forEach(async function (e) {
-                //SkuItemDAO
-                let a;
-                skuItems.forEach(g => {
-                    if (g.SKUId == e.SKUId) {
-                        a = g;
-                        if (a == undefined || e.description == undefined || e.price == undefined || e.qty == undefined) {
-                            valid = false;
-                        }
-                    }
-                })
-
+                let a = await skuDao.getSKUByID(e.SKUId);
+                if(a == null || a.availableQuantity<e.qty){
+                    valid = false;
+                }
             })
             if (!valid) {
                 return res.status(422).end();
             }
-
+            
+            products.forEach(async function (e) {
+                let a = await skuDao.getSKUByID(e.SKUId);
+                await updateSKU({newDescription:a.description, newNotes:a.notes, newPrice:a.price, newWeight:a.weight, newVolume:a.volume, newAvailableQuantity: a.availableQuantity-e.qty}, a.id)
+                const newWeight = a.weight*(a.availableQuantity-e.qty);
+                const newVolume = a.volume*(a.availableQuantity-e.qty);
+                await skuDao.updatePositionWeightVolume(a.position, newWeight, newVolume);
+            })
             const id = await InternalOrderDao.storeInternalOrder({ date: dayjsdate, state: 0, customerID: customerID });
 
             products.forEach(async function (e) {
@@ -212,26 +214,46 @@ module.exports = function (app) {
             if (order == undefined) {
                 return res.status(404).end();
             }
-            await InternalOrderDao.changeState(id, newState);
+            
+            // Se COMPLETED => per ogni skuitem dei products bisogna settare available=0
+            
+            // Se REFUSED o CANCELLED aumentare sku quantity di x per ogni sku passato, aumentare posizione peso e volume
             if (newState == 'COMPLETED') {
                 let products = req.body.products;
                 products.forEach(async function (e) {
-                    let a = await SkuItemDao.existingRFID(e.RFID);
-                    if (a != undefined || a != null) {
-                        await SkuItemDao.updateSKUItem({ newRFID: e.RFID, newAvailable: 1, newDateOfStock: dayjs().format('YYYY/MM/DD') })
-                    } else {
-                        await SkuItemDao.storeSKUItem({ RFID: e.RFID, SKUId: e.SkuID, DateOfStock: dayjs().format('YYYY/MM/DD') }, 1);
+                    let a = await SkuItemDao.getSKUItemByRFID(e.RFID);
+                    if (a == null) { 
+                        return res.status(422).end();
                     }
                 });
+                products.forEach(async function (e) {
+                    let a = await SkuItemDao.getSKUItemByRFID(e.RFID);
+                    await SkuItemDao.updateSKUItem({ newRFID: e.RFID, newAvailable: 0, newDateOfStock: a.DateOfStock});
+                });
+                await InternalOrderDao.changeState(id, newState);
+            }else if (newState=="REFUSED" || newState=="CANCELLED"){
+                products.forEach(async function (e) {
+                    let a = await skuDao.getSKUByID(e.SKUId);
+                    if(a == null){
+                        return res.status(422).end();
+                    }
+                })
+                products.forEach(async function (e) {
+                    let a = await skuDao.getSKUByID(e.SKUId);
+                    await updateSKU({newDescription:a.description, newNotes:a.notes, newPrice:a.price, newWeight:a.weight, newVolume:a.volume, newAvailableQuantity: a.availableQuantity+e.qty}, a.id)
+                    const newWeight = a.weight*(a.availableQuantity+e.qty);
+                    const newVolume = a.volume*(a.availableQuantity+e.qty);
+                    await skuDao.updatePositionWeightVolume(a.position, newWeight, newVolume);
+                })
+                await InternalOrderDao.changeState(id, newState);
             }
-
             return res.status(200).end();
         } catch (error) {
             return res.status(500).end();
         }
     });
 
-    app.delete('/api/internalOrders/:id', async function (req, res) {
+    app.delete('/api/internalOrders/:id', async function (req, res) { 
         try {
 
             const id = parseInt(req.params.id);

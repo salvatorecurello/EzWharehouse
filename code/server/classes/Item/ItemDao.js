@@ -79,7 +79,7 @@ class ItemDAO {
                 if(rows.length==0){
                     resolve(null);
                 }else{
-                    resolve(rows[0]);
+                    resolve(new Item(rows[0]));
                 }
                 
             });
