@@ -47,7 +47,7 @@ module.exports = function (app) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             if (req.params.rfid != undefined) {
-                const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid);
+                const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid); 
                 if (skuitem != null) {
                     return res.status(200).json(skuitem);
                 }

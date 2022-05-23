@@ -59,7 +59,6 @@ class SKUDAO {
         });
     }
 
-    // fatta da rivedere
     getTestDescriptorsBySKUID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT ID FROM TestDescriptor WHERE SKUID = ?';
@@ -93,7 +92,7 @@ class SKUDAO {
     }
 
     // fatta
-    updatePositionWeightVolume(position, weight, volume){
+    updatePositionWeightVolume(position, weight, volume){ 
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE POSITION SET OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE ID = ?';
             this.db.all(sql, [weight, volume, position], (err, rows) => {

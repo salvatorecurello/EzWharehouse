@@ -6,31 +6,34 @@ const TestDescriptorDaoImport = require('../classes/TestDescriptor/TestDescripto
 const TestDescriptorDao = new TestDescriptorDaoImport();
 const PositionDaoImport = require('../classes/Position/PositionDAO.js');
 const PositionDao = new PositionDaoImport();
+const dayjs = require('dayjs')
 
 const mainDB = require("../db.js");
 
 describe('test skus', () => {
     beforeAll(async () => {
-        skuid0 = await SKUDao.storeSKU({description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, position: "aisle1row1col1", availableQuantity:10});
+        await PositionDao.storePosition({ positionID: 'aisle8row8col8', aisleID: 'aisle8', row: 'row8', col: 'col8', maxWeight: 1000, maxVolume: 1000, occupiedWeight: 0, occupiedVolume: 0 });
+        await PositionDao.storePosition({ positionID: 'aisle9row9col9', aisleID: 'aisle9', row: 'row9', col: 'col9', maxWeight: 2000, maxVolume: 2000, occupiedWeight: 0, occupiedVolume: 0 });
+        skuid0 = await SKUDao.storeSKU({description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity:10});
+        await SKUDao.modifySKUPosition("aisle8row8col8", skuid0);
         await TestDescriptorDao.storeTestDescriptor({name: "testsku", procedureDescription: "description for test", idSKU: skuid0});
-        await PositionDao.storePosition({ id: 'aisle4row4col4', aisleId: 'aisle4', row: 'row4', col: 'col4', maxwei: 1000, maxvol: 1000, occupiedWei: 0, occupiedVol: 0 });
         await SKUItemDao.storeSKUItem({RFID:"09876543211234567890123456789014", SKUId:skuid0, DateOfStock:"2021/11/29 12:30"});
     });
     
     testNewSKU('description 1', 10, 20, 'notes new sku', 5, 20);
     testgetSkus();
-    //testgetSKUByID();
-    // testgetTestDescriptorBySKUID(); non funziona
-    // testPositionOccupied('aisle1row1col1'); non funziona
-    //testexistingSKUItem();
-    //testexistingTestDescriptor(skuid0);
-    //getTestDescriptorBySKUID(skuid0);
+    testgetSKUByID();
+    testgetTestDescriptorBySKUID(); //non funziona
+    testPositionOccupied('aisle8row8col8'); //non funziona
+    testexistingSKUItem();
     
-    //testupdateSKU({newDescription: "testupdateSKU", newWeight: 20, newVolume: 20, newNotes: "notes sku", newPrice: 10, newAvailableQuantity:20});
-    //testupdatePositionWeightVolume(20, 20, 'aisle4row4col4');
-    //testupdateSKUPosition(1, 'aisle2row2col2');
-    //testdeleteSKU(1); 
+    testexistingTestDescriptor();
+    getTestDescriptorBySKUID();
     
+    testupdateSKU({newDescription: "testupdateSKU", newWeight: 20, newVolume: 20, newNotes: "notes sku update", newPrice: 12, newAvailableQuantity:20});
+    testupdatePositionWeightVolume(40, 40, 'aisle8row8col8');
+    testupdateSKUPosition('aisle2row2col2');
+    testdeleteSKU(); 
 });
 
 function testNewSKU(description, weight, volume, notes, availableQuantity, price) {
@@ -83,7 +86,6 @@ function testgetSKUByID() {
     });
 }
 
-// bohh
 function testgetTestDescriptorBySKUID() {
     test('get testdescriptor from skuid', async () => {
         const tmp = await SKUDao.getSkus();
@@ -95,18 +97,18 @@ function testgetTestDescriptorBySKUID() {
             }
         }
         expect(sku).not.toBeUndefined();
-        console.log(sku.id);
+
         var res = await SKUDao.getTestDescriptorsBySKUID(sku.id);
-        expect(res).not.toBeNull();
-        expect(res.idSKU).toStrictEqual(sku.id);
+
+        expect(res.lenght).not.toStrictEqual(0);
     });
 }
 
 function testPositionOccupied(id) {
     test('get position from id', async () => {
         var res = await SKUDao.PositionOccupied(id);
-        expect(res).not.toBeNull();
-        expect(res.position).toStrictEqual(id);
+        expect(res).not.toBeUndefined();
+        expect(res.POSITION).toStrictEqual(id);
     });
 }
 
@@ -122,21 +124,30 @@ function testexistingSKUItem(skuid) {
             }
         }
         expect(sku).not.toBeUndefined();
-        console.log(sku.id)
+        //console.log(sku.id)
         var res = await SKUDao.existingSKUItem(sku.id);
-        expect(res).not.toBeNull();
-        expect(res.length).toBeGreaterThanOrEqual(1);
+        expect(res).toBeGreaterThanOrEqual(1);
+
     });
 }
 
 
 
 // vedere su SKUDAO se le funzioni existingTestDescriptor() e getTestDescriptorsBySKUID() sono la stessa cosa
-function testexistingTestDescriptor(skuid) {
+function testexistingTestDescriptor() {
     test('get testdescriptor from skuid', async () => {
-        var res = await SKUDao.existingTestDescriptor(skuid);
-        expect(res).not.toBeNull();
-        expect(res.length).toBeGreaterThanOrEqual(1);
+        const tmp = await SKUDao.getSkus();
+        expect(tmp.length).toBeGreaterThanOrEqual(1);
+        let sku=undefined;
+        for(const _sku of tmp){
+            if(_sku.description==="testSKU"){
+                sku= _sku;
+            }
+        }
+        expect(sku).not.toBeUndefined();
+
+        var res = await SKUDao.existingTestDescriptor(sku.id);
+        expect(res).toBeGreaterThanOrEqual(1);
     });
 }
 
@@ -144,7 +155,7 @@ function testexistingTestDescriptor(skuid) {
 function getTestDescriptorBySKUID(skuid) {
     test('get testdescriptor by skuid', async () => {
         
-        var res = await SKUDao.getTestDescriptorBySKUID(skuid);
+        var res = await SKUDao.getTestDescriptorsBySKUID(skuid);
         expect(res).not.toBeNull();
         expect(res.SKUID).toStrictEqual(skuid);
     });
@@ -168,47 +179,70 @@ function testupdateSKU(newsku) {
         res_new = await SKUDao.getSKUByID(sku.id);
         
         expect(res_new).not.toBeNull();
-        expect(res_old.ID).toStrictEqual(res_new.ID);
-        expect(res_old.DESCRIPTION).not.toStrictEqual(res_new.DESCRIPTION);
-        expect(res_old.WEIGHT).not.toStrictEqual(res_new.WEIGHT)
-        expect(res_old.VOLUME).not.toStrictEqual(res_new.VOLUME);
-        expect(res_old.NOTE).not.toStrictEqual(res_new.NOTE);
-        expect(res_old.PRICE).not.toStrictEqual(res_new.PRICE);
-        expect(res_old.AVAILABLEQUANTITY).not.toStrictEqual(res_new.AVAILABLEQUANTITY);
+        expect(res_old.id).toStrictEqual(res_new.id);
+        expect(res_old.description).not.toStrictEqual(res_new.description);
+        expect(res_old.weight).not.toStrictEqual(res_new.weight)
+        expect(res_old.volume).not.toStrictEqual(res_new.volume);
+        expect(res_old.notes).not.toStrictEqual(res_new.notes);
+        expect(res_old.price).not.toStrictEqual(res_new.price);
+        expect(res_old.availableQuantity).not.toStrictEqual(res_new.availableQuantity);
     });
 }
 
 
 function testupdatePositionWeightVolume(weight, volume, position) {
-    test('update all fields of sku', async () => {
+    test('update weight and volume of position', async () => {
         let res_old = await PositionDao.getPositionByID(position);
+        expect(res_old).not.toBeNull();
+        
         await SKUDao.updatePositionWeightVolume(position, weight, volume);
-        res_new = await SKUDao.getPositionByID(position);
+        res_new = await PositionDao.getPositionByID(position);
+        
         expect(res_new).not.toBeNull();
-        expect(res_old.ID).toStrictEqual(res_new.ID); // non so se questo serve
-        expect(res_old.OCCUPIEDWEIGHT).not.toStrictEqual(res_new.OCCUPIEDWEIGHT)
-        expect(res_old.OCCUPIEDVOLUME).not.toStrictEqual(res_new.OCCUPIEDVOLUME);
+        expect(res_old.id).toStrictEqual(res_new.id);
+        expect(res_old.occupiedWeight).not.toStrictEqual(res_new.occupiedWeight);
+        expect(res_old.occupiedVolume).not.toStrictEqual(res_new.occupiedVolume);
     });
 }
 
 
-function testupdateSKUPosition(id, position) {
+function testupdateSKUPosition(position) {
     test('update position of sku', async () => {
-        let res_old = await SKUDao.getSKUByID(id);
-        await SKUDao.modifySKUPosition(position, id);
-        res_new = await SKUDao.getSKUByID(id);
+        const tmp = await SKUDao.getSkus();
+        expect(tmp.length).toBeGreaterThanOrEqual(1);
+        let sku=undefined;
+        for(const _sku of tmp){
+            if(_sku.description==="testupdateSKU"){
+                sku= _sku;
+            }
+        }
+        expect(sku).not.toBeUndefined();
+
+        let res_old = await SKUDao.getSKUByID(sku.id);
+        await SKUDao.modifySKUPosition(position, sku.id);
+        res_new = await SKUDao.getSKUByID(sku.id);
         expect(res_new).not.toBeNull();
-        expect(res_old.ID).toStrictEqual(res_new.ID); // non so se questo serve
-        expect(res_old.POSITION).not.toStrictEqual(res_new.POSITION);
+        expect(res_old.id).toStrictEqual(res_new.id); 
+        expect(res_old.position).not.toStrictEqual(res_new.position);
     });
 }
 
 function testdeleteSKU(id) {
     test('delete sku', async () => {
-        let res_old = await SKUDao.getSKUByID(id);
+        const tmp = await SKUDao.getSkus();
+        expect(tmp.length).toBeGreaterThanOrEqual(1);
+        let sku=undefined;
+        for(const _sku of tmp){
+            if(_sku.description==="testupdateSKU"){
+                sku= _sku;
+            }
+        }
+        expect(sku).not.toBeUndefined();
+
+        let res_old = await SKUDao.getSKUByID(sku.id);
         expect(res_old).not.toBeNull();
-        await SKUDao.deleteSKU(new_id);
-        let res_new = await SKUDao.getSKUByID(id);
+        await SKUDao.deleteSKU(sku.id);
+        let res_new = await SKUDao.getSKUByID(sku.id);
         expect(res_new).toBeNull();
     });
 }

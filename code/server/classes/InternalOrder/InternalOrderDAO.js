@@ -10,7 +10,7 @@ class InternalOrderDAO {
 
     changeState(id, state){
         return new Promise((resolve, reject) => {
-            const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
+            const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELLED': 3, 'COMPLETED': 4 };
             const sql = 'UPDATE InternalOrder SET STATE = ? WHERE ID = ?';
             this.db.run(sql, [states[state], id], (err) => {
                 if (err) {
