@@ -2,7 +2,10 @@ const SKUDAO = require("./SKUDAO.js");
 const SKU = require("./SKU.js");
 const skudao = new SKUDAO();
 
-module.exports = function (app) {
+const PositionDAO = require("../Position/PositionDAO.js");
+const Positiondao = new PositionDAO();
+
+module.exports = function(app){
 
     app.get('/api/skus', async function (req, res) {
         try {
@@ -98,17 +101,16 @@ module.exports = function (app) {
                 if (sku != null) {
                     const weight = sku.availableQuantity * sku.weight;
                     const volume = sku.availableQuantity * sku.volume;
-                    const pos = await skudao.existingPosition(req.body.position)
-                    if (pos != undefined) {
+                    const pos = await Positiondao.getPositionByID(req.body.position)
+                    if (pos!=undefined){ 
                         let x = await skudao.PositionOccupied(req.body.position);
-                        console.log(x);
-                        if (pos.MAXWEIGHT >= weight && pos.MAXVOLUME >= volume && x == undefined) {
-                            if (sku.position != null) {
-                                await skudao.modifySKUPosition(req.body.position, req.params.id);
+                        if(pos.MAXWEIGHT>= weight && pos.MAXVOLUME>= volume && x==undefined){ 
+                            if(sku.position != null){
+                                await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                                 await skudao.updatePositionWeightVolume(sku.position, 0, 0);
-                            } else {
-                                await skudao.addPosition(req.body.position, req.params.id);
+                                } else {
+                                await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                             }
                             return res.status(200).end();
