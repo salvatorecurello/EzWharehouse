@@ -1,6 +1,8 @@
 const SKUItemDAO = require("./SKUItemDAO.js");
 const SKUItem = require("./SKUItem.js");
+const SKUDAO = require("../SKU/SKUDAO.js");
 const skuitemdao=new SKUItemDAO();
+const SKUdao = new SKUDAO();
 
 var d1 = /^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$/;
 
@@ -20,7 +22,7 @@ module.exports = function(app){
     app.get('/api/skuitems/sku/:id', async function(req, res){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer")){
             if(req.params.id!=undefined){
-                if(await skuitemdao.existingSKU(req.params.id)){
+                if(await SKUdao.getSKUByID(req.params.id)){
                     const skuitem = await skuitemdao.getArraySKUItemByID(req.params.id);
                     return res.status(200).json(skuitem);
                 } else {
@@ -53,11 +55,11 @@ module.exports = function(app){
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="clerk")){
             const rfid = req.body.RFID
             if(rfid!=undefined && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId!=undefined && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == null)){
-                if(await skuitemdao.existingRFID(rfid)){
+                if(await skuitemdao.getSKUItemByRFID(rfid)){
                     return res.status(422).end();
                 }
                 else {
-                    if(await skuitemdao.isidSKUValid(req.body.SKUId)){
+                    if(await SKUdao.getSKUByID(req.body.SKUId)){
                         await skuitemdao.storeSKUItem(req.body);
                         return res.status(201).end();
                     }
@@ -76,7 +78,7 @@ module.exports = function(app){
             const newrfid = req.body.newRFID
             if(rfid!=undefined && newrfid && newrfid.length==32 && /^\d+$/.test(newrfid) && req.body.newAvailable!=undefined && (d1.test(req.body.newDateOfStock) || d2.test(req.body.newDateOfStock) || req.body.newDateOfStock == undefined)){  
                 if (rfid != newrfid){
-                    if(await skuitemdao.existingRFID(newrfid)){
+                    if(await skuitemdao.getSKUItemByRFID(newrfid)){
                         return res.status(422).end();
                     }
                 }

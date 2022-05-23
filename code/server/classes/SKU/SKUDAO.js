@@ -8,6 +8,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     storeSKU(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO SKU(DESCRIPTION, WEIGHT, VOLUME, NOTE, PRICE, AVAILABLEQUANTITY) VALUES(?, ?, ?, ?, ?, ?)';
@@ -21,7 +22,7 @@ class SKUDAO {
         });
     }
 
-    
+    // fatta
     getSkus() {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKU';
@@ -40,6 +41,7 @@ class SKUDAO {
         });
     }
 
+    //fatta
     getSKUByID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKU WHERE ID = ?';
@@ -57,6 +59,7 @@ class SKUDAO {
         });
     }
 
+    // fatta da rivedere
     getTestDescriptorsBySKUID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT ID FROM TestDescriptor WHERE SKUID = ?';
@@ -75,6 +78,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     updateSKU(data, id){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE SKU SET  DESCRIPTION=?, WEIGHT=?, VOLUME=?, NOTE=?, PRICE=?, AVAILABLEQUANTITY=? WHERE ID = ?';
@@ -88,6 +92,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     updatePositionWeightVolume(position, weight, volume){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE POSITION SET OCCUPIEDWEIGHT=?, OCCUPIEDVOLUME=? WHERE ID = ?';
@@ -101,6 +106,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     PositionOccupied(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKU WHERE POSITION = ?';
@@ -118,23 +124,25 @@ class SKUDAO {
         });
     }
     
-    existingPosition(position){
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM POSITION WHERE ID = ?';
-            this.db.all(sql, [position], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                if (rows.lenght==0){
-                    resolve(undefined)
-                }else{ 
-                resolve(rows[0]);
-                }
-            });
-        });
-    }
+    // fatta
+    //existingPosition(position){
+    //    return new Promise((resolve, reject) => {
+    //        const sql = 'SELECT * FROM POSITION WHERE ID = ?';
+    //        this.db.all(sql, [position], (err, rows) => {
+    //            if (err) {
+    //                reject(err);
+    //                return;
+    //            }
+    //            if (rows.lenght==0){
+    //                resolve(undefined)
+    //            }else{ 
+    //            resolve(rows[0]);
+    //            }
+    //        });
+    //    });
+    //}
 
+    // fatta
     modifySKUPosition(position, id){
         return new Promise((resolve, reject) => {
             const sql = 'UPDATE SKU SET POSITION=? WHERE ID =?';
@@ -148,19 +156,20 @@ class SKUDAO {
         });
     }
 
-    addPosition(position, id){
-        return new Promise((resolve, reject) => {
-            const sql = 'UPDATE SKU SET POSITION=? WHERE ID=?';
-            this.db.run(sql, [position, parseInt(id)], (err) => {
-                if (err) {
-                  reject(err);
-                  return;
-                }
-                resolve(this.lastID);
-            });
-        });
-    }
+    //addPosition(position, id){
+    //    return new Promise((resolve, reject) => {
+    //        const sql = 'UPDATE SKU SET POSITION=? WHERE ID=?';
+    //        this.db.run(sql, [position, parseInt(id)], (err) => {
+    //            if (err) {
+    //              reject(err);
+    //              return;
+    //            }
+    //            resolve(this.lastID);
+    //        });
+    //    });
+    //}
 
+    // fatta
     existingSKUItem(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM SKUItem WHERE SKUID = ?';
@@ -174,6 +183,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     existingTestDescriptor(id){
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM TestDescriptor WHERE SKUID = ?';
@@ -187,6 +197,7 @@ class SKUDAO {
         });
     }
 
+    // fatta
     deleteSKU(id){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM SKU WHERE ID=?';

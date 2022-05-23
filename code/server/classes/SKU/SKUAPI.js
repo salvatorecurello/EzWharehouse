@@ -2,6 +2,9 @@ const SKUDAO = require("./SKUDAO.js");
 const SKU = require("./SKU.js");
 const skudao=new SKUDAO();
 
+const PositionDAO = require("../Position/PositionDAO.js");
+const Positiondao = new PositionDAO();
+
 module.exports = function(app){
 
     app.get('/api/skus', async function(req, res){
@@ -54,7 +57,7 @@ module.exports = function(app){
                         if(sku.position != null){
                             const weight = req.body.newAvailableQuantity * req.body.newWeight;
                             const volume = req.body.newAvailableQuantity * req.body.newVolume;
-                            const pos = await skudao.existingPosition(sku.position)
+                            const pos = await Positiondao.getPositionByID(sku.position)
                             if(pos.MAXWEIGHT>=weight && pos.MAXVOLUME>= volume){
                                 await skudao.updatePositionWeightVolume(sku.position, weight, volume);
                             }
@@ -81,17 +84,16 @@ module.exports = function(app){
                 if(sku!=null){
                     const weight = sku.availableQuantity * sku.weight;
                     const volume = sku.availableQuantity * sku.volume;
-                    const pos = await skudao.existingPosition(req.body.position)
+                    const pos = await Positiondao.getPositionByID(req.body.position)
                     if (pos!=undefined){ 
                         let x = await skudao.PositionOccupied(req.body.position);
-                        console.log(x);
                         if(pos.MAXWEIGHT>= weight && pos.MAXVOLUME>= volume && x==undefined){ 
                             if(sku.position != null){
                                 await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                                 await skudao.updatePositionWeightVolume(sku.position, 0, 0);
                                 } else {
-                                await skudao.addPosition(req.body.position, req.params.id); 
+                                await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                                 } 
                             return res.status(200).end();
