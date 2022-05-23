@@ -70,8 +70,8 @@ module.exports = function(app){
                         if (sku.position != null) {
                             const weight = req.body.newAvailableQuantity * req.body.newWeight;
                             const volume = req.body.newAvailableQuantity * req.body.newVolume;
-                            const pos = await Positiondao.getPositionByID(sku.position)
-                            if(pos.MAXWEIGHT>=weight && pos.MAXVOLUME>= volume){
+                            const pos = await skudao.existingPosition(sku.position)
+                            if (pos.MAXWEIGHT >= weight && pos.MAXVOLUME >= volume) {
                                 await skudao.updatePositionWeightVolume(sku.position, weight, volume);
                             }
                             else {
