@@ -23,7 +23,7 @@ class DAO {
         sql.push("DELETE FROM TestDescriptor");
         sql.push("DELETE FROM RestockOrder");
         sql.push("DELETE FROM SKUItemsRestockOrder");
-        return this.createTablesR(sql, 0).then(() => { });
+        return this.createTablesR(sql, 0).catch((err) => console.log(err));
     }
 
     createTablesR(sql, i) {
@@ -74,15 +74,15 @@ class DAO {
                 const sql_Product = 'INSERT or IGNORE INTO Product(ID, ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
 
                 const sql_SkuItem = 'INSERT or IGNORE INTO SKUItem(RFID, SKUID , AVAILABLE, DATEOFSTOCK ) VALUES(?, ?, ?, ?)';
-                const sql_testdescriptor = 'INSERT INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
-                const sql_testResult = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
+                //const sql_testdescriptor = 'INSERT INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
+                //const sql_testResult = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
 
                 let skuItems = [];
-                skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix()});
-                skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix()});
-                skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix()});
-                skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix()});
-                skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix()});
+                skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix() });
+                skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix() });
+                skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix() });
+                skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix() });
+                skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix() });
 
                 let users = [];
                 const password = crypto.createHash('md5').update('testpassword').digest("hex");
@@ -130,7 +130,7 @@ class DAO {
                 prods.push({ id: 4, orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
                 prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
 
-                /*skuItems.forEach((skuItem) => {
+                skuItems.forEach((skuItem) => {
                     this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
                         if (err)
                             reject(err);
@@ -191,8 +191,7 @@ class DAO {
                         else
                             resolve();
                     });
-                });*/
-
+                });
             });
         });
     }
