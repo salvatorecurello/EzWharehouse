@@ -5,12 +5,6 @@ const RoDAO = new RestockOrderDAO();
 describe('test RestockOrders', () => {
 	beforeAll(async () => {
 		const db = new dataBase();
-		db.deleteAll().then(() =>
-			db.createTables()
-		);
-
-
+		await db.createTables();
 	});
-
-
 });

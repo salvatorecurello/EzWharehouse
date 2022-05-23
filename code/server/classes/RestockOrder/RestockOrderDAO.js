@@ -9,7 +9,7 @@ class RestockOrderDAO {
 		});
 	}
 
-	//Ausiliary functions
+	//Ausiliary methods
 	insertProductsR(orderId, products, i) {
 		if (i >= products.length)
 			return new Promise((resolve, reject) => {
