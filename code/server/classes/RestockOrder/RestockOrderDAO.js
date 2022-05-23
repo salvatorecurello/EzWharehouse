@@ -9,7 +9,7 @@ class RestockOrderDAO {
 		});
 	}
 
-	//Ausiliary functions
+	//Ausiliary methods
 	insertProductsR(orderId, products, i) {
 		if (i >= products.length)
 			return new Promise((resolve, reject) => {
@@ -50,7 +50,7 @@ class RestockOrderDAO {
 		).catch((res) => {
 			return new Promise((resolve, reject) => {
 				if (res == "Wrong data")
-					this.delete(orderId).catch(()=>{;});
+					this.delete(orderId).catch((err) => console.log(err));
 
 				reject(res);
 			});
