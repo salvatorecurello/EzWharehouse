@@ -63,7 +63,7 @@ class DAO {
         // sql.push('DROP Table SKUItem');
 
 
-        return this.createTablesR(sql, 0).then(() => {
+        return this.createTablesR(sql, 0)/*.then(() => {
             return new Promise((resolve, reject) => {
                 const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
                 const sql_Position = 'INSERT or IGNORE INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
@@ -193,7 +193,7 @@ class DAO {
                     });
                 });
             });
-        });
+        });*/
     }
 }
 
