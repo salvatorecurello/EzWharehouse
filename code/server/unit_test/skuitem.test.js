@@ -101,7 +101,7 @@ function testupdateSKUItem(rfid, skuitem) {
     test('update skuitem', async () => {
         let res_old = await SKUItemDao.getSKUItemByRFID(rfid);
        
-        await SKUItemDao.updateSKUItem(skuitem, skuitem.newRFID);
+        await SKUItemDao.updateSKUItem(skuitem, rfid);
         
         res_new = await SKUItemDao.getSKUItemByRFID(skuitem.newRFID);
         

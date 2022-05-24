@@ -22,46 +22,36 @@ before('setting up for testing skus', async function () {
     skus.push(await SKUDao.storeSKU({ description: "testSKUchaiForDelete", weight: 2, volume: 2, notes: "notes sku4", price: 4, availableQuantity: 1 }));
 })
 
-describe("POST /api/sku", function(){
-    it('should add new sku', function(done){
+
+describe("POST /api/sku", function () {
+    it('should add new sku', function (done) {
         agent.post("/api/sku")
-        .send({description: "testmochasku", weight: 1, volume: 2, notes: "note test", price: 10, availableQuantity: 2})
-        .then(function(res){
-        res.should.have.status(201);
-        done();
-        })
+            .send({ description: "testmochasku", weight: 1, volume: 2, notes: "note test", price: 10, availableQuantity: 2 })
+            .then(function (res) {
+                res.should.have.status(201);
+                done();
+            })
     })
 })
 
-describe("GET /api/skus", function(){
-    it('should get all skus', function(done){
+describe("GET /api/skus", function () {
+    it('should get all skus', function (done) {
         agent.get("/api/skus")
-        .then(function(res){
-            res.should.have.status(200);
-            res.body.length.should.be.at.least(1);
-            done();
-        })
-        
+            .then(function (res) {
+                res.should.have.status(200);
+                res.body.length.should.be.at.least(1);
+                done();
+            })
+
     })
 })
 
-describe("GET /api/skus/:id", function(){
-    it('should get the sku with id', function(done){
-        agent.get("/api/skus")
-        .then(function(res){
-            res.should.have.status(200);
-            descriptions=[]
-            res.body.map((x)=>{descriptions.push(x.description)})
-            descriptions.should.contain("testSKUchaiForGet");
-            id=0;
-            for(test of res.body){
-                if(test.description=="testSKUchaiForGet"){
-                    id=test.id;
-                }
-            }
-            agent.get("/api/skus/"+id)
-            .then(function(res){
-                res.should.have.status(200);                
+describe("GET /api/skus/:id", function () {
+    it('should get the sku with id', function (done) {
+        id = skus[0];
+        agent.get("/api/skus/" + id)
+            .then(function (res) {
+                res.should.have.status(200);
                 res.body.description.should.equal("testSKUchaiForGet");
                 res.body.weight.should.equal(7);
                 res.body.volume.should.equal(5);
@@ -70,111 +60,71 @@ describe("GET /api/skus/:id", function(){
                 res.body.availableQuantity.should.equal(5);
                 done();
             })
-            
-        })
-        
+
     })
+
 })
 
-describe("PUT /api/sku/:id", function(){
-    it('should edit the sku with id', function(done){
-        agent.get("/api/skus")
-        .then(function(res){
-            res.should.have.status(200);
-            descriptions=[]
-            res.body.map((x)=>{descriptions.push(x.description)})
-            descriptions.should.contain("testSKUchaiForUpdate");
-            t=undefined;
-            for(test of res.body){
-                if(test.description=="testSKUchaiForUpdate"){
-                    t=test;
-                }
-            }
-            agent.put("/api/sku/"+t.id)
-            .send({newDescription:"testSKUchaiForUpdateEdit", newWeight:50, newVolume: 7, newNotes: "notetestedit", newPrice: 10, newAvailableQuantity: 10})
-            .then(function(res){
+
+describe("PUT /api/sku/:id", function () {
+    it('should edit the sku with id', function (done) {
+        id = skus[1];
+        agent.put("/api/sku/" + id)
+            .send({ newDescription: "testSKUchaiForUpdateEdit", newWeight: 50, newVolume: 7, newNotes: "notetestedit", newPrice: 10, newAvailableQuantity: 10 })
+            .then(function (res) {
                 res.should.have.status(200);
-                agent.get("/api/skus/"+t.id)
-                .then(function(res){
-                    res.should.have.status(200);
-                    res.body.description.should.equal("testSKUchaiForUpdateEdit");
-                    res.body.weight.should.equal(50);
-                    res.body.volume.should.equal(7);
-                    res.body.notes.should.equal("notetestedit");
-                    res.body.price.should.equal(10);
-                    res.body.availableQuantity.should.equal(10);
-                    done();
-                })
-                
+                agent.get("/api/skus/" + id)
+                    .then(function (res) {
+                        res.should.have.status(200);
+                        res.body.description.should.equal("testSKUchaiForUpdateEdit");
+                        res.body.weight.should.equal(50);
+                        res.body.volume.should.equal(7);
+                        res.body.notes.should.equal("notetestedit");
+                        res.body.price.should.equal(10);
+                        res.body.availableQuantity.should.equal(10);
+                        done();
+                    })
+
             })
-            
-        })
-        
+
+    })
+
+})
+
+
+describe("PUT /api/sku/:id/position", function () {
+    it('should edit position of sku with id', function (done) {
+        id = skus[2];
+        agent.put("/api/sku/" + id + "/position")
+            .send({ position: '80000row1col1' })
+            .then(function (res) {
+                res.should.have.status(200);
+                agent.get("/api/skus/" + id)
+                    .then(function (res) {
+                        res.body.position.should.equal('80000row1col1');
+                        done()
+                    })
+            })
     })
 })
 
 
-describe("PUT /api/sku/:id/position", function(){
-    it('should edit position of sku with id', function(done){
-        agent.get("/api/skus")
-        .then(function(res){
-            res.should.have.status(200);
-            descriptions=[]
-            res.body.map((x)=>{descriptions.push(x.description)})
-            descriptions.should.contain("testSKUchaiForAddPosition");
-            id=0;
-            for(test of res.body){
-                if(test.description=="testSKUchaiForAddPosition"){
-                    id=test.id;
-                    //console.log(id);
-                    //weight= test.occupiedWeight;
-                    //volume = test.occupiedVolume;
-                }
-            }
-            agent.put("/api/sku/"+id+"/position")
-            .send({position: '80000row1col1'})
-            .then(function(res){
-                    res.should.have.status(200);
-                    agent.get("/api/skus/"+id)
-                    .then(function(res){
-                    console.log(req.body.position);
-                    res.body.position.should.equal('80000row1col1');                        
-                    done()
-                    })
-                })
-            })
-        })
-    })
-
-
-describe("DELETE /api/skus/:id", function(){
-    it('should delete the sku with id', function(done){
-        agent.get("/api/skus")
-        .then(function(res){
-            res.should.have.status(200);
-            descriptions=[]
-            res.body.map((x)=>{descriptions.push(x.description)})
-            descriptions.should.contain("testSKUchaiForDelete");
-            t=undefined;
-            for(test of res.body){
-                if(test.description=="testSKUchaiForDelete"){
-                    t=test;
-                }
-            }
-            agent.delete("/api/skus/"+t.id)
-            .then(function(res){
+describe("DELETE /api/skus/:id", function () {
+    it('should delete the sku with id', function (done) {
+        id = skus[3];
+        agent.delete("/api/skus/" + id)
+            .then(function (res) {
                 res.should.have.status(204);
-                agent.get("/api/skus/"+t.id)
-                .then(function(res){
-                    res.should.have.status(404);
-                    done();
-                })
-                
+                agent.get("/api/skus/" + id)
+                    .then(function (res) {
+                        res.should.have.status(404);
+                        done();
+                    })
+
             })
-            
-        })
-        
+
     })
+
 })
 
 after("cleaning skus db", async function () {

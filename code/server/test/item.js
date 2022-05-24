@@ -4,11 +4,23 @@ chai.use(chaiHttp);
 chai.should();
 const app = require("../server.js");
 var agent = chai.request.agent(app);
+const userDaoImport = require('../classes/User/UserDAO.js');
+const userDao = new userDaoImport();
+
+const SKUDaoImport = require('../classes/SKU/SKUDAO.js');
+const SKUDao = new SKUDaoImport();
+
+skus=[]
+users=[]
+before('setting up for testing users', async function(){
+    users.push(await userDao.storeUser({username: "luca5ardito5@ezwh.it", name: "luca2", surname: "ardito2", type: "supplier", password: "password"}))
+    skus.push(await SKUDao.storeSKU({ description: "testitemchaiForGet", weight: 7, volume: 5, notes: "notes sku1", price: 10, availableQuantity: 5 }));
+})
 
 describe("POST /api/item", function () {
     it('Creates a new Item without Error', function (done) {
         agent.post("/api/item")
-            .send({ id: 1234, description: 'newDescription', price: 3, SKUId: 1, supplierId: 5 })
+            .send({ id: 1234, description: 'newDescription', price: 3, SKUId: skus[0], supplierId: users[0] })
             .then(function (res) {
                 res.should.have.status(201);
                 done();
@@ -17,7 +29,7 @@ describe("POST /api/item", function () {
     })
     it('Creates a new Item with status 422', function (done) {
         agent.post("/api/item")
-            .send({ id: 1234, description: 'newDescription', price: 3, SKUId: 1, supplierId: 5 })
+            .send({ id: 1234, description: 'newDescription', price: 3, SKUId: skus[0], supplierId: users[0] })
             .then(function (res) {
                 res.should.have.status(422);
                 done();
@@ -26,7 +38,7 @@ describe("POST /api/item", function () {
     })
     it('Creates a new Item with status 404', function (done) {
         agent.post("/api/item")
-            .send({ id: 12345, description: 'newDescription', price: 3, SKUId: 1234, supplierId: 5 })
+            .send({ id: 12345, description: 'newDescription', price: 3, SKUId: 1234, supplierId: users[0] })
             .then(function (res) {
                 res.should.have.status(404);
                 done();
