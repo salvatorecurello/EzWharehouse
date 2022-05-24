@@ -147,7 +147,6 @@ module.exports = function (app) {
             }
             dayjsdate = dayjsdate.unix();
 
-            //Use UserDao
             let user = await UserDao.getUserFromId(customerID);
 
             if (user == undefined) {
