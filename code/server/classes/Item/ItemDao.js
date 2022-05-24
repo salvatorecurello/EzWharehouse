@@ -71,7 +71,7 @@ class ItemDAO {
 
     getItemByID(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Item WHERE ID = ?';
+            const sql = 'SELECT * FROM Item WHERE ID == ?';
             this.db.all(sql, [id], function(err, rows) {
                 if (err) {
                     reject(err);
