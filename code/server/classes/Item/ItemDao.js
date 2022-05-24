@@ -87,23 +87,6 @@ class ItemDAO {
 
     }
 
-    // searchSupplier(supplierId) {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = 'SELECT * FROM User WHERE ID = ? and type = ?';
-    //         this.db.all(sql, [supplierId, 'supplier'], function(err, rows) {
-    //             if (err) {
-    //                 reject(err);
-    //             }
-    //             if(rows.length==0){
-    //                 resolve(undefined);
-    //             }else{
-    //                 resolve(rows[0]);
-    //             }
-                
-    //         });
-    //     });
-    // }
-
     deleteItem(itemID) {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM Item WHERE ID == ?';

@@ -41,15 +41,11 @@ module.exports = function (app) {
             const supplierID = req.body.supplierId;
             const id = req.body.id;
 
-
-            //Change with UserDao
             let supp = await UserDao.getUserFromId(supplierID);
             if (supp == undefined) {
                 
                 return res.status(422).end();
             }
-
-                
 
             let i = await ItemDao.getItemByID(id);
             if (i != undefined) {
@@ -80,8 +76,6 @@ module.exports = function (app) {
                     return res.status(422).end();
                 }
                     
-
-            //Retrieve with SkuDAO
             const res1 = await SkuDao.getSKUByID(skuid);
 
             if (res1 == undefined) {
