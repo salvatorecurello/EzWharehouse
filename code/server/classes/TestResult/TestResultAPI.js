@@ -54,7 +54,7 @@ module.exports = function (app) {
         try {
             //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             if (req.body.rfid != undefined && req.body.rfid.length == 32 && /^\d+$/.test(req.body.rfid) && req.body.idTestDescriptor != undefined && req.body.Date != undefined && dayjs(req.body.Date).isValid() && req.body.Result != undefined) {
-                if (await SKUItemdao.existingRFID(req.body.rfid) && await TestDescriptordao.getTestDescriptorsByID(req.body.idTestDescriptor) != undefined) {
+                if (await SKUItemdao.getSKUItemByRFID(req.body.rfid)!=null && await TestDescriptordao.getTestDescriptorsByID(req.body.idTestDescriptor) != undefined) {
                     await TestResultdao.storeTestResult(req.body);
                     return res.status(201).end();
                 }
@@ -65,6 +65,7 @@ module.exports = function (app) {
             //    return res.status(401).end();
             //}
         } catch (error) {
+            console.error(error);
             return res.status(500).end();
         }
     });

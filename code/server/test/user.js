@@ -74,7 +74,7 @@ describe("POST /api/managerSession", function(){
 })
 
 describe("POST /api/customerSessions", function(){
-    it('should login manager', function(done){
+    it('should login customer', function(done){
         agent.post("/api/customerSessions")
         .send({username:"user1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -86,7 +86,7 @@ describe("POST /api/customerSessions", function(){
 })
 
 describe("POST /api/supplierSessions", function(){
-    it('should login manager', function(done){
+    it('should login supplier', function(done){
         agent.post("/api/supplierSessions")
         .send({username:"supplier1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -98,7 +98,7 @@ describe("POST /api/supplierSessions", function(){
 })
 
 describe("POST /api/clerkSessions", function(){
-    it('should login manager', function(done){
+    it('should login clerk', function(done){
         agent.post("/api/clerkSessions")
         .send({username:"clerk1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -110,7 +110,7 @@ describe("POST /api/clerkSessions", function(){
 })
 
 describe("POST /api/qualityEmployeeSessions", function(){
-    it('should login manager', function(done){
+    it('should login quality employee', function(done){
         agent.post("/api/qualityEmployeeSessions")
         .send({username:"qualityEmployee1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -122,7 +122,7 @@ describe("POST /api/qualityEmployeeSessions", function(){
 })
 
 describe("POST /api/deliveryEmployeeSessions", function(){
-    it('should login manager', function(done){
+    it('should login delivery employee', function(done){
         agent.post("/api/deliveryEmployeeSessions")
         .send({username:"deliveryEmployee1@ezwh.com", password:"testpassword"})
         .then(function(res){
