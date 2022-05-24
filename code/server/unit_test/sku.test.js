@@ -14,8 +14,13 @@ describe('test skus', () => {
     beforeAll(async () => {
         await PositionDao.storePosition({ positionID: 'aisle8row8col8', aisleID: 'aisle8', row: 'row8', col: 'col8', maxWeight: 1000, maxVolume: 1000, occupiedWeight: 0, occupiedVolume: 0 });
         await PositionDao.storePosition({ positionID: 'aisle9row9col9', aisleID: 'aisle9', row: 'row9', col: 'col9', maxWeight: 2000, maxVolume: 2000, occupiedWeight: 0, occupiedVolume: 0 });
+        await PositionDao.storePosition({ positionID: 'aisle6row6col6', aisleID: 'aisle6', row: 'row6', col: 'col6', maxWeight: 2000, maxVolume: 2000, occupiedWeight: 0, occupiedVolume: 0 });
         skuid0 = await SKUDao.storeSKU({description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity:10});
+        await SKUDao.storeSKU({description: "testSKUforUpdate", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity:10});
         await SKUDao.modifySKUPosition("aisle8row8col8", skuid0);
+        skuid1 = await SKUDao.storeSKU({description: "testSKUforPosition", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity:10});
+        await SKUDao.storeSKU({description: "testSKUforDelete", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity:10});
+        await SKUDao.modifySKUPosition("aisle9row9col9", skuid1);
         await TestDescriptorDao.storeTestDescriptor({name: "testsku", procedureDescription: "description for test", idSKU: skuid0});
         await SKUItemDao.storeSKUItem({RFID:"09876543211234567890123456789014", SKUId:skuid0, DateOfStock:"2021/11/29 12:30"});
     });
@@ -27,10 +32,9 @@ describe('test skus', () => {
     testPositionOccupied('aisle8row8col8'); 
     testexistingSKUItem();
     testexistingTestDescriptor();
-    getTestDescriptorBySKUID();
     testupdateSKU({newDescription: "testupdateSKU", newWeight: 20, newVolume: 20, newNotes: "notes sku update", newPrice: 12, newAvailableQuantity:20});
     testupdatePositionWeightVolume(40, 40, 'aisle8row8col8');
-    testupdateSKUPosition('aisle2row2col2');
+    testupdateSKUPosition('aisle6row6col6');
     testdeleteSKU(); 
 });
 
@@ -122,7 +126,6 @@ function testexistingSKUItem(skuid) {
             }
         }
         expect(sku).not.toBeUndefined();
-        //console.log(sku.id)
         var res = await SKUDao.existingSKUItem(sku.id);
         expect(res).toBeGreaterThanOrEqual(1);
 
@@ -130,10 +133,8 @@ function testexistingSKUItem(skuid) {
 }
 
 
-
-// vedere su SKUDAO se le funzioni existingTestDescriptor() e getTestDescriptorsBySKUID() sono la stessa cosa
 function testexistingTestDescriptor() {
-    test('get testdescriptor from skuid', async () => {
+    test('exist testdescriptor from skuid', async () => {
         const tmp = await SKUDao.getSkus();
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
@@ -149,16 +150,6 @@ function testexistingTestDescriptor() {
     });
 }
 
-// da rivedere
-function getTestDescriptorBySKUID(skuid) {
-    test('get testdescriptor by skuid', async () => {
-        
-        var res = await SKUDao.getTestDescriptorsBySKUID(skuid);
-        expect(res).not.toBeNull();
-        expect(res.SKUID).toStrictEqual(skuid);
-    });
-}
-
 
 function testupdateSKU(newsku) {
     test('update all fields of sku', async () => {
@@ -166,7 +157,7 @@ function testupdateSKU(newsku) {
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
         for(const _sku of tmp){
-            if(_sku.description==="testSKU"){
+            if(_sku.description==="testSKUforUpdate"){
                 sku= _sku;
             }
         }
@@ -225,13 +216,13 @@ function testupdateSKUPosition(position) {
     });
 }
 
-function testdeleteSKU(id) {
+function testdeleteSKU() {
     test('delete sku', async () => {
         const tmp = await SKUDao.getSkus();
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
         for(const _sku of tmp){
-            if(_sku.description==="testupdateSKU"){
+            if(_sku.description==="testSKUforDelete"){
                 sku= _sku;
             }
         }
