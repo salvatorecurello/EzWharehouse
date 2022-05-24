@@ -9,14 +9,28 @@ describe('test SkuItems', () => {
         skuid1 = await SKUDao.storeSKU({ description: 'testSKUitem', weight: 100, volume: 50, notes: "a sku", availableQuantity: 50, price: 11 });
         await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456789015", SKUId:skuid1, DateOfStock:"2021/11/29 12:30"});
         await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456789019", SKUId:skuid1, DateOfStock:"2021/07/29 12:30"});
+
+        // for get array
+        skuid2 = await SKUDao.storeSKU({ description: 'testSKUitemForGetArray', weight: 100, volume: 50, notes: "another sku", availableQuantity: 50, price: 11 });
+        await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456781111", SKUId:skuid2, DateOfStock:"2021/11/29 12:30"});
+        await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456782222", SKUId:skuid2, DateOfStock:"2021/07/29 12:30"});
+
+        // for update
+        skuid3 = await SKUDao.storeSKU({ description: 'testSKUitemForUpdate', weight: 100, volume: 50, notes: "another sku", availableQuantity: 50, price: 11 });
+        await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456783333", SKUId:skuid3, DateOfStock:"2021/11/29 10:30"});
+        
+        // for delete
+        await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456784444", SKUId:skuid2, DateOfStock:"2021/07/29 12:30"});
+
+
     });
     
     testNewSKUItem('12345678901234567890123456789016', '2021/11/29');
     testgetSKUItems();
     testgetSKUItemByRFID('12345678901234567890123456789015');
-    // testupdateSKUItem('12345678901234567890123456789015', {newRFID:'12345678901234567890123456781111', newAvailable:1, newDateOfStock:"2021/09/29 12:30"} )
+    testupdateSKUItem('12345678901234567890123456783333', {newRFID:'12345678901234567890123456785555', newAvailable:1, newDateOfStock:"2021/09/29 12:27"} )
     testgetArraySKUItemByID()
-    testdeleteSKUItem('12345678901234567890123456789019') 
+    testdeleteSKUItem('12345678901234567890123456784444') 
 });
 
 function testNewSKUItem(rfid, DateOfStock) {
@@ -105,7 +119,7 @@ function testgetArraySKUItemByID() {
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
         for(const _sku of tmp){
-            if(_sku.description==="testSKUitem"){
+            if(_sku.description==="testSKUitemForGetArray"){
                 sku= _sku;
             }
         }
