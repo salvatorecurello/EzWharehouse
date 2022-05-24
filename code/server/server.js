@@ -6,10 +6,8 @@ const session = require('express-session');
 // init express
 const app = new express();
 const port = 3001;
-
 const db = new DAO();
-db.createTables().catch((err) => { throw err; });
-db.createTestItems()
+
 app.use(express.json());
 
 app.use(session({
@@ -29,9 +27,18 @@ require('./classes/TestDescriptor/TestDescriptorAPI.js')(app);
 require('./classes/TestResult/TestResultAPI.js')(app);
 require('./classes/User/UserAPI.js')(app);
 
-// activate the server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+
+Promise.all(db.createTables()).then(() => {
+  Promise.all(db.createTestItems()).then(() => {
+    db.createDefaultUsers().then(() => {
+      app.listen(port, () => {
+        console.log(`Server listening at http://localhost:${port}`);
+      });
+    })
+
+  })
 });
+
+
 
 module.exports = app;

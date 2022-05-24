@@ -5,7 +5,6 @@ const SKUDao = new SKUDaoImport();
 const mainDB = require("../db.js");
 
 describe('test testdescriptor', () => {
-    var id;
     beforeAll(async () => {
 
         await SKUDao.storeSKU({description: "testSKU", weight: 100, volume: 100, notes: "notes sku1", price: 10.0, availableQuantity:0});

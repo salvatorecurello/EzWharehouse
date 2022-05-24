@@ -6,7 +6,15 @@ chai.should();
 
 const app = require("../server.js");
 var agent = chai.request.agent(app);
+const userDaoImport = require('../classes/User/UserDAO.js');
+const userDao = new userDaoImport();
 
+
+users=[]
+before('setting up for testing users', async function(){
+    users.push(await userDao.storeUser({username: "luca2ardito2@ezwh.it", name: "luca2", surname: "ardito2", type: "customer", password: "password"}))
+    users.push(await userDao.storeUser({username: "luca3ardito3@ezwh.it", name: "luca2", surname: "ardito2", type: "supplier", password: "password"}))
+})
 
 describe("POST /api/newUser", function(){
     it('should add new user', function(done){
@@ -14,6 +22,7 @@ describe("POST /api/newUser", function(){
         .send({username:"lucaardito@ezwh.it", name:"luca", surname:"ardito", password:"passwordsegreta", type:"customer"})
         .then(function(res){
             res.should.have.status(201);
+            users.push(res.body);
             done();
         })
     })
@@ -74,7 +83,7 @@ describe("POST /api/managerSession", function(){
 })
 
 describe("POST /api/customerSessions", function(){
-    it('should login manager', function(done){
+    it('should login customer', function(done){
         agent.post("/api/customerSessions")
         .send({username:"user1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -86,7 +95,7 @@ describe("POST /api/customerSessions", function(){
 })
 
 describe("POST /api/supplierSessions", function(){
-    it('should login manager', function(done){
+    it('should login supplier', function(done){
         agent.post("/api/supplierSessions")
         .send({username:"supplier1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -98,7 +107,7 @@ describe("POST /api/supplierSessions", function(){
 })
 
 describe("POST /api/clerkSessions", function(){
-    it('should login manager', function(done){
+    it('should login clerk', function(done){
         agent.post("/api/clerkSessions")
         .send({username:"clerk1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -110,7 +119,7 @@ describe("POST /api/clerkSessions", function(){
 })
 
 describe("POST /api/qualityEmployeeSessions", function(){
-    it('should login manager', function(done){
+    it('should login quality employee', function(done){
         agent.post("/api/qualityEmployeeSessions")
         .send({username:"qualityEmployee1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -122,7 +131,7 @@ describe("POST /api/qualityEmployeeSessions", function(){
 })
 
 describe("POST /api/deliveryEmployeeSessions", function(){
-    it('should login manager', function(done){
+    it('should login delivery employee', function(done){
         agent.post("/api/deliveryEmployeeSessions")
         .send({username:"deliveryEmployee1@ezwh.com", password:"testpassword"})
         .then(function(res){
@@ -135,7 +144,7 @@ describe("POST /api/deliveryEmployeeSessions", function(){
 
 describe("GET /api/logout", function(){
     it('should logout user', function(done){
-        agent.get("/api/userinfo")
+        agent.post("/api/logout")
         .then(function(res){
             res.should.have.status(200);
             done();
@@ -145,18 +154,19 @@ describe("GET /api/logout", function(){
 
 describe("PUT /api/users/:username", function(){
     it('should edit user type', function(done){
-        agent.put("/api/users/lucaardito@ezwh.it")
+        agent.put("/api/users/luca2ardito2@ezwh.it")
         .send({oldType:"customer", newType:"supplier"})
         .then(function(res){
             res.should.have.status(200);
             agent.get("/api/users")
             .then(function(res){
+                
                 res.should.have.status(200);
                 emails=[]
                 res.body.map((x)=>{emails.push(x.email)})
-                emails.should.contain("lucaardito@ezwh.it")
+                emails.should.contain("luca2ardito2@ezwh.it")
                 for(let user of res.body){
-                    if(user.email==="lucaardito@ezwh.it"){
+                    if(user.email==="luca2ardito2@ezwh.it"){
                         user.type.should.equal("supplier");
                     }
                 }
@@ -168,7 +178,7 @@ describe("PUT /api/users/:username", function(){
 
 describe("DELETE /api/users/:username/:type", function(){
     it('should delete user', function(done){
-        agent.delete("/api/users/lucaardito@ezwh.it/supplier")
+        agent.delete("/api/users/luca3ardito3@ezwh.it/supplier")
         .then(function(res){
             res.should.have.status(204);
             agent.get("/api/users")
@@ -183,4 +193,10 @@ describe("DELETE /api/users/:username/:type", function(){
             })
         })
     })
+})
+
+after("cleaning user db", async function(){
+    for (user of users){
+        await userDao.deleteUser(user);
+    }
 })

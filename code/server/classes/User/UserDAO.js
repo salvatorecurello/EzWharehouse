@@ -114,7 +114,6 @@ class UserDAO {
             const sql = 'UPDATE User SET TYPE = ? WHERE ID=?';
             this.db.all(sql, [newType, id], (err, rows) => {
                 if (err) {
-                    console.log(err);
                     reject(err);
                     return;
                 }

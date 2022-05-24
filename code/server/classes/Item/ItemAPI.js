@@ -41,15 +41,18 @@ module.exports = function (app) {
             const supplierID = req.body.supplierId;
             const id = req.body.id;
 
-
-            //Change with UserDao
             let supp = await UserDao.getUserFromId(supplierID);
-            if (supp == undefined)
+            if (supp == undefined) {
+                
                 return res.status(422).end();
+            }
 
             let i = await ItemDao.getItemByID(id);
-            if (i != undefined)
+            if (i != undefined) {
+                
                 return res.status(422).end();
+            }
+                
 
             var valid = true;
 
@@ -60,15 +63,19 @@ module.exports = function (app) {
                     valid = false;
             });
 
-            if (!valid)
+            if (!valid) {
+                
                 return res.status(422).end();
+            }
+                
 
             const item = { id: id, description: description, price: price, skuid: skuid, supplierID: supplierID };
             for (x in item)
-                if (x == undefined)
+                if (x == undefined) {
+                    
                     return res.status(422).end();
-
-            //Retrieve with SkuDAO
+                }
+                    
             const res1 = await SkuDao.getSKUByID(skuid);
 
             if (res1 == undefined) {
@@ -113,14 +120,14 @@ module.exports = function (app) {
     app.delete('/api/items/:id', async function (req, res) {
         try {
             const itemId = parseInt(req.params.id);
-            if (itemId == undefined);
-            res.status(422).end();
+            if (itemId == undefined) {
+                return res.status(422).end();
+            }
             const itemSelected = await ItemDao.getItemByID(itemId);
             if (itemSelected == undefined) {
                 return res.status(422).end();
             }
             await ItemDao.deleteItem(itemId);
-
 
             return res.status(204).end();
         } catch (error) {

@@ -4,14 +4,13 @@ const mainDB = require("../db.js");
 
 describe('test Items', () => {
     beforeAll(async () => {
-
         await itemDao.storeItem({id: 1, description: 'description1', price: 2.00, skuid: 1, supplierID: 5});
     });
     testNewItem(2, 'description2', 3.00, 4, 1);
     getItems();
-    // getItemFromId(2);
-    // updateAnItem({id: 1, description: 'new_description', price: 4.00, skuid: 2, supplierID: 1});
-    // getItemsOfSupplier(1);
+    getItemFromId(2);
+    updateAnItem({id: 1, description: 'new_description', price: 4.00, skuid: 2, supplierID: 1});
+    getItemsOfSupplier(1);
     deleteItem(1); 
 });
 
@@ -41,12 +40,12 @@ function getItems() {
     });
 }
 
-/*
+
 function getItemFromId(id) {
     test('get Item from position ID', async () => {
         var res = await itemDao.getItemByID(id);
         expect(res).not.toBeNull();
-        expect(res.ID).toStrictEqual(id);
+        expect(res.id).toStrictEqual(id);
     });
 }
 
@@ -58,18 +57,17 @@ function updateAnItem(item) {
         res_new = await itemDao.getItemByID(item.id);
         expect(res_new).not.toBeNull();
         expect(res_old.ID).toStrictEqual(res_new.ID);
-        expect(res_old.DESCRIPTION).not.toStrictEqual(res_new.DESCRIPTION);
-        expect(res_old.PRICE).not.toStrictEqual(res_new.PRICE)
-        expect(res_old.SKUID).not.toStrictEqual(res_new.SKUID);
-        expect(res_old.SUPPLIERID).not.toStrictEqual(res_new.SUPPLIERID);
+        expect(res_old.description).not.toStrictEqual(res_new.DESCRIPTION);
+        expect(res_old.price).not.toStrictEqual(res_new.PRICE)
+        expect(res_old.SKUId).not.toStrictEqual(res_new.SKUID);
+        expect(res_old.supplierId).not.toStrictEqual(res_new.SUPPLIERID);
 
     });
 }
-*/
+
 function deleteItem(id) {
     test('delete item', async () => {
         let res_old = await itemDao.getItemByID(id);
-        console.log(res_old);
         expect(res_old).not.toBeNull();
         await itemDao.deleteItem(id);
         let res_new = await itemDao.getItemByID(id);

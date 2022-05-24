@@ -78,8 +78,6 @@ module.exports = function (app) {
     app.put('/api/position/:positionID/changeID', async function (req, res) {
         try {
 
-
-
             const old_positionId = req.params.positionID;
             const new_positionID = req.body.newPositionID;
             if (old_positionId == undefined || new_positionID == undefined)

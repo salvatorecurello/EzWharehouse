@@ -21,6 +21,7 @@ describe('test InternalOrders', () => {
     storeProduct({ orderID: 1, SKUId: 3, description: 'description3', price: 40.00, qty: 30 });
     getProducts();
     deleteAnInternalOrder(); 
+    
 });
 
 function testNewInternalOrder(date, customerid) {
@@ -109,6 +110,7 @@ function changeStateOfInternalOrder(state) {
 
 function deleteAnInternalOrder() {
     test('delete internal order', async () => {
+        
         let idx = Math.floor(Math.random() * 2);
         let internalOrders = await IODao.getInternalOrders();
         expect(internalOrders).not.toBeNull();
@@ -120,4 +122,6 @@ function deleteAnInternalOrder() {
         
     });
 }
+
+
 

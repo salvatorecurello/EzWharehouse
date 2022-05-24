@@ -22,19 +22,15 @@ function testNewPosition(id, aisleId, row, col, maxwei, maxvol, occupiedWei, occ
         
         await positionDao.storePosition({positionID: id, aisleID: aisleId, row: row, col: col, maxWeight: maxwei,maxVolume: maxvol,occupiedWeight: occupiedWei, occupiedVolume: occupiedVol});
         
-        var res = await positionDao.getPositions();
-        expect(res.length).toBeGreaterThanOrEqual(1);
-        
         res = await positionDao.getPositionByID(id);
-
-        expect(res.ID).toStrictEqual(id);
-        expect(res.AISLEID).toStrictEqual(aisleId);
-        expect(res.ROW).toStrictEqual(row);
-        expect(res.COL).toStrictEqual(col);
-        expect(res.MAXWEIGHT).toStrictEqual(maxwei);
-        expect(res.MAXVOLUME).toStrictEqual(maxvol);
-        expect(res.OCCUPIEDWEIGHT).toStrictEqual(occupiedWei);
-        expect(res.OCCUPIEDVOLUME).toStrictEqual(occupiedVol);
+        expect(res.positionID).toStrictEqual(id);
+        expect(res.aisleID).toStrictEqual(aisleId);
+        expect(res.row).toStrictEqual(row);
+        expect(res.col).toStrictEqual(col);
+        expect(res.maxWeight).toStrictEqual(maxwei);
+        expect(res.maxVolume).toStrictEqual(maxvol);
+        expect(res.occupiedWeight).toStrictEqual(occupiedWei);
+        expect(res.occupiedVolume).toStrictEqual(occupiedVol);
     });
 }
 
@@ -50,25 +46,25 @@ function getPositionFromId(id) {
     test('get position from id', async () => {
         var res = await positionDao.getPositionByID(id);
         expect(res).not.toBeNull();
-        expect(res.ID).toStrictEqual(id);
+        expect(res.positionID).toStrictEqual(id);
     });
 }
 
 function updateAllPosition(old_positionID, new_position) {
     test('update all fields of position', async () => {
         var res = await positionDao.getPositionByID(old_positionID);
-        var id = res.ID;
+        var id = res.positionID;
         await positionDao.updatePosition(id, new_position);
         res = await positionDao.getPositionByID(new_position.positionID);
         expect(res).not.toBeNull();
-        expect(res.ID).toStrictEqual(new_position.positionID);
-        expect(res.AISLEID).toStrictEqual(new_position.aisleID);
-        expect(res.ROW).toStrictEqual(new_position.row);
-        expect(res.COL).toStrictEqual(new_position.col);
-        expect(res.MAXWEIGHT).toStrictEqual(new_position.maxWeight);
-        expect(res.MAXVOLUME).toStrictEqual(new_position.maxVolume);
-        expect(res.OCCUPIEDWEIGHT).toStrictEqual(new_position.occupiedWeight);
-        expect(res.OCCUPIEDVOLUME).toStrictEqual(new_position.occupiedVolume);
+        expect(res.positionID).toStrictEqual(new_position.positionID);
+        expect(res.aisleID).toStrictEqual(new_position.aisleID);
+        expect(res.row).toStrictEqual(new_position.row);
+        expect(res.col).toStrictEqual(new_position.col);
+        expect(res.maxWeight).toStrictEqual(new_position.maxWeight);
+        expect(res.maxVolume).toStrictEqual(new_position.maxVolume);
+        expect(res.occupiedWeight).toStrictEqual(new_position.occupiedWeight);
+        expect(res.occupiedVolume).toStrictEqual(new_position.occupiedVolume);
 
     });
 }
@@ -82,21 +78,21 @@ function updatePositionID(old_positionID, new_positionID) {
         const aisleID = new_positionID.substring(0, 4);
         const row = new_positionID.substring(4, 8);
         const col = new_positionID.substring(8, 12);
-        expect(res_new.ID).toStrictEqual(new_positionID);
-        expect(res_new.AISLEID).toStrictEqual(aisleID);
-        expect(res_new.ROW).toStrictEqual(row);
-        expect(res_new.COL).toStrictEqual(col);
-        expect(res_old.MAXWEIGHT).toStrictEqual(res_new.MAXWEIGHT);
-        expect(res_old.MAXVOLUME).toStrictEqual(res_new.MAXVOLUME);
-        expect(res_old.OCCUPIEDWEIGHT).toStrictEqual(res_new.OCCUPIEDWEIGHT);
-        expect(res_old.OCCUPIEDVOLUME).toStrictEqual(res_new.OCCUPIEDVOLUME);
+        expect(res_new.positionID).toStrictEqual(new_positionID);
+        expect(res_new.aisleID).toStrictEqual(aisleID);
+        expect(res_new.row).toStrictEqual(row);
+        expect(res_new.col).toStrictEqual(col);
+        expect(res_old.maxWeight).toStrictEqual(res_new.maxWeight);
+        expect(res_old.maxVolume).toStrictEqual(res_new.maxVolume);
+        expect(res_old.occupiedWeight).toStrictEqual(res_new.occupiedWeight);
+        expect(res_old.occupiedVolume).toStrictEqual(res_new.occupiedVolume);
     });
 }
 
 function deletePosition(id) {
     test('delete position', async () => {
         var res = await positionDao.getPositionByID(id);
-        var new_id = res.ID;
+        var new_id = res.positionID;
         await positionDao.deletePosition(new_id);
         var res = await positionDao.getPositionByID(id);
         expect(res).toBeNull();
