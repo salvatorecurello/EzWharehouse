@@ -27,130 +27,134 @@ class DAO {
         return this.createTablesR(sql, 0).then(() => { });
     }
 
-    createTestItems(){
-        return new Promise((resolve, reject) => {
-            const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
-            const sql_Position = 'INSERT or IGNORE INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-            const sql_Items = 'INSERT or IGNORE INTO Item(ID, DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?, ?,?)';
-            const sql_InternalOrders = 'INSERT or IGNORE INTO InternalOrder(ID, ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?, ?)';
+    createTestItems() {
+        let promises = [];
+        const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql_Position = 'INSERT or IGNORE INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql_Items = 'INSERT or IGNORE INTO Item(DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?,?)';
+        const sql_InternalOrders = 'INSERT or IGNORE INTO InternalOrder( ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
 
-            const sql_SKU = 'INSERT or IGNORE INTO Sku(ID, DESCRIPTION, WEIGHT, VOLUME, POSITION, AVAILABLEQUANTITY, PRICE, NOTE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-            const sql_Product = 'INSERT or IGNORE INTO Product(ID, ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql_SKU = 'INSERT or IGNORE INTO Sku(ID, DESCRIPTION, WEIGHT, VOLUME, POSITION, AVAILABLEQUANTITY, PRICE, NOTE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql_Product = 'INSERT or IGNORE INTO Product(ID, ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
 
-            const sql_SkuItem = 'INSERT or IGNORE INTO SKUItem(RFID, SKUID , AVAILABLE, DATEOFSTOCK ) VALUES(?, ?, ?, ?)';
-            const sql_testdescriptor = 'INSERT or IGNORE INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
-            const sql_testResult = 'INSERT or IGNORE INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
+        const sql_SkuItem = 'INSERT or IGNORE INTO SKUItem(RFID, SKUID , AVAILABLE, DATEOFSTOCK ) VALUES(?, ?, ?, ?)';
+        const sql_testdescriptor = 'INSERT or IGNORE INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
+        const sql_testResult = 'INSERT or IGNORE INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
 
-            let skuItems = [];
-            skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix()});
-
-            
-
-            let positions = [];
-            positions.push({ id: 'aisle1row1col1', aisleId: 'aisle1', row: 'row1', col: 'col1', maxwei: 5, maxvol: 10, occupiedWei: 10, occupiedVol: 10 });
-            positions.push({ id: 'aisle2row2col2', aisleId: 'aisle2', row: 'row2', col: 'col2', maxwei: 5, maxvol: 11, occupiedWei: 10, occupiedVol: 20 });
-            positions.push({ id: 'aisle3row3col3', aisleId: 'aisle3', row: 'row3', col: 'col3', maxwei: 3, maxvol: 21, occupiedWei: 15, occupiedVol: 15 });
-            positions.push({ id: 'aisle4row4col4', aisleId: 'aisle4', row: 'row4', col: 'col4', maxwei: 3, maxvol: 34, occupiedWei: 14, occupiedVol: 10 });
-            positions.push({ id: 'aisle5row5col5', aisleId: 'aisle5', row: 'row5', col: 'col5', maxwei: 4, maxvol: 20, occupiedWei: 15, occupiedVol: 20 });
-
-            let items = [];
-            items.push({ id: 1, description: 'description1', price: 2.00, skuid: 1, supplierid: 5 });
-            items.push({ id: 2, description: 'description2', price: 5.00, skuid: 3, supplierid: 2 });
-            items.push({ id: 3, description: 'description3', price: 6.00, skuid: 4, supplierid: 1 });
-            items.push({ id: 4, description: 'description4', price: 1.00, skuid: 2, supplierid: 3 });
-            items.push({ id: 5, description: 'description5', price: 8.00, skuid: 3, supplierid: 2 });
-
-            let ords = [];
-            const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
-            ords.push({ id: 1, issueDate: 'issueDateEx1', state: states['COMPLETED'], customerID: 1 });
-            ords.push({ id: 2, issueDate: 'issueDateEx2', state: states['ACCEPTED'], customerID: 1 });
-            ords.push({ id: 3, issueDate: 'issueDateEx3', state: states['COMPLETED'], customerID: 1 });
-            ords.push({ id: 4, issueDate: 'issueDateEx4', state: states['ACCEPTED'], customerID: 1 });
-            ords.push({ id: 5, issueDate: 'issueDateEx5', state: states['ISSUED'], customerID: 1 });
+        let skuItems = [];
+        skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix() });
+        skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix() });
+        skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix() });
+        skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix() });
+        skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix() });
 
 
-            let skus = [];
-            skus.push({ id: 1, description: 'description1', weight: 10, volume: 10, position: 1, availableQuantity: 10, price: 2.00, note: 'note1' });
-            skus.push({ id: 2, description: 'description2', weight: 20, volume: 5, position: 2, availableQuantity: 20, price: 21.00, note: 'note2' });
-            skus.push({ id: 3, description: 'description3', weight: 5, volume: 5, position: 3, availableQuantity: 15, price: 10.00, note: 'note3' });
-            skus.push({ id: 4, description: 'description4', weight: 10, volume: 6, position: 1, availableQuantity: 10, price: 7.00, note: 'note4' });
-            skus.push({ id: 5, description: 'description5', weight: 20, volume: 7, position: 4, availableQuantity: 15, price: 8.00, note: 'note5' });
 
-            let prods = [];
-            prods.push({ id: 1, orderid: 1, skuid: 1, description: 'description1', price: 50.00, qty: 40 });
-            prods.push({ id: 2, orderid: 2, skuid: 2, description: 'description2', price: 70.00, qty: 50 });
-            prods.push({ id: 3, orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
-            prods.push({ id: 4, orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
-            prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
+        let positions = [];
+        positions.push({ id: 'aisle1row1col1', aisleId: 'aisle1', row: 'row1', col: 'col1', maxwei: 5, maxvol: 10, occupiedWei: 10, occupiedVol: 10 });
+        positions.push({ id: 'aisle2row2col2', aisleId: 'aisle2', row: 'row2', col: 'col2', maxwei: 5, maxvol: 11, occupiedWei: 10, occupiedVol: 20 });
+        positions.push({ id: 'aisle3row3col3', aisleId: 'aisle3', row: 'row3', col: 'col3', maxwei: 3, maxvol: 21, occupiedWei: 15, occupiedVol: 15 });
+        positions.push({ id: 'aisle4row4col4', aisleId: 'aisle4', row: 'row4', col: 'col4', maxwei: 3, maxvol: 34, occupiedWei: 14, occupiedVol: 10 });
+        positions.push({ id: 'aisle5row5col5', aisleId: 'aisle5', row: 'row5', col: 'col5', maxwei: 4, maxvol: 20, occupiedWei: 15, occupiedVol: 20 });
 
-            skuItems.forEach((skuItem) => {
+        let items = [];
+        items.push({ id: 1, description: 'description1', price: 2.00, skuid: 1, supplierid: 5 });
+        items.push({ id: 2, description: 'description2', price: 5.00, skuid: 3, supplierid: 2 });
+        items.push({ id: 3, description: 'description3', price: 6.00, skuid: 4, supplierid: 1 });
+        items.push({ id: 4, description: 'description4', price: 1.00, skuid: 2, supplierid: 3 });
+        items.push({ id: 5, description: 'description5', price: 8.00, skuid: 3, supplierid: 2 });
+
+        let ords = [];
+        const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
+        ords.push({ id: 1, issueDate: 'issueDateEx1', state: states['COMPLETED'], customerID: 1 });
+        ords.push({ id: 2, issueDate: 'issueDateEx2', state: states['ACCEPTED'], customerID: 1 });
+        ords.push({ id: 3, issueDate: 'issueDateEx3', state: states['COMPLETED'], customerID: 1 });
+        ords.push({ id: 4, issueDate: 'issueDateEx4', state: states['ACCEPTED'], customerID: 1 });
+        ords.push({ id: 5, issueDate: 'issueDateEx5', state: states['ISSUED'], customerID: 1 });
+
+
+        let skus = [];
+        skus.push({ id: 1, description: 'description1', weight: 10, volume: 10, position: 1, availableQuantity: 10, price: 2.00, note: 'note1' });
+        skus.push({ id: 2, description: 'description2', weight: 20, volume: 5, position: 2, availableQuantity: 20, price: 21.00, note: 'note2' });
+        skus.push({ id: 3, description: 'description3', weight: 5, volume: 5, position: 3, availableQuantity: 15, price: 10.00, note: 'note3' });
+        skus.push({ id: 4, description: 'description4', weight: 10, volume: 6, position: 1, availableQuantity: 10, price: 7.00, note: 'note4' });
+        skus.push({ id: 5, description: 'description5', weight: 20, volume: 7, position: 4, availableQuantity: 15, price: 8.00, note: 'note5' });
+
+        let prods = [];
+        prods.push({ id: 1, orderid: 1, skuid: 1, description: 'description1', price: 50.00, qty: 40 });
+        prods.push({ id: 2, orderid: 2, skuid: 2, description: 'description2', price: 70.00, qty: 50 });
+        prods.push({ id: 3, orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
+        prods.push({ id: 4, orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
+        prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
+
+        
+        skuItems.forEach((skuItem) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_SkuItem, [skuItem.rfid, skuItem.skuid, skuItem.available, skuItem.dateofstock], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
+            }));
+        });
 
-            users.forEach((user) => {
-                this.db.run(sql_User, [user.id, user.name, user.surname, user.type, user.password, user.email], (err) => {
-                    if (err)
-                        reject(err);
-                    else
-                        resolve();
-                });
-            });
-
-            positions.forEach((pos) => {
+        positions.forEach((pos) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_Position, [pos.id, pos.aisleId, pos.row, pos.col, pos.maxwei, pos.maxvol, pos.occupiedWei, pos.occupiedVol], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
+            }));
+        });
 
-            items.forEach((item) => {
+        items.forEach((item) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_Items, [item.description, item.price, item.skuid, item.supplierid], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
+            }));
+        });
 
-            ords.forEach((ord) => {
+        ords.forEach((ord) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_InternalOrders, [ord.issueDate, ord.state, ord.customerID], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
+            }));
+        });
 
-            skus.forEach((sku) => {
+        skus.forEach((sku) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_SKU, [sku.id, sku.description, sku.weight, sku.volume, sku.position, sku.availableQuantity, sku.price, sku.note], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
+            }));
+        });
 
-            prods.forEach((prod) => {
+        prods.forEach((prod) => {
+            promises.push(new Promise((resolve, reject) => {
                 this.db.run(sql_Product, [prod.orderid, prod.skuid, prod.description, prod.price, prod.qty], (err) => {
                     if (err)
                         reject(err);
                     else
                         resolve();
                 });
-            });
-
+            }));
         });
+        return promises;
+
     }
 
     createTablesR(sql, i) {
@@ -193,9 +197,6 @@ class DAO {
         return this.createTablesR(sql, 0).then(() => {
             return new Promise((resolve, reject) => {
                 const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
-                
-                //const sql_testdescriptor = 'INSERT INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
-                //const sql_testResult = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
 
 
 
