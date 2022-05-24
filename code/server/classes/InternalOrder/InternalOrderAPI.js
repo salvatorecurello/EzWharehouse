@@ -14,7 +14,6 @@ module.exports = function (app) {
         try {
             let internalOrders = await InternalOrderDao.getInternalOrders();
             let products = await InternalOrderDao.getProducts();
-            console.log(products);
 
             let productsToOrder = [];
 
