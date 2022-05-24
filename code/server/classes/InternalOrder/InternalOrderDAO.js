@@ -1,5 +1,4 @@
 const InternalOrder = require('./InternalOrder.js');
-const dayjs = require('dayjs');
 class InternalOrderDAO {
     sqlite = require('sqlite3');
     constructor() {
@@ -8,7 +7,7 @@ class InternalOrderDAO {
         });
     }
 
-    changeState(id, state){
+    changeState(id, state) {
         return new Promise((resolve, reject) => {
             const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELLED': 3, 'COMPLETED': 4 };
             const sql = 'UPDATE InternalOrder SET STATE = ? WHERE ID = ?';
@@ -18,7 +17,7 @@ class InternalOrderDAO {
                 } else {
                     resolve(true);
                 }
-                
+
             });
         });
     }
@@ -26,29 +25,29 @@ class InternalOrderDAO {
     storeInternalOrder(internalOrder) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO InternalOrder(ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
-            
-            this.db.run(sql, [internalOrder.date, 0,internalOrder.customerID], function(err) {
+
+            this.db.run(sql, [internalOrder.date, 0, internalOrder.customerID], function (err) {
                 if (err) {
                     reject(err);
-                } else {
+                } else {
                     resolve(this.lastID);
                 }
-                
+
             });
-            
+
         });
     }
 
     storeProducts(prod) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO Product(ORDERID,SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?)';
-                this.db.run(sql, [prod.orderID, prod.SKUId, prod.description,prod.price,prod.qty], function(err) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(this.lastID);
-                    }
-                });
+            this.db.run(sql, [prod.orderID, prod.SKUId, prod.description, prod.price, prod.qty], function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
         });
     }
 
@@ -62,10 +61,10 @@ class InternalOrderDAO {
                 if (err) {
                     reject(err);
                 } else {
-                    rows.forEach((e) => {products.push({id: e.ID, skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID})});
+                    rows.forEach((e) => { products.push({ id: e.ID, skuid: e.SKUID, description: e.DESCRIPTION, price: e.PRICE, qty: e.QTY, orderID: e.ORDERID, rfid: e.RFID }) });
                     resolve(products);
                 }
-                
+
             });
         });
 
@@ -74,16 +73,16 @@ class InternalOrderDAO {
         return new Promise((resolve, reject) => {
             const sql_internalOrder = 'SELECT * FROM INTERNALORDER O';
             const internalOrders = [];
-            const states = {0 : 'ISSUED', 1: 'ACCEPTED', 2: 'REFUSED', 3: 'CANCELED', 4: 'COMPLETED'};
+            const states = { 0: 'ISSUED', 1: 'ACCEPTED', 2: 'REFUSED', 3: 'CANCELED', 4: 'COMPLETED' };
 
             this.db.all(sql_internalOrder, [], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
-                    rows.forEach((e) => {internalOrders.push({id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID})});
+                    rows.forEach((e) => { internalOrders.push({ id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID }) });
                     resolve(internalOrders);
                 }
-                
+
             });
         });
     }
@@ -91,15 +90,15 @@ class InternalOrderDAO {
     getInternalOrderByID(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM InternalOrder WHERE ID = ?';
-            const states = { 0: 'ISSUED',  1: 'ACCEPTED', 2: 'REFUSED', 3 : 'CANCELED', 4 : 'COMPLETED' };
+            const states = { 0: 'ISSUED', 1: 'ACCEPTED', 2: 'REFUSED', 3: 'CANCELED', 4: 'COMPLETED' };
             this.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
-                if(rows.length==0){
+                if (rows.length == 0) {
                     resolve(undefined);
-                }else{
-                    const internalOrd = new InternalOrder({id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: states[rows[0].STATE], customerID: rows[0].CUSTOMERID, products: []});
+                } else {
+                    const internalOrd = new InternalOrder({ id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: states[rows[0].STATE], customerID: rows[0].CUSTOMERID, products: [] });
                     resolve(internalOrd);
                 }
             });
@@ -117,57 +116,13 @@ class InternalOrderDAO {
                 } else {
                     resolve(InternalOrderId);
                 }
-                
+
 
             });
         });
 
     }
 
-    // searchProductForSkuID(skuId) {
-    //     return new Promise((resolve, reject) => {
-    //     const sql_rfid = 'SELECT RFID FROM SKUItem WHERE SKUID == ?';
-    //         this.db.run(sql_rfid, [skuId], (err, rows) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(rows);
-    //             }
-                
-    //         });
-    //     });
-    // }
-
-    // storeSKUItem(SkuID, RFID) {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = 'INSERT INTO SKUItem (RFID, SKUID, AVAILABLE, DATEOFSTOCK) VALUES(?, ?, ?, ?)';
-    //         this.db.run(sql, [RFID, SkuID, 1, dayjs().unix()], (err) => {
-    //             if (err) {
-    //               reject(err);
-    //             } else {
-    //                 resolve(this.lastID);
-    //             }
-                
-    //         });
-
-    //     });
-    // }
-
-    // getUserByID(id) {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = 'SELECT * FROM user WHERE ID = ? and type = ?';
-    //         this.db.all(sql, [id, 'customer'], (err, rows) => {
-    //             if (err) {
-    //                 reject(err);
-    //             }
-    //             if(rows.length==0){
-    //                 resolve(undefined);
-    //             }else{
-    //                 resolve(true);
-    //             }
-    //         });
-    //     });
-    // }
 }
 
 module.exports = InternalOrderDAO;
