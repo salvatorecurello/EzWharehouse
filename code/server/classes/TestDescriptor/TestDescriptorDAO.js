@@ -11,7 +11,7 @@ class TestDescriptorDAO {
     storeTestDescriptor(data) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO TestDescriptor(NAME, PROCEDURE, SKUID) VALUES(?, ?, ?)';
-            this.db.run(sql, [data.name, data.procedureDescription, data.idSKU], (err) => {
+            this.db.run(sql, [data.name, data.procedureDescription, data.idSKU], function(err){
                 if (err) {
                     reject(err);
                     return;

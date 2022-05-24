@@ -28,12 +28,16 @@ require('./classes/TestResult/TestResultAPI.js')(app);
 require('./classes/User/UserAPI.js')(app);
 
 
-db.createTables().then(async () => {
-  Promise.all(db.createTestItems()).then(async()=>{
-  app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-  });
-})});
+Promise.all(db.createTables()).then(() => {
+  Promise.all(db.createTestItems()).then(() => {
+    db.createDefaultUsers().then(() => {
+      app.listen(port, () => {
+        console.log(`Server listening at http://localhost:${port}`);
+      });
+    })
+
+  })
+});
 
 
 

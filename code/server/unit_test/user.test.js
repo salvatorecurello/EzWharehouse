@@ -2,16 +2,14 @@ const userDaoImport = require('../classes/User/UserDAO.js');
 const userDao = new userDaoImport();
 
 
-beforeAll(async()=>{
-    
-})
+
 
 
 describe('testUser', () => {
     var id;
     beforeAll(async () => {
 
-        await userDao.storeUser({username: "prova", name: "marco", surname: "milani", type: "qualityEmployee", password: "password"});
+        await userDao.storeUser({username: "prova", name: "luca", surname: "ardito2", type: "qualityEmployee", password: "password"});
     });
     
     testNewUser('luca', 'Luca', 'Ardito', 'customer', 'testpassword');

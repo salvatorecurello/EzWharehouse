@@ -174,7 +174,7 @@ class DAO {
     }
     createTables() {
         const sql = [];
-
+        let promises = [];
         sql.push('CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR, SURNAME VARCHAR, TYPE VARCHAR, PASSWORD VARCHAR, EMAIL VARCHAR UNIQUE)');
         sql.push('CREATE TABLE IF NOT EXISTS SKU (ID INTEGER PRIMARY KEY AUTOINCREMENT,DESCRIPTION VARCHAR, WEIGHT INTEGER, VOLUME INTEGER, POSITION VARCHAR, AVAILABLEQUANTITY INTEGER, PRICE FLOAT, NOTE VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS TransportNote (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, KEY VARCHAR, NOTE VARCHAR)');
@@ -192,31 +192,42 @@ class DAO {
         // sql.push('DROP Table InternalOrder');
         // sql.push('DROP Table Product');
         // sql.push('DROP Table SKUItem');
+        sql.forEach((x)=>{
+            promises.push(new Promise((resolve, reject) => {
+                this.db.run(x, [], (err) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve();
+                });
+            }))
+        })
+        
+        return promises
+    }
+
+    createDefaultUsers(){
+        return new Promise((resolve, reject) => {
+            const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
 
 
-        return this.createTablesR(sql, 0).then(() => {
-            return new Promise((resolve, reject) => {
-                const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
+
+            let users = [];
+            const password = crypto.createHash('md5').update('testpassword').digest("hex");
+            users.push({ id: 1, name: 'nome', surname: 'cognome', type: 'customer', password: password, email: 'user1@ezwh.com' });
+            users.push({ id: 2, name: 'nome', surname: 'cognome', type: 'qualityEmployee', password: password, email: 'qualityEmployee1@ezwh.com' });
+            users.push({ id: 3, name: 'nome', surname: 'cognome', type: 'clerk', password: password, email: 'clerk1@ezwh.com' });
+            users.push({ id: 4, name: 'nome', surname: 'cognome', type: 'deliveryEmployee', password: password, email: 'deliveryEmployee1@ezwh.com' });
+            users.push({ id: 5, name: 'nome', surname: 'cognome', type: 'supplier', password: password, email: 'supplier1@ezwh.com' });
+            users.push({ id: 6, name: 'nome', surname: 'cognome', type: 'manager', password: password, email: 'manager1@ezwh.com' });
 
 
-
-                let users = [];
-                const password = crypto.createHash('md5').update('testpassword').digest("hex");
-                users.push({ id: 1, name: 'nome', surname: 'cognome', type: 'customer', password: password, email: 'user1@ezwh.com' });
-                users.push({ id: 2, name: 'nome', surname: 'cognome', type: 'qualityEmployee', password: password, email: 'qualityEmployee1@ezwh.com' });
-                users.push({ id: 3, name: 'nome', surname: 'cognome', type: 'clerk', password: password, email: 'clerk1@ezwh.com' });
-                users.push({ id: 4, name: 'nome', surname: 'cognome', type: 'deliveryEmployee', password: password, email: 'deliveryEmployee1@ezwh.com' });
-                users.push({ id: 5, name: 'nome', surname: 'cognome', type: 'supplier', password: password, email: 'supplier1@ezwh.com' });
-                users.push({ id: 6, name: 'nome', surname: 'cognome', type: 'manager', password: password, email: 'manager1@ezwh.com' });
-
-
-                users.forEach((user) => {
-                    this.db.run(sql_User, [user.id, user.name, user.surname, user.type, user.password, user.email], (err) => {
-                        if (err)
-                            reject(err);
-                        else
-                            resolve();
-                    });
+            users.forEach((user) => {
+                this.db.run(sql_User, [user.id, user.name, user.surname, user.type, user.password, user.email], (err) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve();
                 });
             });
         });
