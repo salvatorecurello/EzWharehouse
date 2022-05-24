@@ -32,7 +32,7 @@ describe("GET /api/skus", function(){
             res.should.have.status(200);
             descriptions=[]
             res.body.map((x)=>{descriptions.push(x.description)})
-            description.should.contain("testmochasku");
+            descriptions.should.contain("testmochasku");
             done();
         })
         
@@ -70,6 +70,7 @@ describe("GET /api/skus/:id", function(){
     })
 })
 
+//non funziona
 describe("PUT /api/sku/:id", function(){
     it('should edit the sku with id', function(done){
         agent.get("/api/skus")
@@ -85,7 +86,7 @@ describe("PUT /api/sku/:id", function(){
                 }
             }
             agent.put("/api/sku/"+t.id)
-            .send({newDescription:"testmochaskuedit", newWeight:100, newVolume: 50, newNotes: "note test edit", newPrice: 20, newAvailableQuantity: 40})
+            .send({newDescription:"testmochaskuedit", newWeight:100, newVolume: 50, newNotes: "notetestedit", newPrice: 20, newAvailableQuantity: 40})
             .then(function(res){
                 res.should.have.status(200);
                 agent.get("/api/sku/"+t.id)
@@ -94,7 +95,7 @@ describe("PUT /api/sku/:id", function(){
                     res.body.description.should.equal("testmochaskuedit");
                     res.body.weight.should.equal(100);
                     res.body.volume.should.equal(50);
-                    res.body.notes.should.equal("note test edit");
+                    res.body.notes.should.equal("notetestedit");
                     res.body.price.should.equal(20);
                     res.body.availableQuantity.should.equal(40);
                     done();

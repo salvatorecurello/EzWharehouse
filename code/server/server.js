@@ -6,9 +6,7 @@ const session = require('express-session');
 // init express
 const app = new express();
 const port = 3001;
-
 const db = new DAO();
-
 
 app.use(express.json());
 

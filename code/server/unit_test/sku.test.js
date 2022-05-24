@@ -23,13 +23,11 @@ describe('test skus', () => {
     testNewSKU('description 1', 10, 20, 'notes new sku', 5, 20);
     testgetSkus();
     testgetSKUByID();
-    testgetTestDescriptorBySKUID(); //non funziona
-    testPositionOccupied('aisle8row8col8'); //non funziona
+    testgetTestDescriptorBySKUID(); 
+    testPositionOccupied('aisle8row8col8'); 
     testexistingSKUItem();
-    
     testexistingTestDescriptor();
     getTestDescriptorBySKUID();
-    
     testupdateSKU({newDescription: "testupdateSKU", newWeight: 20, newVolume: 20, newNotes: "notes sku update", newPrice: 12, newAvailableQuantity:20});
     testupdatePositionWeightVolume(40, 40, 'aisle8row8col8');
     testupdateSKUPosition('aisle2row2col2');
