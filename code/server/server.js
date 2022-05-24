@@ -8,8 +8,8 @@ const app = new express();
 const port = 3001;
 
 const db = new DAO();
-async () => await db.createTables().catch((err) => { throw err; });
-async () => await db.createTestItems()
+
+
 app.use(express.json());
 
 app.use(session({
@@ -29,9 +29,13 @@ require('./classes/TestDescriptor/TestDescriptorAPI.js')(app);
 require('./classes/TestResult/TestResultAPI.js')(app);
 require('./classes/User/UserAPI.js')(app);
 
-// activate the server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+
+db.createTables().then(async () => {await db.createTestItems().then(async()=>{
+  app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+  });
+})});
+
+
 
 module.exports = app;
