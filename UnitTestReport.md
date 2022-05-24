@@ -16,11 +16,578 @@ Version:
 
 # Black Box Unit Tests
 
-    <Define here criteria, predicates and the combination of predicates for each function of each class.
-    Define test cases to cover all equivalence classes and boundary conditions.
-    In the table, report the description of the black box test case and (traceability) the correspondence with the Jest test case writing the 
-    class and method name that contains the test case>
-    <Jest tests  must be in code/server/unit_test  >
+
+## Class SKU
+
+### **Class *SKUDAO* - method *storeSKU***
+
+**Criteria for method *storeSKU*:**
+
+ - Validity object SKU
+ - SKU with unique id in database
+
+**Predicates for method *storeSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Validity object SKU         |   Yes        |
+|          |     No      |
+|  SKU with unique id in database         |   Yes        |
+|         |      No     |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| Validity object SKU | SKU with unique id in database | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidSKU; True)|testNewSKU||
+|Yes|No|Invalid|T2(ValidSKU; False)|||
+|No|Yes|Invalid|T3(NullSKU; False)|||
+|No|No|Invalid|T4(NullSKU; False)|||
+
+### **Class *SKUDAO* - method *getSkus***
+
+**Criteria for method *getSkus*:**
+	
+ - There are Skus in DB
+
+**Predicates for method *getSkus*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| There are Skus in DB         |   Yes        |
+|          |     No      |
+
+
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| There are Skus in DB | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1((); ListSkus)| testgetSkus |
+|No|Invalid|T2((); EmptyList)||
+
+
+### **Class *SKUDAO* - method *getSKUByID***
+
+**Criteria for method *getSKUByID*:**
+
+ - ID is valid
+
+**Predicates for method *getSKUByID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID is valid    |   Yes        |
+|          |     No      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID is valid| Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidID; SKU)|testgetSKUByID|
+|No|Invalid|T2(InvalidID; Null)||
+
+
+### **Class *SKUDAO* - method *getTestDescriptorBySKUID***
+
+**Criteria for method *getTestDescriptorBySKUID*:**
+
+ - There are SkuItems with SKUID in DB
+
+**Predicates for method *getTestDescriptorBySKUID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| SkuItem with SKUID exists in DB         |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| TestResult with SKUITEMID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidSKUITEMID; TestResultList)|testgetTestResultBySKUITEMID|
+|No|Invalid|T2(InvalidSKUITEMID; EmptyList)|
+
+### **Class *SKUDAO* - method *updateSKU***
+
+**Criteria for method *updateSKU*:**
+
+ - New SKU is valid
+ - ID is valid
+
+**Predicates for method *updateSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| New SKU is valid    |   Yes        |
+|          |     No      |
+| ID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| New SKU is valid | ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidSKU; )|testupdateSKU|
+|Yes|No|Invalid|T2(InvalidSKU; )||
+|No|Yes|Invalid|T3(InvalidSKU; )||
+|No|No|Invalid|T4(InvalidSKU; )||
+
+### **Class *SKUDAO* - method *updatePositionWeightVolume***
+
+**Criteria for method *updatePositionWeightVolume*:**
+
+ - Weight and Volume values are valid
+ - Position ID is valid
+
+**Predicates for method *updatePositionWeightVolume*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Weight and Volume values are valid    |   Yes        |
+|          |     No      |
+| Position ID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| W and V values are valid | Position ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidWeightVolume; )|testupdatePositionWeightVolume|
+|Yes|No|Invalid|T2(InvalidWeightVolume; )||
+|No|Yes|Invalid|T3(InvalidWeightVolume; )||
+|No|No|Invalid|T4(InvalidWeightVolume; )||
+
+
+### **Class *SKUDAO* - method *PositionOccupied***
+
+**Criteria for method *PositionOccupied*:**
+
+ - Position ID is valid
+
+**Predicates for method *PositionOccupied*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Position ID is valid    |   Yes        |
+|          |     No      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| Position ID is valid| Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidID; Position)|testPositionOccupied|
+|No|Invalid|T2(InvalidID; Null)||
+
+### **Class *SKUDAO* - method *modifySKUPosition***
+
+**Criteria for method *modifySKUPosition*:**
+
+ - New Position is valid
+ - Sku ID is valid
+
+**Predicates for method *modifySKUPosition*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| New Position is valid    |   Yes        |
+|          |     No      |
+| Sku ID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| New Position is valid | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidPosition; )|testupdateSKUPosition|
+|Yes|No|Invalid|T2(ValidPosition; )||
+|No|Yes|Invalid|T3(InvalidPosition; )||
+|No|No|Invalid|T4(InvalidPosition; )||
+
+
+### **Class *SKUDAO* - method *existingSKUItem***
+
+**Criteria for method *existingSKUItem*:**
+
+ - SkuItem ID is valid
+
+**Predicates for method *existingSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| SkuItem ID is valid    |   Yes        |
+|          |     No      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| SkuItem ID is valid| Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidID; Lenght)|testexistingSKUItem|
+|No|Invalid|T2(InvalidID; Null)||
+
+
+### **Class *SKUDAO* - method *existingTestDescriptor***
+
+**Criteria for method *existingTestDescriptor*:**
+ 
+ - Sku ID is valid
+ - TestDescriptor exist
+
+**Predicates for method *existingTestDescriptor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| TextDescriptor exist    |   Yes        |
+|          |     No      |
+| Sku ID is valid    |   Yes        |
+|          |     No      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| TestDescriptor exist | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidID; Lenght)|testexistingTestDescriptor|
+|Yes|No|Invalid|T2(InvalID; )||
+|No|Yes|Invalid|T3(ValidID; )||
+|No|No|Invalid|T4(InvalidID; )||
+
+### **Class *SKUDAO* - method *deleteSKU***
+
+**Criteria for method *deleteSKU*:**
+
+ - Sku ID is valid
+
+**Predicates for method *deleteSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Sku ID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidID; )|testdeleteSKU|
+|No|Invalid|T2(InvalidID; )||
+
+--------------------------------------------------
+
+## Class SkuItem
+
+### **Class *SKUItemDAO* - method *getSKUItems***
+
+**Criteria for method *getSKUItems*:**
+	
+ - There are SkuItems in DB
+ - Available equal to 1
+ - Sku ID is valid
+
+**Predicates for method *getSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| There are SkuItems in DB related to SKU    |   Yes        |
+|          |     No      |
+| Available equal to 1         |   Yes        |
+|          |     No      |
+| SKU ID is valid        |   Yes        |
+|          |     No      |
+
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|     ??   |      0           |
+|       ???   |         2        |
+
+
+
+**Combination of predicates**:
+
+
+|  There are SkuItems in DB related to SKU    | Available equal to 1 | SKU ID is valid  | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes|Yes|Yes|Valid|T1(ValidID; ListSkuItem)|testgetSKUItems|
+|Yes|Yes|No|Invalid|T2(InvalidID; )||
+|Yes|No|Yes|Invalid|T3(ValidID; )||
+|Yes|No|No|Invalid|T4(InvalidID; )||
+|No|Yes|Yes|Invalid|T5(ValidID; )||
+|No|Yes|No|Invalid|T6(InvalidID; )||
+|No|No|Yes|Invalid|T7(ValidID; )||
+|No|No|No|Invalid|T8(InvalidID; )||
+
+### **Class *SKUItemDAO* - method *getSKUItemByRFID***
+
+**Criteria for method *getSKUItemByRFID*:**
+
+ - RFID is valid
+
+**Predicates for method *getSKUItemByRFID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| RFID is valid    |   Yes        |
+|          |     No      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| RFID is valid| Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidRFID; SKU)|testgetSKUItemByRFID|
+|No|Invalid|T2(InvalidRFID; Null)||
+
+
+### **Class *SKUItemDAO* - method *storeSKUItem***
+
+**Criteria for method *storeSKUItem*:**
+
+ - Validity object SKUItem
+ - SKUItem with unique rfid in database
+ - Sku ID is valid
+
+**Predicates for method *storeSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Validity object SKUItem        |   Yes        |
+|          |     No      |
+|  SKUItem with unique rfid in database         |   Yes        |
+|         |      No     |
+|  Sku ID is valid        |   Yes        |
+|         |      No     |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| Validity object SKUItem  | SKUItem with unique rfid in database| SKU ID is valid  | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes|Yes|Yes|Valid|T1(ValidData; LastID)|testNewSKUItem|
+|Yes|Yes|No|Invalid|T2(InvalidData; )||
+|Yes|No|Yes|Invalid|T3(ValidData; )||
+|Yes|No|No|Invalid|T4(InvalidData; )||
+|No|Yes|Yes|Invalid|T5(InvalidData; )||
+|No|Yes|No|Invalid|T6(InvalidData; )||
+|No|No|Yes|Invalid|T7(InvalidData; )||
+|No|No|No|Invalid|T8(InvalidData; )||
+
+### **Class *SKUItemDAO* - method *updateSKUItem***
+
+**Criteria for method *updateSKUItem*:**
+
+ - New SKUItem is valid
+ - RFID is valid
+
+**Predicates for method *updateSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| New SKUItem is valid    |   Yes        |
+|          |     No      |
+| RFID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| New SKUItem is valid | RFID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Yes|Yes|Valid|T1(ValidSKUItem, ValidRFID;)|testupdateSKUItem|
+|Yes|No|Invalid|T2(ValidSKUItem,InvalidRFID; error)||
+|No|Yes|Invalid|T3(InvalidSKUItem, ValidRFID; error)||
+|No|No|Invalid|T4(InvalidSKUItem, InvalidRFID; error)||
+
+### **Class *SKUItemDAO* - method *deleteSKUItem***
+
+**Criteria for method *deleteSKUItem*:**
+
+ - Skuitem RFID is valid
+
+**Predicates for method *deleteSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Skuitem RFID is valid    |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| Skuitem RFID is valid | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Yes|Valid|T1(ValidRFID; )|testdeleteSKUItem|
+|No|Invalid|T2(InvalidRFID; )||
+
 
 ### **Class *RestockOrderDAO* - method *store***
 **Criteria:**
@@ -634,13 +1201,13 @@ Version:
 | Validity new TestResult | TestResult with rfid exists in DB | TestResult with id exists in DB | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|-------|
 |Yes|Yes|Yes|Valid|T1(ValidData; True)|testupdateTestResult|
-|Yes|Yes|No|Valid|T2(InvalidData; True)||
-|Yes|No|Yes|Valid|T3(InvalidData; True)||
-|Yes|No|No|Valid|T4(InvalidData; True)||
-|No|Yes|Yes|Valid|T5(InvalidData; True)||
-|No|Yes|No|Valid|T6(InvalidData; True)||
-|No|No|Yes|Valid|T7(InvalidData; True)||
-|No|No|No|Valid|T8(InvalidData; True)||
+|Yes|Yes|No|Invalid|T2(InvalidData; )||
+|Yes|No|Yes|Invalid|T3(InvalidData; )||
+|Yes|No|No|Invalid|T4(InvalidData; )||
+|No|Yes|Yes|Invalid|T5(InvalidData; )||
+|No|Yes|No|Invalid|T6(InvalidData; )||
+|No|No|Yes|Invalid|T7(InvalidData; )||
+|No|No|No|Invalid|T8(InvalidData; )||
 
 
 
@@ -1328,16 +1895,20 @@ Version:
 
 ### Test cases definition
     
-    
-    <Report here all the created Jest test cases, and the units/classes under test >
-    <For traceability write the class and method name that contains the test case>
-
 
 | Unit name | Jest test case |
 |--|--|
-|||
-|||
-||||
+|InternalOrder|internalOrder.test.js|
+|Item|item.test.js|
+|Position|position.test.js|
+|RestockOrder||
+|ReturnOrder|returnOrder.test.js|
+|SKU|sku.test.js|
+|SKUItem|skuitem.test.js|
+|TestDescriptor|testdescriptor.test.js|
+|TestResult|testresult.test.js|
+|User|user.test.js|
+
 
 ### Code coverage report
 

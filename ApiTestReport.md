@@ -21,91 +21,131 @@ Version:
 
 # Dependency graph 
 
-     <report the here the dependency graph of the classes in EzWH, using plantuml or other tool>
+```plantuml
+@startuml
+digraph dependencyGraph {
+ InternalOrderAPI -> InternalOrder;
+ UserAPI -> User;
+ SKUItemAPI -> SKUItem;
+ SKUAPI -> SKU;
+ ProductAPI -> Product;
+ ItemAPI -> Item;
+ RestockOrderAPI -> RestockOrder;
+ ReturnOrderAPI -> ReturnOrder;
+ InternalOrder -> User;
+ InternalOrder -> SKUItem;
+ InternalOrder -> SKU;
+ InternalOrder -> Product;
+ Item -> SKU;
+ Item -> User;
+ RestockOrder -> SKU;
+ RestockOrder -> Product;
+ RestockOrder -> SKUItem;
+ RestockOrder -> User;
+ RestockOrder -> TestResult;
+ ReturnOrder -> SKUItem;
+ ReturnOrder -> Product;
+ ReturnOrder -> RestockOrder;
+ ReturnOrder -> TestResult;
+ SKU -> TestDescriptor;
+ SKU -> Position;
+ SKU -> SKUItem;
+ SKUItem -> SKU;
+ TestDescriptor -> SKU;
+ TestResult -> TestDescriptor;
+ TestResult -> SKUItem;
+}
+@enduml
+```
      
 # Integration approach
 
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-    (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
-    <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
-    <One step will  correspond to API testing>
-    
+
+Integration sequence: bottom up
+
+step1: Unit Test of classes
+step2: API classes tested 
+
 
 
 #  Integration Tests
 
-   <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
-     Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here code/server/unit_test
-
 ## Step 1
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
+| Classes  |Jest test cases |
+|--|--|
+|InternalOrder|internalOrder.test.js|
+|Item|item.test.js|
+|Position|position.test.js|
+|RestockOrder||
+|ReturnOrder|returnOrder.test.js|
+|SKU|sku.test.js|
+|SKUItem|skuitem.test.js|
+|TestDescriptor|testdescriptor.test.js|
+|TestResult|testresult.test.js|
+|User|user.test.js|
 
 
 ## Step 2
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-## Step n 
-
-   
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-
-
-# API testing - Scenarios
-
-
-<If needed, define here additional scenarios for the application. Scenarios should be named
- referring the UC in the OfficialRequirements that they detail>
-
-## Scenario UCx.y
-
-| Scenario |  name |
-| ------------- |:-------------:| 
-|  Precondition     |  |
-|  Post condition     |   |
-| Step#        | Description  |
-|  1     |  ... |  
-|  2     |  ... |
-
-
+| Classes  |mocha test cases |
+|--|--|
+|InternalOrderAPI|internalOrder.js|
+|ItemAPI|item.js|
+|PositionAPI|position.js|
+|RestockOrderAPI||
+|ReturnOrderAPI||
+|SKUAPI|sku.js|
+|SKUItemAPI|skuitem.js|
+|TestDescriptorAPI|testdescriptor.js|
+|TestResultAPI|testresult.js|
+|UserAPI|user.js|
 
 # Coverage of Scenarios and FR
 
 
-<Report in the following table the coverage of  scenarios (from official requirements and from above) vs FR. 
-Report also for each of the scenarios the (one or more) API Mocha tests that cover it. >  Mocha test cases should be here code/server/test
-
-
-
-
 | Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
-| ----------- | ------------------------------- | ----------- | 
-|  ..         | FRx                             |             |             
-|  ..         | FRy                             |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
+| ----------- | ------------------------------- | ----------- |        
+| 1.1         | FR2.1                           | "POST /api/sku"            |     
+| 1.2         | FR2.1                           | "PUT /api/sku/:id/position"            |     
+| 1.3         | FR2.1                           | "PUT /api/sku/:id"            |     
+| 2.1         | FR3.1.1  FR3.1.4                | "POST /api/position"            |     
+| 2.2         | FR3.1.1                         | "PUT /api/position/changeID"            |     
+| 2.3         | FR3.1.1  FR3.1.4                | "PUT /api/position"            |     
+| 2.4         | FR3.1.1  FR3.1.4                | "PUT /api/position"            |     
+| 2.5         | FR3.1.2                         | "DELETE /api/position"            |     
+| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3         | "GET /api/suppliers"            |     // Restock Order
+| 3.2         | FR5.1 FR5.2 FR5.5 FR1.3         | "GET /api/suppliers"            |     // Restock Order
+| 4.1         | FR1.1                           | "POST /api/newUser"            |     
+| 4.2         | FR1.1                           | "PUT /api/users/:username"            |     
+| 4.3         | FR1.2                           | "DELETE /api/users/:username/:type"            |     
+| 5.1.1       | FR5.8.1 FR5.8.3 FR5.7           | "POST /api/skuitem"            |     // Restock Order
+| 5.2.1       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order 
+| 5.2.2       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order
+| 5.2.3       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order 
+| 5.3.1       | FR5.8.3 FR3.1.4 FR2.1           | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"         |     // Restock Order 
+| 5.3.2       | FR5.7                           |             |                                                          // Restock Order 
+| 5.3.3       | FR5.8.3 FR3.1.4 FR2.1           | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"            |      // Restock Order 
+| 6.1         | FR5.9 FR5.10 FR6.10             | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid"           |     // Return Order
+| 6.2         |FR5.9 FR5.10 FR6.10 FR3.1.4 FR2.1| "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "PUT /api/position" "PUT /api/sku/:id"         |     // Return Order
+| 7.1         | FR1.5                           | "POST /api/logins"            |     
+| 7.2         | FR1.5                           | "GET /api/logout"            |     
+| 9.1         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |     
+| 9.2         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |     
+| 9.3         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |    
+| 10.1        |FR6.8 FR6.9 FR6.10  FR6.7        | "PUT /api/internalOrders" "GET /api/skus/:id"           |    
+| 11.1        | FR7                             | "POST /api/item"            |    
+| 11.2        | FR7                             | "PUT /api/item"            |    
+| 12.1        | FR3.2.1                         | "POST /api/testDescriptor"            |    
+| 12.2        | FR3.2.2                         | "PUT /api/testDescriptors/:id"            |    
+| 12.3        | FR3.2.3                         | "DELETE /api/testDescriptors/:id"            |    
 
 
 
 # Coverage of Non Functional Requirements
 
 
-<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
-
-
-### 
-
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|                            |           |
+| NFR4                           |  "POST /api/position"         |
+| NFR6                           |  "POST /api/skuitem"          |
+| NFR9                           |  "POST /api/skuitem" "POST /api/internalOrders"         | // Restock Order e Return Order
 

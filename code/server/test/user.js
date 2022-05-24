@@ -69,7 +69,7 @@ describe("GET /api/userinfo", function(){
     })
 })
 
-describe("POST /api/managerSession", function(){
+describe("POST /api/logins", function(){
     it('should login manager', function(done){
         agent.post("/api/managerSessions")
         .send({username:"manager1@ezwh.com", password:"testpassword"})
@@ -80,9 +80,7 @@ describe("POST /api/managerSession", function(){
             done();
         })
     })
-})
 
-describe("POST /api/customerSessions", function(){
     it('should login customer', function(done){
         agent.post("/api/customerSessions")
         .send({username:"user1@ezwh.com", password:"testpassword"})
@@ -92,9 +90,7 @@ describe("POST /api/customerSessions", function(){
             done();
         })
     })
-})
 
-describe("POST /api/supplierSessions", function(){
     it('should login supplier', function(done){
         agent.post("/api/supplierSessions")
         .send({username:"supplier1@ezwh.com", password:"testpassword"})
@@ -104,9 +100,7 @@ describe("POST /api/supplierSessions", function(){
             done();
         })
     })
-})
 
-describe("POST /api/clerkSessions", function(){
     it('should login clerk', function(done){
         agent.post("/api/clerkSessions")
         .send({username:"clerk1@ezwh.com", password:"testpassword"})
@@ -116,9 +110,7 @@ describe("POST /api/clerkSessions", function(){
             done();
         })
     })
-})
 
-describe("POST /api/qualityEmployeeSessions", function(){
     it('should login quality employee', function(done){
         agent.post("/api/qualityEmployeeSessions")
         .send({username:"qualityEmployee1@ezwh.com", password:"testpassword"})
@@ -128,9 +120,7 @@ describe("POST /api/qualityEmployeeSessions", function(){
             done();
         })
     })
-})
 
-describe("POST /api/deliveryEmployeeSessions", function(){
     it('should login delivery employee', function(done){
         agent.post("/api/deliveryEmployeeSessions")
         .send({username:"deliveryEmployee1@ezwh.com", password:"testpassword"})

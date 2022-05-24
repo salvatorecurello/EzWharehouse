@@ -25,15 +25,28 @@ before('setting up for testing testresult', async function () {
     skus.push(await SKUDao.storeSKU({ description: "testSKUtestresult", weight: 100, volume: 100, notes: "notes sku1", price: 10.0, availableQuantity: 0 }))
     testdescriptors.push(await TestDescriptorDao.storeTestDescriptor({ name: "testmochatestdescriptorfortestresult", procedureDescription: "descriptionfortestresult", idSKU: skus[0] }))
     skuitems.push(await SKUItemDao.storeSKUItem({ RFID: "12345678901234567890123456789099", SKUId: skus[0], DateOfStock: "2021/11/29 12:30" }))
+    skuitems.push(await SKUItemDao.storeSKUItem({ RFID: "12345678901234567890123456789098", SKUId: skus[0], DateOfStock: "2021/11/29 12:30" }))
+    skuitems.push(await SKUItemDao.storeSKUItem({ RFID: "12345678901234567890123456789097", SKUId: skus[0], DateOfStock: "2021/11/29 12:30" }))
     testresults.push(await TestResultDao.storeTestResult({ rfid: "12345678901234567890123456789099", idTestDescriptor: testdescriptors[0], Date: "2021/11/29 12:30", Result: true }))
 })
 
 describe("POST /api/skuitems/testResult", function () {
-    it('should add new test result', function (done) {
+    it('should add new positive test result', function (done) {
         skuid = skus[0]
         testdescriptorid = testdescriptors[0]
         agent.post("/api/skuitems/testResult")
-            .send({ rfid: "12345678901234567890123456789099", idTestDescriptor: testdescriptorid, Date: "2022/11/28", Result: true })
+            .send({ rfid: "12345678901234567890123456789098", idTestDescriptor: testdescriptorid, Date: "2022/11/28", Result: true })
+            .then(function (res) {
+                res.should.have.status(201);
+                done();
+            })
+
+    })
+    it('should add new negative test result', function (done) {
+        skuid = skus[0]
+        testdescriptorid = testdescriptors[0]
+        agent.post("/api/skuitems/testResult")
+            .send({ rfid: "12345678901234567890123456789097", idTestDescriptor: testdescriptorid, Date: "2022/11/28", Result: false })
             .then(function (res) {
                 res.should.have.status(201);
                 done();
