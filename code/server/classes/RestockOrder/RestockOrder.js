@@ -43,14 +43,12 @@ class RestockOrder{
             issueDate: this.IssueDate,
             supplierId: this.SupplierId,
             state: RestockOrder.states[this.State],
-            products: this.Products
+            products: this.Products,
+            skuItems: this.SKUItems
         };
 
         if (this.State > 0) {
             data.transportNote = this.TransportNote;
-
-            if (this.State > 1)
-                data.skuItems = this.SKUItemsList;
         }
 
         return data;

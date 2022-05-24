@@ -45,8 +45,6 @@ class ReturnOrderDAO {
 			const sql = 'SELECT DISTINCT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
 
 			this.db.all(sql, [orders[i].restockOrderId], (err, rows) => {
-				let res = [];
-
 				if (err)
 					reject(err);
 				else {

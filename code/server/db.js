@@ -27,7 +27,25 @@ class DAO {
         return this.createTablesR(sql, 0).then(() => { });
     }
 
-    createTestItems(){
+    dropAll() {
+        const sql = [];
+        sql.push("DROP TABLE IF EXISTS User");
+        sql.push("DROP TABLE IF EXISTS SKU");
+        sql.push("DROP TABLE IF EXISTS TransportNote");
+        sql.push("DROP TABLE IF EXISTS InternalOrder");
+        sql.push("DROP TABLE IF EXISTS Product");
+        sql.push("DROP TABLE IF EXISTS Item");
+        sql.push("DROP TABLE IF EXISTS SKUItem");
+        sql.push("DROP TABLE IF EXISTS ReturnOrder");
+        sql.push("DROP TABLE IF EXISTS Position");
+        sql.push("DROP TABLE IF EXISTS TestResult");
+        sql.push("DROP TABLE IF EXISTS TestDescriptor");
+        sql.push("DROP TABLE IF EXISTS RestockOrder");
+        sql.push("DROP TABLE IF EXISTS SKUItemsRestockOrder");
+        return this.createTablesR(sql, 0).then(() => { });
+    }
+
+    createTestItems() {
         return new Promise((resolve, reject) => {
             const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
             const sql_Position = 'INSERT or IGNORE INTO Position(ID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
@@ -42,11 +60,11 @@ class DAO {
             const sql_testResult = 'INSERT INTO TestResult(SKUITEMID, IDTESTDESCRIPTOR, DATE, RESULT) VALUES(?, ?, ?, ?)';
 
             let skuItems = [];
-            skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix()});
-            skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix()});
+            skuItems.push({ rfid: '11111111111111111111111111111111', skuid: 1, available: 20, dateofstock: dayjs('2021/11/28').unix() });
+            skuItems.push({ rfid: '22222222222222222222222222222222', skuid: 2, available: 40, dateofstock: dayjs('2021/11/28').unix() });
+            skuItems.push({ rfid: '33333333333333333333333333333333', skuid: 2, available: 30, dateofstock: dayjs('2021/11/28').unix() });
+            skuItems.push({ rfid: '44444444444444444444444444444444', skuid: 3, available: 25, dateofstock: dayjs('2021/11/28').unix() });
+            skuItems.push({ rfid: '55555555555555555555555555555555', skuid: 1, available: 10, dateofstock: dayjs('2021/11/28').unix() });
 
             let users = [];
             const password = crypto.createHash('md5').update('testpassword').digest("hex");
@@ -189,7 +207,7 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS ReturnOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RETURNDATE INTEGER, RESTOCKORDERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS Position (ID VARCHAR PRIMARY KEY, AISLEID VARCHAR, ROW VARCHAR, COL VARCHAR, MAXWEIGHT INTEGER, MAXVOLUME INTEGER, OCCUPIEDWEIGHT INTEGER, OCCUPIEDVOLUME INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS TestResult (ID INTEGER PRIMARY KEY AUTOINCREMENT, SKUITEMID VARCHAR, IDTESTDESCRIPTOR INTEGER, DATE INTEGER, RESULT INTEGER)');
-        sql.push('CREATE TABLE IF NOT EXISTS TestDescriptor (ID INTEGER PRIMARY KEY, NAME VARCHAR, PROCEDURE VARCHAR, SKUID INTEGER)');
+        sql.push('CREATE TABLE IF NOT EXISTS TestDescriptor (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDURE VARCHAR, SKUID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS RestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUEDATE INTEGER, STATE INTEGER, SUPPLIERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS SKUItemsRestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RESTOCKORDERID INTEGER, SKUITEMID VARCHAR)');
         // sql.push('DROP Table InternalOrder');

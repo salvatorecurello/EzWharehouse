@@ -235,7 +235,7 @@ class RestockOrderDAO {
 		let issueDate = dayjs(order.issueDate);
 		let deliveryDate = dayjs(transportNote.deliveryDate);
 
-		if (order.State < 1 || !deliveryDate || deliveryDate.isBefore(issueDate))
+		if (order.State =! 1 || !deliveryDate || deliveryDate.isBefore(issueDate))
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
