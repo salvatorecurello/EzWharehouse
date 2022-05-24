@@ -8,8 +8,8 @@ const app = new express();
 const port = 3001;
 
 const db = new DAO();
-db.createTables().catch((err) => { throw err; });
-db.createTestItems()
+async () => await db.createTables().catch((err) => { throw err; });
+async () => await db.createTestItems()
 app.use(express.json());
 
 app.use(session({
