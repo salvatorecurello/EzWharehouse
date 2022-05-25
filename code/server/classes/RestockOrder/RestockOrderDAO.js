@@ -109,21 +109,36 @@ class RestockOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT skuId, skuItemId, key, note FROM SKUItemsRestockOrder s, TransportNote t WHERE s.restockOrderId = t.orderId AND restockOrderId = ?;';
+			const sql = 'SELECT key, note FROM TransportNote WHERE orderId = ?;';
 
 			this.db.all(sql, [orders[i].Id], (err, rows) => {
 				if (err)
 					reject(err);
 				else {
 					if (rows != null)
-						rows.forEach((row) => {
-							orders[i].pushSkuItems(row);
-
-							orders[i].setTransportNote(row.KEY, row.NOTE);
-						});
+						rows.forEach((row) =>
+							orders[i].setTransportNote(row.KEY, row.NOTE)
+						);
 
 					resolve();
 				}
+			});
+		}).then(() => {
+			return new Promise((resolve, reject) => {
+				const sql = 'SELECT skuId, skuItemId FROM SKUItemsRestockOrder WHERE restockOrderId = ?;';
+
+				this.db.all(sql, [orders[i].Id], (err, rows) => {
+					if (err)
+						reject(err);
+					else {
+						if (rows != null)
+							rows.forEach((row) =>
+								orders[i].pushSkuItems(row)
+							);
+
+						resolve();
+					}
+				});
 			});
 		}).then(() => this.getDeliveryInfoR(orders, i + 1));
 	}
@@ -176,11 +191,11 @@ class RestockOrderDAO {
 		}).then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
 	}
 	checkSKUItems(order, skuItems) {
-		if (order.State != 2 || skuItems==undefined)
+		if (order.State != 2 || skuItems == undefined)
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
-		
+
 		return this.checkSKUItemsR(order.Id, skuItems, 0);
 	}
 	insertSKUItemsR(orderId, skuItems, i) {
@@ -220,14 +235,14 @@ class RestockOrderDAO {
 		}).then(() => this.insertTransportNoteR(orderId, transportNote, i + 1));
 	}
 	insertTransportNote(order, transportNote) {
-		if (order.State != 1 || transportNote==undefined)
+		if (order.State != 1 || transportNote == undefined)
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
 		let issueDate = dayjs(order.IssueDate);
 		let deliveryDate = dayjs(transportNote.deliveryDate);
 
-		if (!deliveryDate.isValid() || deliveryDate.isBefore(issueDate) || transportNote==undefined)
+		if (!deliveryDate.isValid() || deliveryDate.isBefore(issueDate) || transportNote == undefined)
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
