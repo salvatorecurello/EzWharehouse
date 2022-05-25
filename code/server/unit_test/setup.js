@@ -4,5 +4,5 @@ module.exports = async () => {
     const db = new mainDB();
     await Promise.all(db.createTables());
     await Promise.all(db.deleteAll());
-    Promise.all(db.createDefaultUsers());
+    await Promise.all(db.createDefaultUsers());
 };
