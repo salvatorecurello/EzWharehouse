@@ -7,11 +7,11 @@ const SKUDao = new SKUDaoImport();
 const SKUItemDaoImport = require('../classes/SKUItem/SKUItemDAO.js');
 const SKUItemDao = new SKUItemDaoImport();
 const mainDB = require("../db.js");
-
+const db =new  mainDB();
 describe('testUser', () => {
     var id;
     beforeAll(async () => {
-
+        await Promise.all(db.deleteAll());
         skuid=await SKUDao.storeSKU({description: "testSKUTestDescriptor", weight: 100, volume: 100, notes: "notes sku2", price: 10.0, availableQuantity:0});
         skuitemid=await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456789014", SKUId:skuid, DateOfStock:"2021/11/29 12:30"});
         TestDescriptorDao.storeTestDescriptor({name: "testresulttest", procedureDescription: "description for test", idSKU: skuid});

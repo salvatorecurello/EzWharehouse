@@ -3,10 +3,11 @@ const IODao = new internalOrderDAO();
 const skuDAO = require('../classes/SKUItem/SKUItemDAO');
 const skudao = new skuDAO();
 const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
-
+const mainDB = require("../db.js");
+const db = new mainDB();
 describe('test InternalOrders', () => {
     beforeAll(async () => {
-
+        await Promise.all(db.deleteAll());
         await IODao.storeInternalOrder({date: '2022/04/05 18:40', state: states['ACCEPTED'], customerID: 1 });
         await IODao.storeProducts({ orderID: 1, SKUId: 1, description: 'description1', price: 50.00, qty: 40 });
         await skudao.storeSKUItem({ RFID: 'rfid1', SKUId: 1, DateOfStock: '20/05/22'});

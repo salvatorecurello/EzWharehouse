@@ -3,9 +3,10 @@ const SKUItemDao = new SkuItemDaoImport();
 const SkuDaoImport = require('../classes/SKU/SKUDAO.js');
 const SKUDao = new SkuDaoImport();
 const mainDB = require("../db.js");
-
+const db = new mainDB();
 describe('test SkuItems', () => {
     beforeAll(async () => {
+        await Promise.all(db.deleteAll());
         skuid1 = await SKUDao.storeSKU({ description: 'testSKUitem', weight: 100, volume: 50, notes: "a sku", availableQuantity: 50, price: 11 });
         await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456789015", SKUId:skuid1, DateOfStock:"2021/11/29 12:30"});
         await SKUItemDao.storeSKUItem({RFID:"12345678901234567890123456789019", SKUId:skuid1, DateOfStock:"2021/07/29 12:30"});

@@ -1,9 +1,10 @@
 const itemDaoImport = require('../classes/Item/ItemDao');
 const itemDao = new itemDaoImport();
 const mainDB = require("../db.js");
-
+const db = new mainDB();
 describe('test Items', () => {
     beforeAll(async () => {
+        await Promise.all(db.deleteAll());
         await itemDao.storeItem({id: 1, description: 'description1', price: 2.00, skuid: 1, supplierID: 5});
     });
     testNewItem(2, 'description2', 3.00, 4, 1);

@@ -1,11 +1,11 @@
 const positionDaoImport = require('../classes/Position/PositionDAO.js');
 const positionDao = new positionDaoImport();
 const mainDB = require("../db.js");
-
-
+const db = new mainDB();
 
 describe('test Positions', () => {
     beforeAll(async () => {
+        await Promise.all(db.deleteAll());
         await positionDao.storePosition({ id: 'aisle1row1col1', aisleId: 'aisle1', row: 'row1', col: 'col1', maxwei: 5, maxvol: 10, occupiedWei: 10, occupiedVol: 10 });
     });
     

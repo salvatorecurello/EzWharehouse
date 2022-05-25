@@ -3,13 +3,14 @@ const mainDB = require("../db");
 const db = new mainDB()
 
 describe('test Database', () => {
-    
+    beforeAll(async () => {
+        await Promise.all(db.deleteAll());
+    });
     testCreateTables();
     testCreateDefaultUsers();
     testDeleteAll();
     testCreateItems();
     testCreateTableR();
-    
 });
 
 function testCreateTables() {
@@ -29,8 +30,8 @@ function testCreateDefaultUsers() {
 
 function testCreateTableR() {
     test('Test create table promise', async () => {
-        const sql = "CREATE TABLE example";
-        let a = db.createTablesR(sql, 100000);
+        const sql = ["CREATE TABLE example"];
+        let a = db.createTablesR(sql, 1);
         expect(a).not.equal(null);
     });
 }

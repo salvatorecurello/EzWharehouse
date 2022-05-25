@@ -21,6 +21,8 @@ const RoDAO = new RestockOrderDAO();
 
 describe('test RestockOrder', () => {
 	beforeAll(async () => {
+		await Promise.all(db.deleteAll());
+		await Promise.all(db.createDefaultUsers());
 		let skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 		let suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
 		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });

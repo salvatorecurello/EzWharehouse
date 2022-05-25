@@ -3,10 +3,10 @@ const TestDescriptorDao = new TestDescriptorDaoImport();
 const SKUDaoImport = require('../classes/SKU/SKUDAO.js');
 const SKUDao = new SKUDaoImport();
 const mainDB = require("../db.js");
-
+const db = new mainDB();
 describe('test testdescriptor', () => {
     beforeAll(async () => {
-
+        await Promise.all(db.deleteAll());
         id = await SKUDao.storeSKU({description: "testSKUtestdescriptor", weight: 100, volume: 100, notes: "notes sku1", price: 10.0, availableQuantity:0});
         await TestDescriptorDao.storeTestDescriptor({name: "testDeleteTestDescriptor", procedureDescription: "aaaaaa", idSKU: id});
         await TestDescriptorDao.storeTestDescriptor({name: "testUpdateTestDescriptor", procedureDescription: "aaaaaa", idSKU: id});
