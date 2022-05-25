@@ -23,7 +23,6 @@ const TestResultDAO = require('../classes/TestResult/TestResultDAO');
 const trDAO = new TestResultDAO();
 
 const RestockOrderDAO = require('../classes/RestockOrder/RestockOrderDAO');
-const { states } = require('../classes/RestockOrder/RestockOrder.js');
 const RoDAO = new RestockOrderDAO();
 
 var skuId, suppId, orders = [];
