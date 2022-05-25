@@ -9,7 +9,6 @@ const SKUItemDao = new SKUItemDaoImport();
 const mainDB = require("../db.js");
 const db =new  mainDB();
 describe('testUser', () => {
-    var id;
     beforeAll(async () => {
         await Promise.all(db.deleteAll());
         skuid=await SKUDao.storeSKU({description: "testSKUTestDescriptor", weight: 100, volume: 100, notes: "notes sku2", price: 10.0, availableQuantity:0});

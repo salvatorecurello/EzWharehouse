@@ -15,6 +15,6 @@
   },
   "scripts": {
     "apiTest": "mocha setup-mocha.js test --exit",
-    "test": "jest"
+    "test": "jest --runInBand"
   }
 }
