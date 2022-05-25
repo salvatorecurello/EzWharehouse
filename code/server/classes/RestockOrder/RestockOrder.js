@@ -25,7 +25,7 @@ class RestockOrder{
     pushSkuItems(skuItems){
         this.SKUItems.push({
             SKUId: skuItems.SKUID,
-            rfid: skuItems.RFID
+            rfid: skuItems.SKUITEMID
         });
     }
 

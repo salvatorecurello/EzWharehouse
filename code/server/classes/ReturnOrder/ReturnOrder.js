@@ -4,16 +4,16 @@ class ReturnOrder{
     constructor (data){
         this.Id = data.ID;
         this.ReturnDate = dayjs.unix(data.RETURNDATE).format('YYYY/MM/DD HH:mm');
-        this.ProductsList = [];
+        this.Products = [];
         this.RestockOrderId = data.RESTOCKORDERID;
     }
 
     pushProducts(products){
-        this.ProductsList.push({
+        this.Products.push({
             SKUId: products.SKUID,
             description: products.DESCRIPTION,
             price: products.PRICE,
-            RFID: products.RFID
+            RFID: products.SKUITEMID
         });
     }
 
@@ -21,8 +21,8 @@ class ReturnOrder{
         return {
             id: this.Id,
             returnDate: this.ReturnDate,
-            restockOrderId: this.restockOrderId,
-            products: this.products
+            restockOrderId: this.RestockOrderId,
+            products: this.Products
         }
     }
 }

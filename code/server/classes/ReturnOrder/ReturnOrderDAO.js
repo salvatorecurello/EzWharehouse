@@ -17,12 +17,12 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT COUNT(*) as num FROM SKUItem s, SKUItemsRestockOrder so WHERE s.rfid = so.skuItemId AND orderId = ? AND skuId = ? AND rfid = ?;';
+			const sql = 'SELECT COUNT(*) as num FROM SKUItemsRestockOrder WHERE restockOrderId = ? AND skuId = ? AND skuItemId = ?;';
 
-			this.db.get(sql, [orderId, products[i].SKUId, products[i].rfid], (err, row) => {
+			this.db.get(sql, [orderId, products[i].SKUId, products[i].RFID], (err, row) => {
 				if (err)
 					reject(err);
-				else if (row.NUM == 0)
+				else if (row.num == 0)
 					reject("Wrong data");
 				else
 					resolve();
@@ -42,9 +42,9 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT DISTINCT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
+			const sql = 'SELECT DISTINCT s.skuId, description, price, s.skuItemId FROM Product p, SKUItemsRestockOrder s, TestResult t WHERE p.orderId = s.restockOrderId AND s.skuItemId = t.skuItemId AND result = 0 AND restockOrderId = ?;';
 
-			this.db.all(sql, [orders[i].restockOrderId], (err, rows) => {
+			this.db.all(sql, [orders[i].RestockOrderId], (err, rows) => {
 				if (err)
 					reject(err);
 				else {
@@ -81,12 +81,12 @@ class ReturnOrderDAO {
 			return new Promise((resolve, reject) => {
 				const sql = 'INSERT INTO ReturnOrder(RETURNDATE, RESTOCKORDERID) VALUES(?, ?);';
 				const returnDate = dayjs(data.returnDate);
-				const issueDate = dayjs(res);
+				const issueDate = dayjs.unix(res).format('YYYY/MM/DD HH:mm');
 
-				if (!returnDate || returnDate.isBefore(issueDate))
+				if (!returnDate.isValid() || returnDate.isBefore(issueDate))
 					return reject("Wrong data");
 
-				this.db.run(sql, [returnDate.unix(), data.restockOrderId], (err) => {
+				this.db.run(sql, [returnDate.unix(), data.restockOrderId], function (err) {
 					if (err)
 						reject(err);
 					else
@@ -109,7 +109,7 @@ class ReturnOrderDAO {
 				else {
 					if (rows != null)
 						rows.forEach((row) => {
-							res.push(new ReturnOrder(row.id, row.returndate, row.restockorderid));
+							res.push(new ReturnOrder(row));
 						});
 
 					resolve(res);
@@ -133,33 +133,23 @@ class ReturnOrderDAO {
 				else if (row == null)
 					reject("No match");
 				else
-					resolve(new ReturnOrder(row.id, row.returndate, row.restockOrderId));
+					resolve(new ReturnOrder(row));
 			});
-		}).then((order) => {
-			return new Promise((resolve, reject) => {
-				const sql = 'SELECT skuId, description, price, rfid FROM Product p, SKUItem s, SKUItemsRestockOrder so, TestResult t WHERE p.orderId = so.restockOrderId AND s.rfid = so.skuItemId AND s.rfid = t.skuItemId AND result = 0 AND p.orderId = ?;';
+		}).then((order) => 
+			this.getReturnItemsR([order], 0)
+		).then((res) => {
+			let data = res[0];
+			delete data.id;
 
-				this.db.all(sql, [order.restockOrderId], (err, rows) => {
-					if (err)
-						reject(err);
-					else {
-						if (rows != null)
-							rows.forEach((row) => {
-								order.pushProducts(row);
-							});
-
-						resolve(order.toDict());
-					}
-				});
-			});
+			return data;
 		});
 	}
 
 	//DELETE
-	delete(id) {
+	delete(data) {
 		return new Promise((resolve, reject) => {
 			const sql = 'DELETE FROM ReturnOrder WHERE id = ?;';
-			id = parseInt(id);
+			let id = parseInt(data);
 
 			if (!id)
 				return reject("Wrong data");
@@ -170,7 +160,7 @@ class ReturnOrderDAO {
 				else if (this.changes == 0)
 					reject("No match");
 				else
-					resolve(this.changes);
+					resolve(id);
 			});
 		});
 	}
