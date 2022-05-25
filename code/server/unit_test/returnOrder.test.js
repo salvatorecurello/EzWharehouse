@@ -1,6 +1,3 @@
-const Database = require('../db');
-const db = new Database();
-
 const SKUDAO = require('../classes/SKU/SKUDAO');
 const sDAO = new SKUDAO();
 
@@ -33,30 +30,24 @@ describe('test ReturnOrder', () => {
 		let roId = await roDAO.store(ro);
 		let order = {
 			returnDate: "2021/12/30 09:33",
-			products: [
-				{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }
-			],
+			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
 			restockOrderId: roId
 		};
 
-		await roDAO.setState(roId, 'DELIVERED').then(() => roDAO.setSkuItems(roId, [{ rfid: "12345678901234567890123456789070", SKUId: skuId }]));
+		await roDAO.setState(roId, 'DELIVERED').then(() => roDAO.setSkuItems(roId, [{ rfid: "22345678901234567890123456789017", SKUId: skuId }]));
 
 		await RoDAO.store(order);
 		await RoDAO.store(order);
 		await RoDAO.store(order);
 
-		await siDAO.storeSKUItem({ RFID: "12345678901234567890123456789070", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
-		await trDAO.storeTestResult({ rfid: "12345678901234567890123456789070", idTestDescriptor: tdId, Date: '2021/12/29', Result: 0 });
+		await siDAO.storeSKUItem({ RFID: "22345678901234567890123456789017", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
+		await trDAO.storeTestResult({ rfid: "22345678901234567890123456789017", idTestDescriptor: tdId, Date: '2021/12/29', Result: 0 });
 	});
 
 	testStore();
 	testGetAll();
 	testGet();
 	testDelete();
-
-	afterAll(() => {
-		return db.deleteAll();
-	});
 });
 
 function testStore() {
@@ -73,31 +64,31 @@ function testStore() {
 
 		let order1 = {
 			returnDate: "2021/12/30 09:33",
-			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }],
+			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
 			restockOrderId: roId
 		};
 
 		let order2 = {
 			returnDate: "2021/12/30 09:33",
-			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }],
-			restockOrderId: roId + 10
+			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
+			restockOrderId: -1
 		};
 
 		let order3 = {
 			returnDate: "g",
-			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }],
+			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
 			restockOrderId: roId
 		};
 
 		let order4 = {
 			returnDate: "2021/12/30 09:33",
-			products: [{ SKUId: skuId + 10, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }],
+			products: [{ SKUId: -1, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
 			restockOrderId: roId
 		};
 
 		let order5 = {
 			returnDate: "2021/12/30 09:33",
-			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789018" }],
+			products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789018" }],
 			restockOrderId: roId
 		};
 
@@ -129,7 +120,7 @@ function testStore() {
 
 		expect(res1).toBe(orderId + 1);
 		expect(res2.returnDate).toEqual('2021/12/30 09:33');
-		expect(res2.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }]);
+		expect(res2.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }]);
 		expect(res2.restockOrderId).toEqual(roId);
 		expect(res3).toEqual("No match");
 		expect(res4).toEqual("Wrong data");
@@ -157,7 +148,7 @@ function testGetAll() {
 		expect(res1.length).toBeLessThanOrEqual(5);
 		expect(res2.id).toBeDefined();
 		expect(res2.returnDate).toEqual('2021/12/30 09:33');
-		expect(res2.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }]);
+		expect(res2.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }]);
 		expect(res2.restockOrderId).toEqual(roId);
 	});
 }
@@ -178,7 +169,7 @@ function testGet() {
 			return err;
 		});
 
-		let res2 = await RoDAO.get(orderId + 10).catch((err) => {
+		let res2 = await RoDAO.get(-1).catch((err) => {
 			return err;
 		});
 
@@ -188,7 +179,7 @@ function testGet() {
 
 		expect(res1.id).not.toBeDefined();
 		expect(res1.returnDate).toEqual('2021/12/30 09:33');
-		expect(res1.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "12345678901234567890123456789070" }]);
+		expect(res1.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }]);
 		expect(res1.restockOrderId).toEqual(roId);
 		expect(res2).toEqual("No match");
 		expect(res3).toEqual("Wrong data");
@@ -209,7 +200,7 @@ function testDelete() {
 			return err;
 		});
 
-		let res3 = await RoDAO.delete(orderId + 10).catch((err) => {
+		let res3 = await RoDAO.delete(-1).catch((err) => {
 			return err;
 		});
 
