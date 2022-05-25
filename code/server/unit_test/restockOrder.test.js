@@ -15,7 +15,8 @@ const trDAO = new TestResultDAO();
 
 const RestockOrderDAO = require('../classes/RestockOrder/RestockOrderDAO');
 const RoDAO = new RestockOrderDAO();
-
+const mainDB = require("../db.js");
+const db = new mainDB();
 describe('test RestockOrder', () => {
 	beforeAll(async () => {
 		await Promise.all(db.deleteAll());
