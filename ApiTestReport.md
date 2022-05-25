@@ -119,20 +119,20 @@ Integration sequence: **Bottom Up**
 | 2.3         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                       |
 | 2.4         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                       |
 | 2.5         | FR3.1.2                             | "DELETE /api/position"                                                                                    |
-| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers"                                                                                      | // Restock Order 
-| 3.2         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers"                                                                                      | // Restock Order 
+| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers" "POST /api/restockOrder" "PUT /api/restockOrder/:id/skuItems"                        | 
+| 3.2         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers" "POST /api/restockOrder" "PUT /api/restockOrder/:id/skuItems"                        | 
 | 4.1         | FR1.1                               | "POST /api/newUser"                                                                                       |
 | 4.2         | FR1.1                               | "PUT /api/users/:username"                                                                                |
 | 4.3         | FR1.2                               | "DELETE /api/users/:username/:type"                                                                       |
-| 5.1.1       | FR5.8.1 FR5.8.3 FR5.7               | "POST /api/skuitem"                                                                                       | // Restock Order 
-| 5.2.1       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
-| 5.2.2       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
-| 5.2.3       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
-| 5.3.1       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | // Restock Order 
-| 5.3.2       | FR5.7                               |                                                                                                           | // Restock Order 
-| 5.3.3       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | // Restock Order 
-| 6.1         | FR5.9 FR5.10 FR6.10                 | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid"                                        | // Return Order  
-| 6.2         | FR5.9 FR5.10 FR6.10 FR3.1.4 FR2.1   | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "PUT /api/position" "PUT /api/sku/:id" | // Return Order  
+| 5.1.1       | FR5.8.1 FR5.8.3 FR5.7               | "POST /api/skuitem" "PUT /api/restockOrder/:id"                                                           | 
+| 5.2.1       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem" "PUT /api/restockOrder/:id"                           | 
+| 5.2.2       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem" "PUT /api/restockOrder/:id"                           | 
+| 5.2.3       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem" "PUT /api/restockOrder/:id"                           | 
+| 5.3.1       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | 
+| 5.3.2       | FR5.7                               | "PUT /api/restockOrder/:id"                                                                               | 
+| 5.3.3       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | 
+| 6.1         | FR5.9 FR5.10 FR6.10                 | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "POST /api/returnOrder"                |
+| 6.2         | FR5.9 FR5.10 FR6.10 FR3.1.4 FR2.1   | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "PUT /api/position" "PUT /api/sku/:id" "POST /api/returnOrder"|
 | 7.1         | FR1.5                               | "POST /api/logins"                                                                                        |
 | 7.2         | FR1.5                               | "GET /api/logout"                                                                                         |
 | 9.1         | FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6 | "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"                                   |
@@ -157,6 +157,5 @@ Integration sequence: **Bottom Up**
 | NFR6                       | "POST /api/skuitem" "PUT /api/skuitems/:rfid"                                                                       |
 | NFR7                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
 | NFR8                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
-| NFR9                       | "POST /api/skuitem" "POST /api/internalOrders"                                                                      | // Restock Order e Return Order 
-
+| NFR9                       | "POST /api/skuitem" "POST /api/internalOrders" "POST /api/restockOrder" "POST /api/returnOrder"                     | 
 
