@@ -8,7 +8,15 @@ Version:
 
 - [Dependency graph](#dependency-graph)
 
-- [Integration approach](#integration)
+- [Integration and API Test Report](#integration-and-api-test-report)
+- [Contents](#contents)
+- [Dependency graph](#dependency-graph)
+- [Integration approach](#integration-approach)
+- [Integration Tests](#integration-tests)
+  - [Step 1](#step-1)
+  - [Step 2](#step-2)
+- [Coverage of Scenarios and FR](#coverage-of-scenarios-and-fr)
+- [Coverage of Non Functional Requirements](#coverage-of-non-functional-requirements)
 
 - [Tests](#tests)
 
@@ -70,85 +78,85 @@ Integration sequence: **Bottom Up**
 #  Integration Tests
 
 ## Step 1
-| Classes  |Jest test cases |
-|--|--|
-|InternalOrder|internalOrder.test.js|
-|Item|item.test.js|
-|Position|position.test.js|
-|RestockOrder||
-|ReturnOrder|returnOrder.test.js|
-|SKU|sku.test.js|
-|SKUItem|skuitem.test.js|
-|TestDescriptor|testdescriptor.test.js|
-|TestResult|testresult.test.js|
-|User|user.test.js|
+| Classes        | Jest test cases        |
+| -------------- | ---------------------- |
+| InternalOrder  | internalOrder.test.js  |
+| Item           | item.test.js           |
+| Position       | position.test.js       |
+| RestockOrder   |                        |
+| ReturnOrder    | returnOrder.test.js    |
+| SKU            | sku.test.js            |
+| SKUItem        | skuitem.test.js        |
+| TestDescriptor | testdescriptor.test.js |
+| TestResult     | testresult.test.js     |
+| User           | user.test.js           |
 
 
 ## Step 2
-| Classes  |mocha test cases |
-|--|--|
-|InternalOrderAPI|internalOrder.js|
-|ItemAPI|item.js|
-|PositionAPI|position.js|
-|RestockOrderAPI||
-|ReturnOrderAPI||
-|SKUAPI|sku.js|
-|SKUItemAPI|skuitem.js|
-|TestDescriptorAPI|testdescriptor.js|
-|TestResultAPI|testresult.js|
-|UserAPI|user.js|
+| Classes           | mocha test cases  |
+| ----------------- | ----------------- |
+| InternalOrderAPI  | internalOrder.js  |
+| ItemAPI           | item.js           |
+| PositionAPI       | position.js       |
+| RestockOrderAPI   |                   |
+| ReturnOrderAPI    |                   |
+| SKUAPI            | sku.js            |
+| SKUItemAPI        | skuitem.js        |
+| TestDescriptorAPI | testdescriptor.js |
+| TestResultAPI     | testresult.js     |
+| UserAPI           | user.js           |
 
 # Coverage of Scenarios and FR
 
 
-| Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
-| ----------- | ------------------------------- | ----------- |        
-| 1.1         | FR2.1                           | "POST /api/sku"            |     
-| 1.2         | FR2.1                           | "PUT /api/sku/:id/position"            |     
-| 1.3         | FR2.1                           | "PUT /api/sku/:id"            |     
-| 2.1         | FR3.1.1  FR3.1.4                | "POST /api/position"            |     
-| 2.2         | FR3.1.1                         | "PUT /api/position/changeID"            |     
-| 2.3         | FR3.1.1  FR3.1.4                | "PUT /api/position"            |     
-| 2.4         | FR3.1.1  FR3.1.4                | "PUT /api/position"            |     
-| 2.5         | FR3.1.2                         | "DELETE /api/position"            |     
-| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3         | "GET /api/suppliers"            |     // Restock Order
-| 3.2         | FR5.1 FR5.2 FR5.5 FR1.3         | "GET /api/suppliers"            |     // Restock Order
-| 4.1         | FR1.1                           | "POST /api/newUser"            |     
-| 4.2         | FR1.1                           | "PUT /api/users/:username"            |     
-| 4.3         | FR1.2                           | "DELETE /api/users/:username/:type"            |     
-| 5.1.1       | FR5.8.1 FR5.8.3 FR5.7           | "POST /api/skuitem"            |     // Restock Order
-| 5.2.1       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order 
-| 5.2.2       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order
-| 5.2.3       | FR3.2.1 FR5.7 FR5.8.2           | "POST /api/skuitems/testResult" "POST /api/skuitem"           |    // Restock Order 
-| 5.3.1       | FR5.8.3 FR3.1.4 FR2.1           | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"         |     // Restock Order 
-| 5.3.2       | FR5.7                           |             |                                                          // Restock Order 
-| 5.3.3       | FR5.8.3 FR3.1.4 FR2.1           | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"            |      // Restock Order 
-| 6.1         | FR5.9 FR5.10 FR6.10             | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid"           |     // Return Order
-| 6.2         |FR5.9 FR5.10 FR6.10 FR3.1.4 FR2.1| "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "PUT /api/position" "PUT /api/sku/:id"         |     // Return Order
-| 7.1         | FR1.5                           | "POST /api/logins"            |     
-| 7.2         | FR1.5                           | "GET /api/logout"            |     
-| 9.1         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |     
-| 9.2         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |     
-| 9.3         |FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6| "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"          |    
-| 10.1        |FR6.8 FR6.9 FR6.10  FR6.7        | "PUT /api/internalOrders" "GET /api/skus/:id"           |    
-| 11.1        | FR7                             | "POST /api/item"            |    
-| 11.2        | FR7                             | "PUT /api/item"            |    
-| 12.1        | FR3.2.1                         | "POST /api/testDescriptor"            |    
-| 12.2        | FR3.2.2                         | "PUT /api/testDescriptors/:id"            |    
-| 12.3        | FR3.2.3                         | "DELETE /api/testDescriptors/:id"            |    
+| Scenario ID | Functional Requirements covered     | Mocha  Test(s)                                                                                            |
+| ----------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 1.1         | FR2.1                               | "POST /api/sku"                                                                                           |
+| 1.2         | FR2.1                               | "PUT /api/sku/:id/position"                                                                               |
+| 1.3         | FR2.1                               | "PUT /api/sku/:id"                                                                                        |
+| 2.1         | FR3.1.1  FR3.1.4                    | "POST /api/position"                                                                                      |
+| 2.2         | FR3.1.1                             | "PUT /api/position/changeID"                                                                              |
+| 2.3         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                       |
+| 2.4         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                       |
+| 2.5         | FR3.1.2                             | "DELETE /api/position"                                                                                    |
+| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers"                                                                                      | // Restock Order 
+| 3.2         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers"                                                                                      | // Restock Order 
+| 4.1         | FR1.1                               | "POST /api/newUser"                                                                                       |
+| 4.2         | FR1.1                               | "PUT /api/users/:username"                                                                                |
+| 4.3         | FR1.2                               | "DELETE /api/users/:username/:type"                                                                       |
+| 5.1.1       | FR5.8.1 FR5.8.3 FR5.7               | "POST /api/skuitem"                                                                                       | // Restock Order 
+| 5.2.1       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
+| 5.2.2       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
+| 5.2.3       | FR3.2.1 FR5.7 FR5.8.2               | "POST /api/skuitems/testResult" "POST /api/skuitem"                                                       | // Restock Order 
+| 5.3.1       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | // Restock Order 
+| 5.3.2       | FR5.7                               |                                                                                                           | // Restock Order 
+| 5.3.3       | FR5.8.3 FR3.1.4 FR2.1               | "PUT /api/position" "PUT /api/sku/:id"  "POST /api/skuitem"                                               | // Restock Order 
+| 6.1         | FR5.9 FR5.10 FR6.10                 | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid"                                        | // Return Order  
+| 6.2         | FR5.9 FR5.10 FR6.10 FR3.1.4 FR2.1   | "GET /api/skuitems/:rfid/testResults" "DELETE /api/skuitems/:rfid" "PUT /api/position" "PUT /api/sku/:id" | // Return Order  
+| 7.1         | FR1.5                               | "POST /api/logins"                                                                                        |
+| 7.2         | FR1.5                               | "GET /api/logout"                                                                                         |
+| 9.1         | FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6 | "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"                                   |
+| 9.2         | FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6 | "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"                                   |
+| 9.3         | FR6.1 FR6.2 FR6.3 FR6.4 FR2.1 FR6.6 | "PUT /api/sku/:id" "POST /api/internalOrders" "PUT /api/internalOrders"                                   |
+| 10.1        | FR6.8 FR6.9 FR6.10  FR6.7           | "PUT /api/internalOrders" "GET /api/skus/:id"                                                             |
+| 11.1        | FR7                                 | "POST /api/item"                                                                                          |
+| 11.2        | FR7                                 | "PUT /api/item"                                                                                           |
+| 12.1        | FR3.2.1                             | "POST /api/testDescriptor"                                                                                |
+| 12.2        | FR3.2.2                             | "PUT /api/testDescriptors/:id"                                                                            |
+| 12.3        | FR3.2.3                             | "DELETE /api/testDescriptors/:id"                                                                         |
 
 
 
 # Coverage of Non Functional Requirements
 
 
-| Non Functional Requirement | Test name |
-| -------------------------- | --------- |
-| NFR2                           |  All tests in: internalOrder.js, item.js, position.js, sku.js, skuitem.js, testdescriptor.js, testresult.js, user.js        |
-| NFR4                           |  "POST /api/position"         |
-| NFR6                           |  "POST /api/skuitem" "PUT /api/skuitems/:rfid"         |
-| NFR7                           |  "POST /api/position" PUT "/api/position/:positionID"        |
-| NFR8                           |  "POST /api/position" PUT "/api/position/:positionID"   |
-| NFR9                           |  "POST /api/skuitem" "POST /api/internalOrders"         | // Restock Order e Return Order
+| Non Functional Requirement | Test name                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| NFR2                       | All tests in: internalOrder.js, item.js, position.js, sku.js, skuitem.js, testdescriptor.js, testresult.js, user.js |
+| NFR4                       | "POST /api/position"                                                                                                |
+| NFR6                       | "POST /api/skuitem" "PUT /api/skuitems/:rfid"                                                                       |
+| NFR7                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
+| NFR8                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
+| NFR9                       | "POST /api/skuitem" "POST /api/internalOrders"                                                                      | // Restock Order e Return Order 
 
 
