@@ -89,12 +89,20 @@ describe('GET /api/returnOrders', () => {
 describe('GET /api/returnOrders/:id', () => {
 	it('should get order', function (done) {
 		agent.get('/api/returnOrders/' + orders[1]).then((res) => {
-			res.should.have.status(200);
 
-			res.body.id.should.be.undefined();
+			res.should.have.status(200);
 			res.body.returnDate.should.be.equal('2021/12/30 09:33');
-			res.body.products.should.be.equal([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }]);
-			res.body.restockOrderId.should.be(roId);
+
+			res.body.products.length.should.equal(1);
+			res.body.products[0].SKUId.should.equal(skuId)
+			res.body.products[0].description.should.equal("a product")
+			res.body.products[0].price.should.equal(10.99)
+			res.body.products[0].RFID.should.equal("22345678901234567890123456789017")
+
+
+
+			res.body.restockOrderId.should.equal(roId);
+
 
 			done();
 		});

@@ -105,8 +105,12 @@ describe('PUT /api/restockOrder/:id', () => {
 describe('PUT /api/restockOrder/:id/skuItems', () => {
 	it('should add skuItems to order', function (done) {
 		agent.put('/api/restockOrder/' + orders[2] + '/skuItems').send(
-			[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+			{
+				"skuItems":
+					[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+			}
 		).then((res) => {
+
 			res.should.have.status(200);
 
 			done();
@@ -115,7 +119,10 @@ describe('PUT /api/restockOrder/:id/skuItems', () => {
 
 	it('should not add skuItems to order', function (done) {
 		agent.put('/api/restockOrder/-1/skuItems').send(
-			[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+			{
+				"skuItems":
+					[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+			}
 		).then((res) => {
 			res.should.have.status(404);
 
@@ -134,8 +141,11 @@ describe('PUT /api/restockOrder/:id/skuItems', () => {
 
 describe('PUT /api/restockOrder/:id/transportNote', () => {
 	it('should add transportNote to order', function (done) {
-		agent.put('/api/restokOrder/' + orders[1] + '/transportNote').send(
-			{ deliveryDate: '2021/12/29' }
+		agent.put('/api/restockOrder/' + orders[1] + '/transportNote').send(
+			{
+				"transportNote":
+					{ deliveryDate: '2021/12/29' }
+			}
 		).then((res) => {
 			res.should.have.status(200);
 
@@ -144,8 +154,11 @@ describe('PUT /api/restockOrder/:id/transportNote', () => {
 	});
 
 	it('should not add transportNote to order', function (done) {
-		agent.put('/api/restokOrder/-1/transportNote').send(
-			{ deliveryDate: '2021/12/29' }
+		agent.put('/api/restockOrder/-1/transportNote').send(
+			{
+				"transportNote":
+					{ deliveryDate: '2021/12/29' }
+			}
 		).then((res) => {
 			res.should.have.status(404);
 
@@ -154,7 +167,7 @@ describe('PUT /api/restockOrder/:id/transportNote', () => {
 	});
 
 	it('should not add transportNote to order', function (done) {
-		agent.put('/api/restokOrder/' + orders[1] + '/transportNote').send('g').then((res) => {
+		agent.put('/api/restockOrder/' + orders[1] + '/transportNote').send('g').then((res) => {
 			res.should.have.status(422);
 
 			done();
@@ -177,10 +190,10 @@ describe('GET /api/restockOrders', () => {
 describe('GET /api/restockOrdersIssued', () => {
 	it('should get issued orders', function (done) {
 		agent.get('/api/restockOrdersIssued').then((res) => {
+			
 			res.should.have.status(200);
-
 			res.body.forEach(x => {
-				x.should.equal('ISSUED');
+				x.state.should.equal('ISSUED');
 			});
 
 			done();
@@ -192,13 +205,21 @@ describe('GET /api/restockOrders/:id', () => {
 	it('should get order', function (done) {
 		agent.get('/api/restockOrders/' + orders[4]).then((res) => {
 			res.should.have.status(200);
-
-			res.body.id.should.be.undefined();
+			try{
 			res.body.issueDate.should.be.equal('2021/11/29 09:33');
-			res.body.products.should.be.equal([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }]);
-			res.body.skuItems.should.equal([{ rfid: "23345678901234567890123456789017", SKUId: skuId }]);
+			res.body.products.length.should.be.equal(1);
+			res.body.products[0].SKUId.should.equal(skuId)
+			res.body.products[0].description.should.equal("a product")
+			res.body.products[0].price.should.equal(10.99)
+			res.body.products[0].qty.should.equal(3)
+			res.body.skuItems.length.should.be.equal(1);
+			res.body.skuItems[0].rfid.should.equal("23345678901234567890123456789017")
+			res.body.skuItems[0].SKUId.should.equal(skuId)
 			res.body.state.should.equal('COMPLETEDRETURN');
 			res.body.supplierId.should.be(suppId);
+			} catch (error) {
+        	    console.error(error)
+       		 }
 
 			done();
 		});

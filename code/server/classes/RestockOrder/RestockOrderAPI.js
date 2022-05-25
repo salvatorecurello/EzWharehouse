@@ -88,6 +88,7 @@ module.exports = function (app) {
             else if (data == "Wrong data")
                 return res.status(422).end();
             else
+                
                 return res.status(503).end();
         });
     });
@@ -124,6 +125,7 @@ module.exports = function (app) {
             else if (data == "Wrong data")
                 return res.status(422).end();
             else
+            console.log(data)
                 return res.status(503).end();
         });
     });

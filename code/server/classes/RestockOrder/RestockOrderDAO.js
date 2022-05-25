@@ -176,11 +176,11 @@ class RestockOrderDAO {
 		}).then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
 	}
 	checkSKUItems(order, skuItems) {
-		if (order.State != 2)
+		if (order.State != 2 || skuItems==undefined)
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
-
+		
 		return this.checkSKUItemsR(order.Id, skuItems, 0);
 	}
 	insertSKUItemsR(orderId, skuItems, i) {
@@ -220,10 +220,14 @@ class RestockOrderDAO {
 		}).then(() => this.insertTransportNoteR(orderId, transportNote, i + 1));
 	}
 	insertTransportNote(order, transportNote) {
+		if (order.State != 1 || transportNote==undefined)
+			return new Promise((resolve, reject) => {
+				reject("Wrong data");
+			});
 		let issueDate = dayjs(order.IssueDate);
 		let deliveryDate = dayjs(transportNote.deliveryDate);
 
-		if (order.State != 1 || !deliveryDate.isValid() || deliveryDate.isBefore(issueDate))
+		if (!deliveryDate.isValid() || deliveryDate.isBefore(issueDate) || transportNote==undefined)
 			return new Promise((resolve, reject) => {
 				reject("Wrong data");
 			});
