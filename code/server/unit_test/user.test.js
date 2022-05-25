@@ -54,7 +54,7 @@ function getSuppliers() {
         
         var res = await userDao.getSuppliers();
         for(let user of res){
-            expect(user.type).ToStrictEqual("supplier")
+            expect(user.type).toStrictEqual("supplier")
         }
     });
 }
