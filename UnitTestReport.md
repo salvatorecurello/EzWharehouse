@@ -51,8 +51,8 @@ Version:
 |-------|-------|-------|-------|-------|
 |Yes|Yes|Valid|T1(ValidSKU; True)|testNewSKU||
 |Yes|No|Invalid|T2(ValidSKU; False)|||
-|No|Yes|Invalid|T3(NullSKU; False)|||
-|No|No|Invalid|T4(NullSKU; False)|||
+|No|Yes|Invalid|T3(InvalidSKU; error)|||
+|No|No|Invalid|T4(InvalidSKU; error)|||
 
 ### **Class *SKUDAO* - method *getSkus***
 
@@ -120,7 +120,7 @@ Version:
 | ID is valid| Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
 |Yes|Valid|T1(ValidID; SKU)|testgetSKUByID|
-|No|Invalid|T2(InvalidID; Null)||
+|No|Invalid|T2(InvalidID; error)||
 
 
 ### **Class *SKUDAO* - method *getTestDescriptorBySKUID***
@@ -151,7 +151,7 @@ Version:
 
 | TestDescriptor with SKUID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|Yes|Valid|T1(ValidSKUIID; TestDescriptorList)|testgetTestDescriptorBySKUIID|
+|Yes|Valid|T1(ValidSKUIID; TestDescriptorList)|testgetTestDescriptorBySKUID|
 |No|Invalid|T2(InvalidSKUID; EmptyList)|
 
 ### **Class *SKUDAO* - method *updateSKU***
@@ -326,7 +326,7 @@ Version:
 | SkuItem ID is valid| Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
 |Yes|Valid|T1(ValidID; Lenght)|testexistingSKUItem|
-|No|Invalid|T2(InvalidID; Null)||
+|No|Invalid|T2(InvalidID; error)||
 
 
 ### **Class *SKUDAO* - method *existingTestDescriptor***
@@ -362,9 +362,9 @@ Version:
 | TestDescriptor exist | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
 |Yes|Yes|Valid|T1(ValidID; Lenght)|testexistingTestDescriptor|
-|Yes|No|Invalid|T2(InvalID; )||
+|Yes|No|Invalid|T2(InvalID; error)||
 |No|Yes|Invalid|T3(ValidID; )||
-|No|No|Invalid|T4(InvalidID; )||
+|No|No|Invalid|T4(InvalidID; error)||
 
 ### **Class *SKUDAO* - method *deleteSKU***
 
@@ -550,14 +550,14 @@ Version:
 
 | Validity object SKUItem  | SKUItem with unique rfid in database| SKU ID is valid  | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|-------|
-|Yes|Yes|Yes|Valid|T1(ValidData; LastID)|testNewSKUItem|
-|Yes|Yes|No|Invalid|T2(InvalidData; )||
-|Yes|No|Yes|Invalid|T3(ValidData; )||
-|Yes|No|No|Invalid|T4(InvalidData; )||
-|No|Yes|Yes|Invalid|T5(InvalidData; )||
-|No|Yes|No|Invalid|T6(InvalidData; )||
-|No|No|Yes|Invalid|T7(InvalidData; )||
-|No|No|No|Invalid|T8(InvalidData; )||
+|Yes|Yes|Yes|Valid|T1(ValidData, ValidSKUID; LastID)|testNewSKUItem|
+|Yes|Yes|No|Invalid|T2(InvalidData,  InvalidSKUID; error )||
+|Yes|No|Yes|Invalid|T3(ValidData, ValidSKUID; error )||
+|Yes|No|No|Invalid|T4(ValidData,  InvalidSKUID; error )||
+|No|Yes|Yes|Invalid|T5(InvalidData,  ValidSKUID; error )||
+|No|Yes|No|Invalid|T6(InvalidData,  InvalidSKUID; error)||
+|No|No|Yes|Invalid|T7(InvalidData,  InvalidSKUID; error )||
+|No|No|No|Invalid|T8(InvalidData,  InvalidSKUID; error)||
 
 ### **Class *SKUItemDAO* - method *updateSKUItem***
 
