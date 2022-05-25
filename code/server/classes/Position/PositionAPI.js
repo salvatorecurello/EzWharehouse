@@ -24,7 +24,7 @@ module.exports = function (app) {
             const aisleID = req.body.aisleID;
             const positionID = aisleID + row + col;
 
-            if (row.length != 4 || aisleID.length != 4 || col.length != 4 || positionID != req.body.positionID) {
+            if (row.length != 4 || aisleID.length != 4 || col.length != 4 || positionID != req.body.positionID || maxVolume <0 || maxWeight <0) {
                 return res.status(422).end();
             }
 
@@ -56,6 +56,9 @@ module.exports = function (app) {
             const occupiedWeight = req.body.newOccupiedWeight;
 
             const positionID = aisleID + row + col;
+            if(maxVolume <0 || maxWeight <0 || occupiedVolume <0 || occupiedWeight < 0) {
+                return res.status(422).end();
+            }
             const data = { positionID: positionID, col: col, row: row, maxWeight: maxWeight, maxVolume: maxVolume, aisleID: aisleID, occupiedVolume: occupiedVolume, occupiedWeight: occupiedWeight };
             for (x in data) {
                 if (x == undefined)

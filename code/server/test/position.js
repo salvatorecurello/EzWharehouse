@@ -24,6 +24,15 @@ describe("POST /api/position", function () {
                 done();
             })
     })
+
+    it('Creates a new Position with error 422', function (done) {
+        agent.post("/api/position")
+            .send({ positionID: '234523452345', col: '2345', row: '2345', maxWeight: -20, maxVolume: -20, aisleID: '2345' })
+            .then(function (res) {
+                res.should.have.status(422);
+                done();
+            })
+    })
 });
 
 describe("GET /api/positions", function () {
@@ -54,6 +63,15 @@ describe("PUT /api/position", function () {
                 done();
             })
     })
+    it('Modify a position with error 422 not valid Weigh and Volume', function (done) {
+        agent.put("/api/position/800234543412")
+            .send({ newAisleID: '8002', newCol: '3412', newRow: '3454', newMaxWeight: -2, newMaxVolume: -600, newOccupiedWeight: -200, newOccupiedVolume: -100 })
+            .then(function (res) {
+                res.should.have.status(422);
+                done();
+            })
+    })
+
 })
 
 describe("PUT /api/position/changeID", function () {

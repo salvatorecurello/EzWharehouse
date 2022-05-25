@@ -1,8 +1,8 @@
 # Unit Testing Report
 
-Date:
+Date: 25/05/2022
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -1689,10 +1689,8 @@ Version:
 
 
 **Combination of predicates**:
-
-
 | Validity object InternalOrder | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
+|-------|-------|-------|-------|
 |Yes|Valid|T1(ValidInternalOrder; lastID)|testNewInternalOrder|
 |No|Invalid|T2(InvalidInternalOrder; Error)|"|
 
@@ -1722,7 +1720,7 @@ Version:
 
 
 | Validity object Item | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
+|-------|-------|-------|-------|
 |Yes|Valid|T1(ValidProduct; lastID)|storeProduct|
 |No|Invalid|T2(NullProduct; Error)|"|
 
@@ -1888,6 +1886,168 @@ Version:
 |-------|-------|-------|-------|
 |Yes|Valid|T1(ValidID; ID)|deleteAnInternalOrder|
 |No|Invalid|T2(InvalidID; Null)|"|
+
+--------------------------------------------------
+
+## Class DB
+
+ ### **Class *DB* - method *testCreateTables***
+
+**Criteria for method *testCreateTables*:**
+
+ - List of promises returned  
+
+**Predicates for method *testCreateTables*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| List of promises returned        |   Empty        |
+|          |     Full      |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Full|Valid|T1((); FullList)|testCreateTables|
+|Empty|Invalid|T2((); EmptyList)|"|
+
+### **Class *DB* - method *testCreateDefaultUsers***
+
+**Criteria for method *testCreateDefaultUsers*:**
+
+ - List of promises returned  
+
+**Predicates for method *testCreateDefaultUsers*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| List of promises returned           |   Empty        |
+|          |     Full      |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Full|Valid|T1((); FullList)|testCreateDefaultUsers|
+|Empty|Invalid|T2((); EmptyList)|"|
+
+
+
+ ### **Class *DB* - method *testCreateTableR***
+
+**Criteria for method *testCreateTableR*:**
+
+ - List of promises returned
+ - Identifier is unique
+
+**Predicates for method *testCreateTableR*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| List of promises returned        |   Empty        |
+|          |     Full      |
+| Identifier is unique     |   Yes        |
+|          |     No      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| List of promises returned |Identifier is unique | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|Full|Yes|Valid|T1((); FullList)|testCreateTableR|
+|Full|No|Invalid|T2((); EmptyList)|"|
+|Empty|Yes|Invalid|T3((); EmptyList)|"|
+|Empty|No|Invalid|T4((); EmptyList)|"|
+
+### **Class *DB* - method *testCreateItems***
+
+**Criteria for method *testCreateItems*:**
+
+ - List of promises returned
+
+**Predicates for method *testCreateItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| List of promises returned       |   Empty        |
+|          |     Full      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Full|Valid|T1((); FullList)|testCreateItems|
+|Empty|Invalid|T2((); EmptyList)|"|
+
+ ### **Class *DB* - method *testDeleteAll***
+
+**Criteria for method *testDeleteAll*:**
+
+ - List of promises returned
+
+**Predicates for method *testDeleteAll*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| List of promises returned         |   Empty        |
+|          |     Full      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|Full|Valid|T1((); FullList)|testDeleteAll|
+|Empty|Invalid|T2((); EmptyList)|"|
 
 --------------------------------------------------
 

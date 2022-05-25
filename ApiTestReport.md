@@ -6,7 +6,7 @@ Version:
 
 # Contents
 
-- [Dependency graph](#dependency graph)
+- [Dependency graph](#dependency-graph)
 
 - [Integration approach](#integration)
 
@@ -60,11 +60,10 @@ digraph dependencyGraph {
      
 # Integration approach
 
+Integration sequence: **Bottom Up**
 
-Integration sequence: bottom up
-
-step1: Unit Test of classes
-step2: API classes tested 
+* **Step 1**: Unit Test of classes
+* **Step 2**: API classes tested 
 
 
 
@@ -145,7 +144,11 @@ step2: API classes tested
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
+| NFR2                           |  All tests in: internalOrder.js, item.js, position.js, sku.js, skuitem.js, testdescriptor.js, testresult.js, user.js        |
 | NFR4                           |  "POST /api/position"         |
-| NFR6                           |  "POST /api/skuitem"          |
+| NFR6                           |  "POST /api/skuitem" "PUT /api/skuitems/:rfid"         |
+| NFR7                           |  "POST /api/position" PUT "/api/position/:positionID"        |
+| NFR8                           |  "POST /api/position" PUT "/api/position/:positionID"   |
 | NFR9                           |  "POST /api/skuitem" "POST /api/internalOrders"         | // Restock Order e Return Order
+
 

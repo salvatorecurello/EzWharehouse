@@ -1,4 +1,6 @@
 const InternalOrder = require('./InternalOrder.js');
+const dayJS = require("dayjs");
+
 class InternalOrderDAO {
     sqlite = require('sqlite3');
     constructor() {
@@ -29,7 +31,7 @@ class InternalOrderDAO {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO InternalOrder(ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
 
-            this.db.run(sql, [internalOrder.date, 0, internalOrder.customerID], function (err) {
+            this.db.run(sql, [dayJS(internalOrder.date).format('YYYY/MM/DD HH:mm'), 0, internalOrder.customerID], function (err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -82,7 +84,7 @@ class InternalOrderDAO {
                 if (err) {
                     reject(err);
                 } else {
-                    rows.forEach((e) => { internalOrders.push({ id: e.ID, issueDate: e.ISSUEDATE, state: states[e.STATE], customerID: e.CUSTOMERID }) });
+                    rows.forEach((e) => { internalOrders.push({ id: e.ID, issueDate: dayJS(e.ISSUEDATE).format('YYYY/MM/DD HH:mm'), state: states[e.STATE], customerID: e.CUSTOMERID }) });
                     resolve(internalOrders);
                 }
 
@@ -101,7 +103,7 @@ class InternalOrderDAO {
                 if (rows.length == 0) {
                     resolve(undefined);
                 } else {
-                    const internalOrd = new InternalOrder({ id: rows[0].ID, issueDate: rows[0].ISSUEDATE, state: states[rows[0].STATE], customerID: rows[0].CUSTOMERID, products: [] });
+                    const internalOrd = new InternalOrder({ id: rows[0].ID, issueDate: dayJS(rows[0].ISSUEDATE).format('YYYY/MM/DD HH:mm'), state: states[rows[0].STATE], customerID: rows[0].CUSTOMERID, products: [] });
                     resolve(internalOrd);
                 }
             });

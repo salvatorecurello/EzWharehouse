@@ -2,19 +2,18 @@ const internalOrderDAO = require('../classes/InternalOrder/InternalOrderDAO');
 const IODao = new internalOrderDAO();
 const skuDAO = require('../classes/SKUItem/SKUItemDAO');
 const skudao = new skuDAO();
-const mainDB = require("../db.js");
 const states = { 'ISSUED': 0, 'ACCEPTED': 1, 'REFUSED': 2, 'CANCELED': 3, 'COMPLETED': 4 };
 
 describe('test InternalOrders', () => {
     beforeAll(async () => {
 
-        await IODao.storeInternalOrder({date: '22/04/2022 18:40', state: states['ACCEPTED'], customerID: 1 });
+        await IODao.storeInternalOrder({date: '2022/04/05 18:40', state: states['ACCEPTED'], customerID: 1 });
         await IODao.storeProducts({ orderID: 1, SKUId: 1, description: 'description1', price: 50.00, qty: 40 });
         await skudao.storeSKUItem({ RFID: 'rfid1', SKUId: 1, DateOfStock: '20/05/22'});
         await skudao.storeSKUItem({ RFID: 'rfid5', SKUId: 3, DateOfStock: '20/05/22'});
         
     });
-    testNewInternalOrder('22/05/2023 18:40', 1);
+    testNewInternalOrder('2023/05/22 18:00', 1);
     getInternalOrders();
     changeStateOfInternalOrder('COMPLETED');
     getItemFromInternalOrderFromID();
@@ -25,7 +24,7 @@ describe('test InternalOrders', () => {
 });
 
 function testNewInternalOrder(date, customerid) {
-    test('create new Item', async () => {
+    test('create new Internal Order', async () => {
         
         let id = await IODao.storeInternalOrder({date: date, state: states['ISSUED'], customerID: customerid});
         let res = await IODao.getInternalOrders();
@@ -49,7 +48,7 @@ function getInternalOrders() {
 }
 
 function getItemFromInternalOrderFromID() {
-    test('get InternalOrdrder from  ID', async () => {
+    test('get InternalOrder from  ID', async () => {
         
         let idx = Math.floor(Math.random() * 2);
         let internalOrders = await IODao.getInternalOrders();

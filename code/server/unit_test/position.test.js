@@ -21,7 +21,6 @@ function testNewPosition(id, aisleId, row, col, maxwei, maxvol, occupiedWei, occ
     test('create new Position', async () => {
         
         await positionDao.storePosition({positionID: id, aisleID: aisleId, row: row, col: col, maxWeight: maxwei,maxVolume: maxvol,occupiedWeight: occupiedWei, occupiedVolume: occupiedVol});
-        
         res = await positionDao.getPositionByID(id);
         expect(res.positionID).toStrictEqual(id);
         expect(res.aisleID).toStrictEqual(aisleId);
