@@ -1,6 +1,3 @@
-const Database = require('../db');
-const db = new Database();
-
 const SKUDAO = require('../classes/SKU/SKUDAO');
 const sDAO = new SKUDAO();
 
@@ -22,11 +19,11 @@ const roDAO = new RestockOrderDAO();
 const ReturnOrderDAO = require('../classes/ReturnOrder/ReturnOrderDAO');
 const RoDAO = new ReturnOrderDAO();
 
-describe('test RestockOrder', () => {
+describe('test ReturnOrder', () => {
 	beforeAll(async () => {
-		let skuId = await sDAO.storeSKU({ description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
-		let suppId = await uDAO.storeUser({ username: "test", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
-		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttest", procedureDescription: "description for test", idSKU: skuId });
+		let skuId = await sDAO.storeSKU({ description: "testSKUreturnOrder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
+		let suppId = await uDAO.storeUser({ username: "provareturnorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
+		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestreturnorder", procedureDescription: "description for test", idSKU: skuId });
 		let ro = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
 		let roId = await roDAO.store(ro);
 		let order = {

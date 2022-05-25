@@ -1,6 +1,3 @@
-const Database = require('../db');
-const db = new Database();
-
 const SKUDAO = require('../classes/SKU/SKUDAO');
 const sDAO = new SKUDAO();
 
@@ -21,9 +18,9 @@ const RoDAO = new RestockOrderDAO();
 
 describe('test RestockOrder', () => {
 	beforeAll(async () => {
-		let skuId = await sDAO.storeSKU({ description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
-		let suppId = await uDAO.storeUser({ username: "test", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
-		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttest", procedureDescription: "description for test", idSKU: skuId });
+		let skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
+		let suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
+		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });
 		let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
 
 		await RoDAO.store(order);
@@ -68,7 +65,7 @@ function testStore() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('test').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {
@@ -297,7 +294,7 @@ function testGetAll() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('test').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 
@@ -324,7 +321,7 @@ function testGetIssued() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('test').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 
@@ -351,7 +348,7 @@ function testGet() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('test').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {

@@ -1,4 +1,3 @@
-const { expect } = require("chai");
 const mainDB = require("../db");
 const db = new mainDB()
 
