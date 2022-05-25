@@ -627,25 +627,297 @@ Version: 1.0
 | No                    | Invalid         | T2(InvalidRFID; error )      |                   |
 
 
+--------------------------------------------------
+## Class RestockOrder
+
 ### **Class *RestockOrderDAO* - method *store***
 **Criteria:**
-
- - Table *RestockOrder* exists
- - *issueDate* is a valid date
- - *products* is a list of valid products
+ - Validity of object Order
  - *supplierId* is the id of a user of type = 'supplier'
 
 **Predicates:**
-| Criteria | Predicate |
-| -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
+|       Criteria        | Predicate |
+| --------------------- | --------- |
+| Validity of object Order | Yes |
+|                          | No |
+| *supplierId* is the id of a user of type = 'supplier' | Yes |
+|                                                       | No |
 
 **Boundaries:**
 
 **Combination of predicates:**
+| Validity of object Order | *supplierId* is the id of a user of type = 'supplier' | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------ | ----------------------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                      | Yes                                                   | Valid           | T1(ValidOrder; True)         | testStore      |
+| Yes                      | No                                                    | Invalid         | T2(ValidOrder; False)        | testStore      |
+| No                       | Yes                                                   | Invalid         | T3(NullOrder; False)         | testStore      |
+| No                       | No                                                    | Invalid         | T4(NullOrder; False)         | testStore      |
+
+
+
+### **Class *RestockOrderDAO* - method *setState***
+**Criteria:**
+ - *orderId* refers to an existing Order
+ - Validity of *newState*
+
+**Predicates:**
+|       Criteria        | Predicate |
+| --------------------- | --------- |
+| *orderId* refers to an existing Order | Yes |
+|                                       | No |
+| Validity of *newState* | Yes |
+|                        | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order | Validity of *newState* | Valid / Invalid | Description of the test case     | Jest test case |
+| ------------------------------------- | ---------------------- | --------------- | -------------------------------- | -------------- |
+| Yes                                   | Yes                    | Valid           | T1(ValidOrder, ValidState; True) | testSetState   |
+| Yes                                   | No                     | Invalid         | T2(ValidOrder, NullState; False) | testSetState   |
+| No                                    | Yes                    | Invalid         | T3(NullOrder, ValidState; False) | testSetState   |
+| No                                    | No                     | Invalid         | T4(NullOrder, NullState; False)  | testSetState   |
+
+
+
+### **Class *RestockOrderDAO* - method *setSkuItems***
+**Criteria:**
+ - *orderId* refers to a delivered Order
+ - Validity of *skuItems*
+
+**Predicates:**
+|       Criteria        | Predicate |
+| --------------------- | --------- |
+| *orderId* refers to a delivered Order | Yes |
+|                                       | No |
+| Validity of *skuItems* | Yes |
+|                        | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to a delivered Order | Validity of *skuItems* | Valid / Invalid | Description of the test case     | Jest test case    |
+| ------------------------------------- | ---------------------- | --------------- | -------------------------------- | ----------------- |
+| Yes                                   | Yes                    | Valid           | T1(ValidOrder, ValidItems; True) | testSetSkuItems   |
+| Yes                                   | No                     | Invalid         | T2(ValidOrder, NullItems; False) | testSetSkuItems   |
+| No                                    | Yes                    | Invalid         | T3(NullOrder, ValidItems; False) | testSetSkuItems   |
+| No                                    | No                     | Invalid         | T4(NullOrder, NullItems; False)  | testSetSkuItems   |
+
+
+
+### **Class *RestockOrderDAO* - method *setTransportNote***
+**Criteria:**
+ - *orderId* refers to an Order to be deliverd
+ - Validity of *transportNote*
+
+**Predicates:**
+|       Criteria        | Predicate |
+| --------------------- | --------- |
+| *orderId* refers to an Order to be deliverd | Yes |
+|                                             | No |
+| Validity of *transportNote* | Yes |
+|                             | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an Order to be deliverd | Validity of *transportNote* | Valid / Invalid | Description of the test case    | Jest test case         |
+| ------------------------------------------- | --------------------------- | --------------- | ------------------------------- | ---------------------- |
+| Yes                                         | Yes                         | Valid           | T1(ValidOrder, ValidNote; True) | testSetTransportNote   |
+| Yes                                         | No                          | Invalid         | T2(ValidOrder, NullNote; False) | testSetTransportNote   |
+| No                                          | Yes                         | Invalid         | T3(NullOrder, ValidNote; False) | testSetTransportNote   |
+| No                                          | No                          | Invalid         | T4(NullOrder, NullNote; False)  | testSetTransportNote   |
+
+
+
+### **Class *RestockOrderDAO* - method *getAll***
+**Criteria:**
+ - There are orders in DB
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| There are orders in DB | Yes |
+|                        | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| There are orders in DB | Valid / Invalid | Description of the test case | Jest test case |
+| ---------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                    | Valid           | T1((); True)           | testGetAll      |
+| No                     | Valid           | T2((); True)           |  |
+
+
+
+### **Class *RestockOrderDAO* - method *getIssued***
+**Criteria:**
+ - There are orders in DB with *state* 'ISSUED'
+ - Some orders have *state* 'ISSUED'
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| There are orders in DB with *state* 'ISSUED' | Yes |
+|                                              | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| There are orders in DB with *state* 'ISSUED' | Valid / Invalid | Description of the test case | Jest test case |
+| -------------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                          | Valid           | T1((); True)        | testGetIssued  |
+| No                                           | Valid           | T2((); True)        |  |
+
+
+
+### **Class *RestockOrderDAO* - method *get***
+**Criteria:**
+ - *orderId* refers to an existing Order
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| *orderId* refers to an existing Order | Yes |
+|                                       | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                   | Valid           | T1(ValidOrderId; True)       | testGet |
+| No                                   | Invalid          | T2(InvalidOrderId; False)    | testGet |
+
+
+
+### **Class *RestockOrderDAO* - method *getReturnItems***
+**Criteria:**
+ - *orderId* refers to an existing Order with *state* 'COMPLETEDRETURN'
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| *orderId* refers to an existing Order with *state* 'COMPLETEDRETURN' | Yes |
+|                                       | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order with *state* 'COMPLETEDRETURN' | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                   | Valid           | T1(ValidOrderId; True)       | testGetReturnItems |
+| No                                   | Invalid           | T2(InvalidOrderId; False)    | testGetReturnItems |
+
+
+
+### **Class *RestockOrderDAO* - method *delete***
+**Criteria:**
+ - *orderId* refers to an existing Order
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| *orderId* refers to an existing Order | Yes |
+|                                       | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                   | Valid           | T1(ValidOrderId; True)       | testDelete |
+| No                                   | Invalid           | T2(InvalidOrderId; False)    | testDelete |
+
+
+
+--------------------------------------------------
+## Class ReturnOrder
+
+### **Class *ReturnOrderDAO* - method *store***
+**Criteria:**
+ - Validity of object Order
+ - *restockOrderId* refers to an existing RestockOrder
+
+**Predicates:**
+|       Criteria        | Predicate |
+| --------------------- | --------- |
+| Validity of object Order | Yes |
+|                          | No |
+| *restockOrderId* refers to an existing RestockOrder | Yes |
+|                                                     | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| Validity of object Order | *restockOrderId* refers to an existing RestockOrder | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------ | ----------------------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                      | Yes                                                   | Valid           | T1(ValidOrder; True)         | testStore      |
+| Yes                      | No                                                    | Invalid         | T2(ValidOrder; False)        | testStore      |
+| No                       | Yes                                                   | Invalid         | T3(NullOrder; False)         | testStore      |
+| No                       | No                                                    | Invalid         | T4(NullOrder; False)         | testStore      |
+
+
+
+### **Class *ReturnOrderDAO* - method *getAll***
+**Criteria:**
+ - There are orders in DB
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| There are orders in DB | Yes |
+|                        | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| There are orders in DB | Valid / Invalid | Description of the test case | Jest test case |
+| ---------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                    | Valid           | T1((); True)        | testGetAll     |
+| No                     | Valid           | T2((); True)           |  |
+
+
+
+### **Class *ReturnOrderDAO* - method *get***
+**Criteria:**
+ - *orderId* refers to an existing Order
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| *orderId* refers to an existing Order | Yes |
+|                                       | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                   | Valid           | T1(ValidOrderId; True)       | testGet |
+| No                                    | Invalid           | T2(InvalidOrderId; False)    | testGet |
+
+
+
+### **Class *ReturnOrderDAO* - method *delete***
+**Criteria:**
+ - *orderId* refers to an existing Order
+
+**Predicates:**
+|       Criteria         | Predicate |
+| ---------------------- | --------- |
+| *orderId* refers to an existing Order | Yes |
+|                                       | No |
+
+**Boundaries:**
+
+**Combination of predicates:**
+| *orderId* refers to an existing Order | Valid / Invalid | Description of the test case | Jest test case |
+| ------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                   | Valid           | T1(ValidOrderId; True)       | testDelete |
+| No                                   | Invalid           | T2(InvalidOrderId; False)    | testDelete |
+
+
 
 --------------------------------------------------
 ## Class User
@@ -2099,7 +2371,7 @@ Version: 1.0
 | InternalOrder  | internalOrder.test.js  |
 | Item           | item.test.js           |
 | Position       | position.test.js       |
-| RestockOrder   |                        |
+| RestockOrder   | restockOrder.test.js   |
 | ReturnOrder    | returnOrder.test.js    |
 | SKU            | sku.test.js            |
 | SKUItem        | skuitem.test.js        |
