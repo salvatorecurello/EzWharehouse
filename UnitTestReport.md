@@ -28,12 +28,12 @@ Version: 1.0
 
 **Predicates for method *storeSKU*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object SKU         |   Yes        |
-|          |     No      |
-|  SKU with unique id in database         |   Yes        |
-|         |      No     |
+| Criteria                       | Predicate |
+| ------------------------------ | --------- |
+| Validity object SKU            | Yes       |
+|                                | No        |
+| SKU with unique id in database | Yes       |
+|                                | No        |
 
 **Boundaries**:
 
@@ -48,11 +48,11 @@ Version: 1.0
 
 
 | Validity object SKU | SKU with unique id in database | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidSKU; True)|testNewSKU||
-|Yes|No|Invalid|T2(ValidSKU; False)|||
-|No|Yes|Invalid|T3(InvalidSKU; error)|||
-|No|No|Invalid|T4(InvalidSKU; error)|||
+| ------------------- | ------------------------------ | --------------- | ---------------------------- | -------------- |
+| Yes                 | Yes                            | Valid           | T1(ValidSKU; True)           | testNewSKU     |  |
+| Yes                 | No                             | Invalid         | T2(ValidSKU; False)          |                |  |
+| No                  | Yes                            | Invalid         | T3(InvalidSKU; error)        |                |  |
+| No                  | No                             | Invalid         | T4(InvalidSKU; error)        |                |  |
 
 ### **Class *SKUDAO* - method *getSkus***
 
@@ -62,10 +62,10 @@ Version: 1.0
 
 **Predicates for method *getSkus*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Skus in DB         |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| There are Skus in DB | Yes       |
+|                      | No        |
 
 
 
@@ -85,9 +85,9 @@ Version: 1.0
 
 
 | There are Skus in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListSkus)| testgetSkus |
-|No|Invalid|T2((); EmptyList)||
+| -------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                  | Valid           | T1((); ListSkus)             | testgetSkus    |
+| No                   | Invalid         | T2((); EmptyList)            |                |
 
 
 ### **Class *SKUDAO* - method *getSKUByID***
@@ -98,10 +98,10 @@ Version: 1.0
 
 **Predicates for method *getSKUByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is valid    |   Yes        |
-|          |     No      |
+| Criteria    | Predicate |
+| ----------- | --------- |
+| ID is valid | Yes       |
+|             | No        |
 
 
 
@@ -117,10 +117,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| ID is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; SKU)|testgetSKUByID|
-|No|Invalid|T2(InvalidID; error)||
+| ID is valid | Valid / Invalid | Description of the test case | Jest test case |
+| ----------- | --------------- | ---------------------------- | -------------- |
+| Yes         | Valid           | T1(ValidID; SKU)             | testgetSKUByID |
+| No          | Invalid         | T2(InvalidID; error)         |                |
 
 
 ### **Class *SKUDAO* - method *getTestDescriptorBySKUID***
@@ -131,10 +131,10 @@ Version: 1.0
 
 **Predicates for method *getTestDescriptorBySKUID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TestDescriptor with SKUID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                               | Predicate |
+| -------------------------------------- | --------- |
+| TestDescriptor with SKUID exists in DB | Yes       |
+|                                        | No        |
 
 
 **Boundaries**:
@@ -149,10 +149,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestDescriptor with SKUID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidSKUIID; TestDescriptorList)|testgetTestDescriptorBySKUID|
-|No|Invalid|T2(InvalidSKUID; EmptyList)|
+| TestDescriptor with SKUID exists in DB | Valid / Invalid | Description of the test case        | Jest test case               |
+| -------------------------------------- | --------------- | ----------------------------------- | ---------------------------- |
+| Yes                                    | Valid           | T1(ValidSKUIID; TestDescriptorList) | testgetTestDescriptorBySKUID |
+| No                                     | Invalid         | T2(InvalidSKUID; EmptyList)         |
 
 ### **Class *SKUDAO* - method *updateSKU***
 
@@ -163,12 +163,12 @@ Version: 1.0
 
 **Predicates for method *updateSKU*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| New SKU is valid    |   Yes        |
-|          |     No      |
-| ID is valid    |   Yes        |
-|          |     No      |
+| Criteria         | Predicate |
+| ---------------- | --------- |
+| New SKU is valid | Yes       |
+|                  | No        |
+| ID is valid      | Yes       |
+|                  | No        |
 
 
 **Boundaries**:
@@ -183,12 +183,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| New SKU is valid | ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidSKU, Valid ID; )|testupdateSKU|
-|Yes|No|Invalid|T2(ValidSKU, InvalidID; error)||
-|No|Yes|Invalid|T3(InvalidSKU, ValidID; error)||
-|No|No|Invalid|T4(InvalidSKU, InvalidID; error)||
+| New SKU is valid | ID is valid | Valid / Invalid | Description of the test case     | Jest test case |
+| ---------------- | ----------- | --------------- | -------------------------------- | -------------- |
+| Yes              | Yes         | Valid           | T1(ValidSKU, Valid ID; )         | testupdateSKU  |
+| Yes              | No          | Invalid         | T2(ValidSKU, InvalidID; error)   |                |
+| No               | Yes         | Invalid         | T3(InvalidSKU, ValidID; error)   |                |
+| No               | No          | Invalid         | T4(InvalidSKU, InvalidID; error) |                |
 
 ### **Class *SKUDAO* - method *updatePositionWeightVolume***
 
@@ -199,12 +199,12 @@ Version: 1.0
 
 **Predicates for method *updatePositionWeightVolume*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Weight and Volume values are valid    |   Yes        |
-|          |     No      |
-| Position ID is valid    |   Yes        |
-|          |     No      |
+| Criteria                           | Predicate |
+| ---------------------------------- | --------- |
+| Weight and Volume values are valid | Yes       |
+|                                    | No        |
+| Position ID is valid               | Yes       |
+|                                    | No        |
 
 
 **Boundaries**:
@@ -219,12 +219,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| W and V values are valid | Position ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidWeightVolume, ValidPosID; )|testupdatePositionWeightVolume|
-|Yes|No|Invalid|T2(ValidWeightVolume, InvalidPosID; error )||
-|No|Yes|Invalid|T3(InvalidWeightVolume, ValidPosID; error )||
-|No|No|Invalid|T4(InvalidWeightVolume, InvalidPosID; error )||
+| W and V values are valid | Position ID is valid | Valid / Invalid | Description of the test case                  | Jest test case                 |
+| ------------------------ | -------------------- | --------------- | --------------------------------------------- | ------------------------------ |
+| Yes                      | Yes                  | Valid           | T1(ValidWeightVolume, ValidPosID; )           | testupdatePositionWeightVolume |
+| Yes                      | No                   | Invalid         | T2(ValidWeightVolume, InvalidPosID; error )   |                                |
+| No                       | Yes                  | Invalid         | T3(InvalidWeightVolume, ValidPosID; error )   |                                |
+| No                       | No                   | Invalid         | T4(InvalidWeightVolume, InvalidPosID; error ) |                                |
 
 
 ### **Class *SKUDAO* - method *PositionOccupied***
@@ -235,10 +235,10 @@ Version: 1.0
 
 **Predicates for method *PositionOccupied*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Position ID is valid    |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| Position ID is valid | Yes       |
+|                      | No        |
 
 
 
@@ -254,10 +254,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Position ID is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; Position)|testPositionOccupied|
-|No|Invalid|T2(InvalidID; error)||
+| Position ID is valid | Valid / Invalid | Description of the test case | Jest test case       |
+| -------------------- | --------------- | ---------------------------- | -------------------- |
+| Yes                  | Valid           | T1(ValidID; Position)        | testPositionOccupied |
+| No                   | Invalid         | T2(InvalidID; error)         |                      |
 
 ### **Class *SKUDAO* - method *modifySKUPosition***
 
@@ -268,12 +268,12 @@ Version: 1.0
 
 **Predicates for method *modifySKUPosition*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| New Position is valid    |   Yes        |
-|          |     No      |
-| Sku ID is valid    |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| New Position is valid | Yes       |
+|                       | No        |
+| Sku ID is valid       | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -288,12 +288,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| New Position is valid | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidPosition, ValidID; )|testupdateSKUPosition|
-|Yes|No|Invalid|T2(ValidPosition, InvalidID; error)||
-|No|Yes|Invalid|T3(InvalidPosition, ValidID; error)||
-|No|No|Invalid|T4(InvalidPosition, InvalidID; error)||
+| New Position is valid | Sku ID is valid | Valid / Invalid | Description of the test case          | Jest test case        |
+| --------------------- | --------------- | --------------- | ------------------------------------- | --------------------- |
+| Yes                   | Yes             | Valid           | T1(ValidPosition, ValidID; )          | testupdateSKUPosition |
+| Yes                   | No              | Invalid         | T2(ValidPosition, InvalidID; error)   |                       |
+| No                    | Yes             | Invalid         | T3(InvalidPosition, ValidID; error)   |                       |
+| No                    | No              | Invalid         | T4(InvalidPosition, InvalidID; error) |                       |
 
 
 ### **Class *SKUDAO* - method *existingSKUItem***
@@ -304,10 +304,10 @@ Version: 1.0
 
 **Predicates for method *existingSKUItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| SkuItem ID is valid    |   Yes        |
-|          |     No      |
+| Criteria            | Predicate |
+| ------------------- | --------- |
+| SkuItem ID is valid | Yes       |
+|                     | No        |
 
 
 
@@ -323,10 +323,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| SkuItem ID is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; Lenght)|testexistingSKUItem|
-|No|Invalid|T2(InvalidID; error)||
+| SkuItem ID is valid | Valid / Invalid | Description of the test case | Jest test case      |
+| ------------------- | --------------- | ---------------------------- | ------------------- |
+| Yes                 | Valid           | T1(ValidID; Lenght)          | testexistingSKUItem |
+| No                  | Invalid         | T2(InvalidID; error)         |                     |
 
 
 ### **Class *SKUDAO* - method *existingTestDescriptor***
@@ -338,12 +338,12 @@ Version: 1.0
 
 **Predicates for method *existingTestDescriptor*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TextDescriptor exist    |   Yes        |
-|          |     No      |
-| Sku ID is valid    |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| TextDescriptor exist | Yes       |
+|                      | No        |
+| Sku ID is valid      | Yes       |
+|                      | No        |
 
 
 
@@ -359,12 +359,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestDescriptor exist | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidID; Lenght)|testexistingTestDescriptor|
-|Yes|No|Invalid|T2(InvalID; error)||
-|No|Yes|Invalid|T3(ValidID; )||
-|No|No|Invalid|T4(InvalidID; error)||
+| TestDescriptor exist | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case             |
+| -------------------- | --------------- | --------------- | ---------------------------- | -------------------------- |
+| Yes                  | Yes             | Valid           | T1(ValidID; Lenght)          | testexistingTestDescriptor |
+| Yes                  | No              | Invalid         | T2(InvalID; error)           |                            |
+| No                   | Yes             | Invalid         | T3(ValidID; )                |                            |
+| No                   | No              | Invalid         | T4(InvalidID; error)         |                            |
 
 ### **Class *SKUDAO* - method *deleteSKU***
 
@@ -374,10 +374,10 @@ Version: 1.0
 
 **Predicates for method *deleteSKU*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Sku ID is valid    |   Yes        |
-|          |     No      |
+| Criteria        | Predicate |
+| --------------- | --------- |
+| Sku ID is valid | Yes       |
+|                 | No        |
 
 
 **Boundaries**:
@@ -393,9 +393,9 @@ Version: 1.0
 
 
 | Sku ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; )|testdeleteSKU|
-|No|Invalid|T2(InvalidID; error)||
+| --------------- | --------------- | ---------------------------- | -------------- |
+| Yes             | Valid           | T1(ValidID; )                | testdeleteSKU  |
+| No              | Invalid         | T2(InvalidID; error)         |                |
 
 --------------------------------------------------
 
@@ -409,10 +409,10 @@ Version: 1.0
 
 **Predicates for method *getSKUItems*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are SkuItems in DB         |   Yes        |
-|          |     No      |
+| Criteria                 | Predicate |
+| ------------------------ | --------- |
+| There are SkuItems in DB | Yes       |
+|                          | No        |
 
 
 
@@ -431,10 +431,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| There are SkuItems in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListSkuItems)| testgetSKUItems |
-|No|Invalid|T2((); EmptyList)||
+| There are SkuItems in DB | Valid / Invalid | Description of the test case | Jest test case  |
+| ------------------------ | --------------- | ---------------------------- | --------------- |
+| Yes                      | Valid           | T1((); ListSkuItems)         | testgetSKUItems |
+| No                       | Invalid         | T2((); EmptyList)            |                 |
 
 
 
@@ -448,14 +448,14 @@ Version: 1.0
 
 **Predicates for method *getArraySKUItemByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are SkuItems in DB related to SKU    |   Yes        |
-|          |     No      |
-| Available equal to 1         |   Yes        |
-|          |     No      |
-| SKU ID is valid        |   Yes        |
-|          |     No      |
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| There are SkuItems in DB related to SKU | Yes       |
+|                                         | No        |
+| Available equal to 1                    | Yes       |
+|                                         | No        |
+| SKU ID is valid                         | Yes       |
+|                                         | No        |
 
 
 
@@ -463,26 +463,26 @@ Version: 1.0
 
 **Boundaries**:
 
-| Criteria | Boundary values |
-| -------- | --------------- |
-|     Available equal to 1   |      0           |
-|     Available equal to 1     |         2        |
+| Criteria             | Boundary values |
+| -------------------- | --------------- |
+| Available equal to 1 | 0               |
+| Available equal to 1 | 2               |
 
 
 
 **Combination of predicates**:
 
 
-|  There are SkuItems in DB related to SKU    | Available equal to 1 | SKU ID is valid  | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|Yes|Yes|Yes|Valid|T1(ValidID, Available=1; ListSkuItem)|testgetSKUItems|
-|Yes|Yes|No|Invalid|T2(InvalidID, Available=1; error)||
-|Yes|No|Yes|Invalid|T3(ValidID, Available=0; EmptyList)<br/> T4(ValidID, Available=2; EmptyList)|
-|Yes|No|No|Invalid|T5(InvalidID, Available=0; error)<br/> T6(InvalidID, Available=2; error)||
-|No|Yes|Yes|Invalid|T6(ValidID, Available=1; )||
-|No|Yes|No|Invalid|T7(InvalidID, Available=1; error )||
-|No|No|Yes|Invalid|T8(InvalidID, Available=0; error)<br/> T9(InvalidID, Available=2; error)||
-|No|No|No|Invalid|T10(InvalidID, Available=0; error)<br/> T11(InvalidID, Available=2; error)||
+| There are SkuItems in DB related to SKU | Available equal to 1 | SKU ID is valid | Valid / Invalid | Description of the test case                                                 | Jest test case  |
+| --------------------------------------- | -------------------- | --------------- | --------------- | ---------------------------------------------------------------------------- | --------------- |
+| Yes                                     | Yes                  | Yes             | Valid           | T1(ValidID, Available=1; ListSkuItem)                                        | testgetSKUItems |
+| Yes                                     | Yes                  | No              | Invalid         | T2(InvalidID, Available=1; error)                                            |                 |
+| Yes                                     | No                   | Yes             | Invalid         | T3(ValidID, Available=0; EmptyList)<br/> T4(ValidID, Available=2; EmptyList) |
+| Yes                                     | No                   | No              | Invalid         | T5(InvalidID, Available=0; error)<br/> T6(InvalidID, Available=2; error)     |                 |
+| No                                      | Yes                  | Yes             | Invalid         | T6(ValidID, Available=1; )                                                   |                 |
+| No                                      | Yes                  | No              | Invalid         | T7(InvalidID, Available=1; error )                                           |                 |
+| No                                      | No                   | Yes             | Invalid         | T8(InvalidID, Available=0; error)<br/> T9(InvalidID, Available=2; error)     |                 |
+| No                                      | No                   | No              | Invalid         | T10(InvalidID, Available=0; error)<br/> T11(InvalidID, Available=2; error)   |                 |
 
 
 ### **Class *SKUItemDAO* - method *getSKUItemByRFID***
@@ -493,10 +493,10 @@ Version: 1.0
 
 **Predicates for method *getSKUItemByRFID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| RFID is valid    |   Yes        |
-|          |     No      |
+| Criteria      | Predicate |
+| ------------- | --------- |
+| RFID is valid | Yes       |
+|               | No        |
 
 
 
@@ -512,10 +512,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| RFID is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidRFID; SKUItem)|testgetSKUItemByRFID|
-|No|Invalid|T2(InvalidRFID; error)||
+| RFID is valid | Valid / Invalid | Description of the test case | Jest test case       |
+| ------------- | --------------- | ---------------------------- | -------------------- |
+| Yes           | Valid           | T1(ValidRFID; SKUItem)       | testgetSKUItemByRFID |
+| No            | Invalid         | T2(InvalidRFID; error)       |                      |
 
 
 ### **Class *SKUItemDAO* - method *storeSKUItem***
@@ -528,14 +528,14 @@ Version: 1.0
 
 **Predicates for method *storeSKUItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object SKUItem        |   Yes        |
-|          |     No      |
-|  SKUItem with unique rfid in database         |   Yes        |
-|         |      No     |
-|  Sku ID is valid        |   Yes        |
-|         |      No     |
+| Criteria                             | Predicate |
+| ------------------------------------ | --------- |
+| Validity object SKUItem              | Yes       |
+|                                      | No        |
+| SKUItem with unique rfid in database | Yes       |
+|                                      | No        |
+| Sku ID is valid                      | Yes       |
+|                                      | No        |
 
 **Boundaries**:
 
@@ -548,16 +548,16 @@ Version: 1.0
 
 **Combination of predicates**:
 
-| Validity object SKUItem  | SKUItem with unique rfid in database| SKU ID is valid  | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|Yes|Yes|Yes|Valid|T1(ValidData, ValidSKUID; LastID)|testNewSKUItem|
-|Yes|Yes|No|Invalid|T2(InvalidData,  InvalidSKUID; error )||
-|Yes|No|Yes|Invalid|T3(ValidData, ValidSKUID; error )||
-|Yes|No|No|Invalid|T4(ValidData,  InvalidSKUID; error )||
-|No|Yes|Yes|Invalid|T5(InvalidData,  ValidSKUID; error )||
-|No|Yes|No|Invalid|T6(InvalidData,  InvalidSKUID; error)||
-|No|No|Yes|Invalid|T7(InvalidData,  InvalidSKUID; error )||
-|No|No|No|Invalid|T8(InvalidData,  InvalidSKUID; error)||
+| Validity object SKUItem | SKUItem with unique rfid in database | SKU ID is valid | Valid / Invalid | Description of the test case           | Jest test case |
+| ----------------------- | ------------------------------------ | --------------- | --------------- | -------------------------------------- | -------------- |
+| Yes                     | Yes                                  | Yes             | Valid           | T1(ValidData, ValidSKUID; LastID)      | testNewSKUItem |
+| Yes                     | Yes                                  | No              | Invalid         | T2(InvalidData,  InvalidSKUID; error ) |                |
+| Yes                     | No                                   | Yes             | Invalid         | T3(ValidData, ValidSKUID; error )      |                |
+| Yes                     | No                                   | No              | Invalid         | T4(ValidData,  InvalidSKUID; error )   |                |
+| No                      | Yes                                  | Yes             | Invalid         | T5(InvalidData,  ValidSKUID; error )   |                |
+| No                      | Yes                                  | No              | Invalid         | T6(InvalidData,  InvalidSKUID; error)  |                |
+| No                      | No                                   | Yes             | Invalid         | T7(InvalidData,  InvalidSKUID; error ) |                |
+| No                      | No                                   | No              | Invalid         | T8(InvalidData,  InvalidSKUID; error)  |                |
 
 ### **Class *SKUItemDAO* - method *updateSKUItem***
 
@@ -568,12 +568,12 @@ Version: 1.0
 
 **Predicates for method *updateSKUItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| New SKUItem is valid    |   Yes        |
-|          |     No      |
-| RFID is valid    |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| New SKUItem is valid | Yes       |
+|                      | No        |
+| RFID is valid        | Yes       |
+|                      | No        |
 
 
 **Boundaries**:
@@ -588,12 +588,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| New SKUItem is valid | RFID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidSKUItem, ValidRFID;)|testupdateSKUItem|
-|Yes|No|Invalid|T2(ValidSKUItem,InvalidRFID; error)||
-|No|Yes|Invalid|T3(InvalidSKUItem, ValidRFID; error)||
-|No|No|Invalid|T4(InvalidSKUItem, InvalidRFID; error)||
+| New SKUItem is valid | RFID is valid | Valid / Invalid | Description of the test case           | Jest test case    |
+| -------------------- | ------------- | --------------- | -------------------------------------- | ----------------- |
+| Yes                  | Yes           | Valid           | T1(ValidSKUItem, ValidRFID;)           | testupdateSKUItem |
+| Yes                  | No            | Invalid         | T2(ValidSKUItem,InvalidRFID; error)    |                   |
+| No                   | Yes           | Invalid         | T3(InvalidSKUItem, ValidRFID; error)   |                   |
+| No                   | No            | Invalid         | T4(InvalidSKUItem, InvalidRFID; error) |                   |
 
 ### **Class *SKUItemDAO* - method *deleteSKUItem***
 
@@ -603,10 +603,10 @@ Version: 1.0
 
 **Predicates for method *deleteSKUItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Skuitem RFID is valid    |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| Skuitem RFID is valid | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -621,10 +621,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Skuitem RFID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidRFID; )|testdeleteSKUItem|
-|No|Invalid|T2(InvalidRFID; error )||
+| Skuitem RFID is valid | Valid / Invalid | Description of the test case | Jest test case    |
+| --------------------- | --------------- | ---------------------------- | ----------------- |
+| Yes                   | Valid           | T1(ValidRFID; )              | testdeleteSKUItem |
+| No                    | Invalid         | T2(InvalidRFID; error )      |                   |
 
 
 ### **Class *RestockOrderDAO* - method *store***
@@ -638,10 +638,10 @@ Version: 1.0
 **Predicates:**
 | Criteria | Predicate |
 | -------- | --------- |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
+|          |           |
+|          |           |
+|          |           |
+|          |           |
 
 **Boundaries:**
 
@@ -659,12 +659,12 @@ Version: 1.0
 
 **Predicates for method *storeUser*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object User         |   Yes        |
-|          |     No      |
-|  User with unique email in database         |   Yes        |
-|         |      No     |
+| Criteria                           | Predicate |
+| ---------------------------------- | --------- |
+| Validity object User               | Yes       |
+|                                    | No        |
+| User with unique email in database | Yes       |
+|                                    | No        |
 
 **Boundaries**:
 
@@ -679,11 +679,11 @@ Version: 1.0
 
 
 | Validity object User | User with unique id in database | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidUser; True)|testNewUser|
-|Yes|No|Invalid|T2(ValidUser; False)||
-|No|Yes|Invalid|T3(NullUser; False)||
-|No|No|Invalid|T4(NullUser; False)||
+| -------------------- | ------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                  | Yes                             | Valid           | T1(ValidUser; True)          | testNewUser    |
+| Yes                  | No                              | Invalid         | T2(ValidUser; False)         |                |
+| No                   | Yes                             | Invalid         | T3(NullUser; False)          |                |
+| No                   | No                              | Invalid         | T4(NullUser; False)          |                |
 
 
 
@@ -695,10 +695,10 @@ Version: 1.0
 
 **Predicates for method *getUsers*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Users in DB         |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| There are Users in DB | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -714,9 +714,9 @@ Version: 1.0
 
 
 | There are Users in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListUsers)|getUsers|
-|No|Invalid|T2((); EmptyList)||
+| --------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                   | Valid           | T1((); ListUsers)            | getUsers       |
+| No                    | Invalid         | T2((); EmptyList)            |                |
 
 
 
@@ -728,10 +728,10 @@ Version: 1.0
 
 **Predicates for method *getSuppliers*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Suppliers in DB         |   Yes        |
-|          |     No      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| There are Suppliers in DB | Yes       |
+|                           | No        |
 
 
 **Boundaries**:
@@ -747,9 +747,9 @@ Version: 1.0
 
 
 | There are Suppliers in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListUsers)|getSuppliers|
-|No|Invalid|T2((); EmptyList)||
+| ------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                       | Valid           | T1((); ListUsers)            | getSuppliers   |
+| No                        | Invalid         | T2((); EmptyList)            |                |
 
 
 
@@ -762,12 +762,12 @@ Version: 1.0
 
 **Predicates for method *login*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity of tuple username, password         |   Yes        |
-|          |     No      |
-| User exists in db with correct type          |   Yes        |
-|         |      No     |
+| Criteria                             | Predicate |
+| ------------------------------------ | --------- |
+| Validity of tuple username, password | Yes       |
+|                                      | No        |
+| User exists in db with correct type  | Yes       |
+|                                      | No        |
 
 **Boundaries**:
 
@@ -781,12 +781,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Validity of tuple username, password | User exists in db with correct type | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidUsernamePassword; User)|login|
-|Yes|No|Invalid|T2(ValidUsernamePassword; Null)||
-|No|Yes|Invalid|T3(InvalidUsernamePassword; Null)||
-|No|No|Invalid|T4(InvalidUsernamePassword; Null)||
+| Validity of tuple username, password | User exists in db with correct type | Valid / Invalid | Description of the test case      | Jest test case |
+| ------------------------------------ | ----------------------------------- | --------------- | --------------------------------- | -------------- |
+| Yes                                  | Yes                                 | Valid           | T1(ValidUsernamePassword; User)   | login          |
+| Yes                                  | No                                  | Invalid         | T2(ValidUsernamePassword; Null)   |                |
+| No                                   | Yes                                 | Invalid         | T3(InvalidUsernamePassword; Null) |                |
+| No                                   | No                                  | Invalid         | T4(InvalidUsernamePassword; Null) |                |
 
 
  ### **Class *UserDAO* - method *getUserFromId***
@@ -797,10 +797,10 @@ Version: 1.0
 
 **Predicates for method *getUserFromId*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is of a valid user         |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| ID is of a valid user | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -816,9 +816,9 @@ Version: 1.0
 
 
 | ID is of a valid user | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; User)|getUserFromId|
-|No|Invalid|T2(InvalidID; Null)||
+| --------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                   | Valid           | T1(ValidID; User)            | getUserFromId  |
+| No                    | Invalid         | T2(InvalidID; Null)          |                |
 
 
  ### **Class *UserDAO* - method *getUserFromEmail***
@@ -829,10 +829,10 @@ Version: 1.0
 
 **Predicates for method *getUserFromEmail*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| email is of a valid user         |   Yes        |
-|          |     No      |
+| Criteria                 | Predicate |
+| ------------------------ | --------- |
+| email is of a valid user | Yes       |
+|                          | No        |
 
 
 **Boundaries**:
@@ -847,10 +847,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| email is of a valid user | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidEmail; User)|getUserFromEmail|
-|No|Invalid|T2(InvalidEmail; Null)||
+| email is of a valid user | Valid / Invalid | Description of the test case | Jest test case   |
+| ------------------------ | --------------- | ---------------------------- | ---------------- |
+| Yes                      | Valid           | T1(ValidEmail; User)         | getUserFromEmail |
+| No                       | Invalid         | T2(InvalidEmail; Null)       |                  |
 
 
  ### **Class *UserDAO* - method *updateUser***
@@ -862,12 +862,12 @@ Version: 1.0
 
 **Predicates for method *updateUser*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is of a valid user         |   Yes        |
-|          |     No      |
-| newType is valid         |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| ID is of a valid user | Yes       |
+|                       | No        |
+| newType is valid      | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -883,11 +883,11 @@ Version: 1.0
 
 
 | ID is of a valid user | newType is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidID; )|updateUser|
-|Yes|No|Invalid|T2(ValidID; )||
-|No|Yes|Invalid|T3(InvalidID; )||
-|No|No|Invalid|T4(InvalidID; )||
+| --------------------- | ---------------- | --------------- | ---------------------------- | -------------- |
+| Yes                   | Yes              | Valid           | T1(ValidID; )                | updateUser     |
+| Yes                   | No               | Invalid         | T2(ValidID; )                |                |
+| No                    | Yes              | Invalid         | T3(InvalidID; )              |                |
+| No                    | No               | Invalid         | T4(InvalidID; )              |                |
 
 
  ### **Class *UserDAO* - method *deleteUser***
@@ -898,10 +898,10 @@ Version: 1.0
 
 **Predicates for method *deleteUser*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is of a valid user         |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| ID is of a valid user | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -917,9 +917,9 @@ Version: 1.0
 
 
 | ID is of a valid user | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; )|deleteUser|
-|No|Invalid|T2(InvalidID; )||
+| --------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                   | Valid           | T1(ValidID; )                | deleteUser     |
+| No                    | Invalid         | T2(InvalidID; )              |                |
 
 
 --------------------------------------------------
@@ -935,10 +935,10 @@ Version: 1.0
 
 **Predicates for method *storeTestDescriptor*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TestDescriptor is valid    |   Yes        |
-|          |     No      |
+| Criteria                | Predicate |
+| ----------------------- | --------- |
+| TestDescriptor is valid | Yes       |
+|                         | No        |
 
 
 
@@ -954,10 +954,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestDescriptor is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidTestDescriptor; True)|teststoreTestDescriptor|
-|No|Invalid|T2(nullTestDescriptor; False)||
+| TestDescriptor is valid | Valid / Invalid | Description of the test case  | Jest test case          |
+| ----------------------- | --------------- | ----------------------------- | ----------------------- |
+| Yes                     | Valid           | T1(ValidTestDescriptor; True) | teststoreTestDescriptor |
+| No                      | Invalid         | T2(nullTestDescriptor; False) |                         |
 
 
 
@@ -971,10 +971,10 @@ Version: 1.0
 
 **Predicates for method *getTestDescriptors*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are TestDescriptors in DB         |   Yes        |
-|          |     No      |
+| Criteria                        | Predicate |
+| ------------------------------- | --------- |
+| There are TestDescriptors in DB | Yes       |
+|                                 | No        |
 
 
 
@@ -990,10 +990,10 @@ Version: 1.0
 
 **Combination of predicates**:
 
-| There are TestDescriptors in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListTestDescriptors)|testgetTestDescriptors|
-|No|Invalid|T2((); EmptyList)||
+| There are TestDescriptors in DB | Valid / Invalid | Description of the test case | Jest test case         |
+| ------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                             | Valid           | T1((); ListTestDescriptors)  | testgetTestDescriptors |
+| No                              | Invalid         | T2((); EmptyList)            |                        |
 
 
 
@@ -1005,10 +1005,10 @@ Version: 1.0
 
 **Predicates for method *getTestDescriptorsByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is valid    |   Yes        |
-|          |     No      |
+| Criteria    | Predicate |
+| ----------- | --------- |
+| ID is valid | Yes       |
+|             | No        |
 
 
 
@@ -1024,10 +1024,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| ID is valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; TestDescriptor)|testgetTestDescriptorsByID|
-|No|Invalid|T2(InvalidID; Null)||
+| ID is valid | Valid / Invalid | Description of the test case | Jest test case             |
+| ----------- | --------------- | ---------------------------- | -------------------------- |
+| Yes         | Valid           | T1(ValidID; TestDescriptor)  | testgetTestDescriptorsByID |
+| No          | Invalid         | T2(InvalidID; Null)          |                            |
 
 
  ### **Class *TestDescriptorDAO* - method *updateTestDescriptor***
@@ -1039,12 +1039,12 @@ Version: 1.0
 
 **Predicates for method *updateTestDescriptor*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| New TestDescriptor is valid    |   Yes        |
-|          |     No      |
-| ID is valid    |   Yes        |
-|          |     No      |
+| Criteria                    | Predicate |
+| --------------------------- | --------- |
+| New TestDescriptor is valid | Yes       |
+|                             | No        |
+| ID is valid                 | Yes       |
+|                             | No        |
 
 
 **Boundaries**:
@@ -1059,12 +1059,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| New TestDescriptor is valid | ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidTestDescriptor; )|testupdateTestDescriptor|
-|Yes|No|Invalid|T2(InvalidTestDescriptor; )||
-|No|Yes|Invalid|T3(InvalidTestDescriptor; )||
-|No|No|Invalid|T4(InvalidTestDescriptor; )||
+| New TestDescriptor is valid | ID is valid | Valid / Invalid | Description of the test case | Jest test case           |
+| --------------------------- | ----------- | --------------- | ---------------------------- | ------------------------ |
+| Yes                         | Yes         | Valid           | T1(ValidTestDescriptor; )    | testupdateTestDescriptor |
+| Yes                         | No          | Invalid         | T2(InvalidTestDescriptor; )  |                          |
+| No                          | Yes         | Invalid         | T3(InvalidTestDescriptor; )  |                          |
+| No                          | No          | Invalid         | T4(InvalidTestDescriptor; )  |                          |
 
 
  ### **Class *TestDescriptorDAO* - method *deleteTestDescriptor***
@@ -1075,10 +1075,10 @@ Version: 1.0
 
 **Predicates for method *deleteTestDescriptor*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ID is valid    |   Yes        |
-|          |     No      |
+| Criteria    | Predicate |
+| ----------- | --------- |
+| ID is valid | Yes       |
+|             | No        |
 
 
 **Boundaries**:
@@ -1093,10 +1093,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| ID is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; )|testdeleteTestDescriptor|
-|No|Invalid|T2(InvalidID; )||
+| ID is valid | Valid / Invalid | Description of the test case | Jest test case           |
+| ----------- | --------------- | ---------------------------- | ------------------------ |
+| Yes         | Valid           | T1(ValidID; )                | testdeleteTestDescriptor |
+| No          | Invalid         | T2(InvalidID; )              |                          |
 
 --------------------------------------------------
 
@@ -1110,10 +1110,10 @@ Version: 1.0
 
 **Predicates for method *storeTestResult*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object TestResult         |   Yes        |
-|          |     No      |
+| Criteria                   | Predicate |
+| -------------------------- | --------- |
+| Validity object TestResult | Yes       |
+|                            | No        |
 
 
 **Boundaries**:
@@ -1128,10 +1128,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Validity object TestResult | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidTestResult; True)|testNewTestResult|
-|No|Invalid|T2(NullTestResult; False)||
+| Validity object TestResult | Valid / Invalid | Description of the test case | Jest test case    |
+| -------------------------- | --------------- | ---------------------------- | ----------------- |
+| Yes                        | Valid           | T1(ValidTestResult; True)    | testNewTestResult |
+| No                         | Invalid         | T2(NullTestResult; False)    |                   |
 
 
  ### **Class *TestResultDAO* - method *getTestResultBySKUITEMID***
@@ -1142,10 +1142,10 @@ Version: 1.0
 
 **Predicates for method *getTestResultBySKUITEMID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TestResult with SKUITEMID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                               | Predicate |
+| -------------------------------------- | --------- |
+| TestResult with SKUITEMID exists in DB | Yes       |
+|                                        | No        |
 
 
 **Boundaries**:
@@ -1160,10 +1160,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestResult with SKUITEMID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidSKUITEMID; TestResultList)|testgetTestResultBySKUITEMID|
-|No|Invalid|T2(InvalidSKUITEMID; EmptyList)||
+| TestResult with SKUITEMID exists in DB | Valid / Invalid | Description of the test case       | Jest test case               |
+| -------------------------------------- | --------------- | ---------------------------------- | ---------------------------- |
+| Yes                                    | Valid           | T1(ValidSKUITEMID; TestResultList) | testgetTestResultBySKUITEMID |
+| No                                     | Invalid         | T2(InvalidSKUITEMID; EmptyList)    |                              |
 
 
  ### **Class *TestResultDAO* - method *getTestResultBySKUITEMIDAndID***
@@ -1175,12 +1175,12 @@ Version: 1.0
 
 **Predicates for method *getTestResultBySKUITEMIDAndID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TestResult with SKUITEMID exists in DB         |   Yes        |
-|          |     No      |
-| TestResult with ID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                               | Predicate |
+| -------------------------------------- | --------- |
+| TestResult with SKUITEMID exists in DB | Yes       |
+|                                        | No        |
+| TestResult with ID exists in DB        | Yes       |
+|                                        | No        |
 
 
 **Boundaries**:
@@ -1195,12 +1195,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestResult with SKUITEMID exists in DB | TestResult with ID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidSKUITEMIDAndID; TestResult)|testgetTestResultBySKUITEMIDAndID|
-|Yes|No|Invalid|T2(InvalidSKUITEMIDAndID; Null)||
-|No|Yes|Invalid|T3(InvalidSKUITEMIDAndID; Null)||
-|No|No|Invalid|T4(InvalidSKUITEMIDAndID; Null)||
+| TestResult with SKUITEMID exists in DB | TestResult with ID exists in DB | Valid / Invalid | Description of the test case        | Jest test case                    |
+| -------------------------------------- | ------------------------------- | --------------- | ----------------------------------- | --------------------------------- |
+| Yes                                    | Yes                             | Valid           | T1(ValidSKUITEMIDAndID; TestResult) | testgetTestResultBySKUITEMIDAndID |
+| Yes                                    | No                              | Invalid         | T2(InvalidSKUITEMIDAndID; Null)     |                                   |
+| No                                     | Yes                             | Invalid         | T3(InvalidSKUITEMIDAndID; Null)     |                                   |
+| No                                     | No                              | Invalid         | T4(InvalidSKUITEMIDAndID; Null)     |                                   |
 
 
  ### **Class *TestResultDAO* - method *updateTestResult***
@@ -1213,14 +1213,14 @@ Version: 1.0
 
 **Predicates for method *updateTestResult*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity new TestResult         |   Yes        |
-|          |     No      |
-| TestResult with rfid exists in DB         |   Yes        |
-|          |     No      |
-| TestResult with id exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                          | Predicate |
+| --------------------------------- | --------- |
+| Validity new TestResult           | Yes       |
+|                                   | No        |
+| TestResult with rfid exists in DB | Yes       |
+|                                   | No        |
+| TestResult with id exists in DB   | Yes       |
+|                                   | No        |
 
 
 
@@ -1236,16 +1236,16 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Validity new TestResult | TestResult with rfid exists in DB | TestResult with id exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|Yes|Yes|Yes|Valid|T1(ValidData; True)|testupdateTestResult|
-|Yes|Yes|No|Invalid|T2(InvalidData; )||
-|Yes|No|Yes|Invalid|T3(InvalidData; )||
-|Yes|No|No|Invalid|T4(InvalidData; )||
-|No|Yes|Yes|Invalid|T5(InvalidData; )||
-|No|Yes|No|Invalid|T6(InvalidData; )||
-|No|No|Yes|Invalid|T7(InvalidData; )||
-|No|No|No|Invalid|T8(InvalidData; )||
+| Validity new TestResult | TestResult with rfid exists in DB | TestResult with id exists in DB | Valid / Invalid | Description of the test case | Jest test case       |
+| ----------------------- | --------------------------------- | ------------------------------- | --------------- | ---------------------------- | -------------------- |
+| Yes                     | Yes                               | Yes                             | Valid           | T1(ValidData; True)          | testupdateTestResult |
+| Yes                     | Yes                               | No                              | Invalid         | T2(InvalidData; )            |                      |
+| Yes                     | No                                | Yes                             | Invalid         | T3(InvalidData; )            |                      |
+| Yes                     | No                                | No                              | Invalid         | T4(InvalidData; )            |                      |
+| No                      | Yes                               | Yes                             | Invalid         | T5(InvalidData; )            |                      |
+| No                      | Yes                               | No                              | Invalid         | T6(InvalidData; )            |                      |
+| No                      | No                                | Yes                             | Invalid         | T7(InvalidData; )            |                      |
+| No                      | No                                | No                              | Invalid         | T8(InvalidData; )            |                      |
 
 
 
@@ -1258,12 +1258,12 @@ Version: 1.0
 
 **Predicates for method *deleteTestResult*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| TestResult with rfid exists in DB         |   Yes        |
-|          |     No      |
-| TestResult with id exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                          | Predicate |
+| --------------------------------- | --------- |
+| TestResult with rfid exists in DB | Yes       |
+|                                   | No        |
+| TestResult with id exists in DB   | Yes       |
+|                                   | No        |
 
 
 **Boundaries**:
@@ -1278,12 +1278,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| TestResult with rfid exists in DB | TestResult with id exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidSKUITEMIDAndID; TestResult)|testdeleteTestResult|
-|Yes|No|Invalid|T2(InvalidSKUITEMIDAndID; Null)||
-|No|Yes|Invalid|T3(InvalidSKUITEMIDAndID; Null)||
-|No|No|Invalid|T4(InvalidSKUITEMIDAndID; Null)||
+| TestResult with rfid exists in DB | TestResult with id exists in DB | Valid / Invalid | Description of the test case        | Jest test case       |
+| --------------------------------- | ------------------------------- | --------------- | ----------------------------------- | -------------------- |
+| Yes                               | Yes                             | Valid           | T1(ValidSKUITEMIDAndID; TestResult) | testdeleteTestResult |
+| Yes                               | No                              | Invalid         | T2(InvalidSKUITEMIDAndID; Null)     |                      |
+| No                                | Yes                             | Invalid         | T3(InvalidSKUITEMIDAndID; Null)     |                      |
+| No                                | No                              | Invalid         | T4(InvalidSKUITEMIDAndID; Null)     |                      |
 
 --------------------------------------------------
 ## Class Position
@@ -1297,12 +1297,12 @@ Version: 1.0
 
 **Predicates for method *storePosition*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object Position         |   Yes        |
-|          |     No      |
-|  Position with unique id in database         |   Yes        |
-|         |      No     |
+| Criteria                            | Predicate |
+| ----------------------------------- | --------- |
+| Validity object Position            | Yes       |
+|                                     | No        |
+| Position with unique id in database | Yes       |
+|                                     | No        |
 
 **Boundaries**:
 
@@ -1316,12 +1316,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Validity object Position | Position with unique id in db | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidPosition; lastID)|testNewPosition|
-|Yes|No|Invalid|T2(ValidPosition; Error)||
-|No|Yes|Invalid|T3(NullPosition; Error)||
-|No|No|Invalid|T4(NullPosition; Error)||
+| Validity object Position | Position with unique id in db | Valid / Invalid | Description of the test case | Jest test case  |
+| ------------------------ | ----------------------------- | --------------- | ---------------------------- | --------------- |
+| Yes                      | Yes                           | Valid           | T1(ValidPosition; lastID)    | testNewPosition |
+| Yes                      | No                            | Invalid         | T2(ValidPosition; Error)     |                 |
+| No                       | Yes                           | Invalid         | T3(NullPosition; Error)      |                 |
+| No                       | No                            | Invalid         | T4(NullPosition; Error)      |                 |
 
 
 
@@ -1333,10 +1333,10 @@ Version: 1.0
 
 **Predicates for method *getPositions*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Positions in DB         |   Yes        |
-|          |     No      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| There are Positions in DB | Yes       |
+|                           | No        |
 
 
 **Boundaries**:
@@ -1352,9 +1352,9 @@ Version: 1.0
 
 
 | There are Users in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListPositions)|getPositions|
-|No|Invalid|T2((); EmptyList)||
+| --------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                   | Valid           | T1((); ListPositions)        | getPositions   |
+| No                    | Invalid         | T2((); EmptyList)            |                |
 
 
 
@@ -1366,10 +1366,10 @@ Version: 1.0
 
 **Predicates for method *getPositionByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| The given PositionID is in database         |   Yes        |
-|          |     No      |
+| Criteria                            | Predicate |
+| ----------------------------------- | --------- |
+| The given PositionID is in database | Yes       |
+|                                     | No        |
 
 
 **Boundaries**:
@@ -1384,10 +1384,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| There are Suppliers in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(Existing ID in database; Position)|getPositionFromId|
-|No|Invalid|T2(Existing ID in database; Null)|"|
+| There are Suppliers in DB | Valid / Invalid | Description of the test case          | Jest test case    |
+| ------------------------- | --------------- | ------------------------------------- | ----------------- |
+| Yes                       | Valid           | T1(Existing ID in database; Position) | getPositionFromId |
+| No                        | Invalid         | T2(Existing ID in database; Null)     | "                 |
 
 
 
@@ -1400,12 +1400,12 @@ Version: 1.0
 
 **Predicates for method *updatePosition*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object for new Position        |   Yes        |
-|          |     No      |
-| Existing PositionID from a DB |   Yes        | 
-|  |      No     |
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| Validity object for new Position | Yes       |
+|                                  | No        |
+| Existing PositionID from a DB    | Yes       |
+|                                  | No        |
 
 **Boundaries**:
 
@@ -1419,12 +1419,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Validity object for new Position | Existing PositionID from a DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1((ValidPosition; PositionIDValid); ())|updateAllPosition|
-|Yes|No|Invalid|T2((ValidPosition; PositionIDValid); ())|"|
-|No|Yes|Invalid|T3((ValidPosition; PositionIDValid); Error)|"|
-|No|No|Invalid|T4((ValidPosition; PositionIDValid); Error)|"|
+| Validity object for new Position | Existing PositionID from a DB | Valid / Invalid | Description of the test case                | Jest test case    |
+| -------------------------------- | ----------------------------- | --------------- | ------------------------------------------- | ----------------- |
+| Yes                              | Yes                           | Valid           | T1((ValidPosition; PositionIDValid); ())    | updateAllPosition |
+| Yes                              | No                            | Invalid         | T2((ValidPosition; PositionIDValid); ())    | "                 |
+| No                               | Yes                           | Invalid         | T3((ValidPosition; PositionIDValid); Error) | "                 |
+| No                               | No                            | Invalid         | T4((ValidPosition; PositionIDValid); Error) | "                 |
 
 
  ### **Class *PositionDAO* - method *updatePositionID***
@@ -1436,12 +1436,12 @@ Version: 1.0
 
 **Predicates for method *updatePositionID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Existing ID of Position in DB         |   Yes        |
-|          |     No      |
-| New PositionID valid          |   Yes        |
-|          |     No      |
+| Criteria                      | Predicate |
+| ----------------------------- | --------- |
+| Existing ID of Position in DB | Yes       |
+|                               | No        |
+| New PositionID valid          | Yes       |
+|                               | No        |
 
 
 **Boundaries**:
@@ -1456,12 +1456,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Existing ID of Position in DB |New PositionID valid| Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1((ValidID, ValidNewID); ())|updatePositionID|
-|Yes|No|Invalid|T2((ValidID, InvalidNewID); (Error))|"|
-|No|Yes|Invalid|T3((InvalidID, ValidNewID); ())|"|
-|No|No|Invalid|T4((InvalidID, InvalidNewID); (Error))|"|
+| Existing ID of Position in DB | New PositionID valid | Valid / Invalid | Description of the test case           | Jest test case   |
+| ----------------------------- | -------------------- | --------------- | -------------------------------------- | ---------------- |
+| Yes                           | Yes                  | Valid           | T1((ValidID, ValidNewID); ())          | updatePositionID |
+| Yes                           | No                   | Invalid         | T2((ValidID, InvalidNewID); (Error))   | "                |
+| No                            | Yes                  | Invalid         | T3((InvalidID, ValidNewID); ())        | "                |
+| No                            | No                   | Invalid         | T4((InvalidID, InvalidNewID); (Error)) | "                |
 
 
  ### **Class *PositionDAO* - method *deletePosition***
@@ -1472,10 +1472,10 @@ Version: 1.0
 
 **Predicates for method *deletePosition*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| PositionID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                | Predicate |
+| ----------------------- | --------- |
+| PositionID exists in DB | Yes       |
+|                         | No        |
 
 
 **Boundaries**:
@@ -1491,9 +1491,9 @@ Version: 1.0
 
 
 | PositionID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; ())|deletePosition|
-|No|Invalid|T2(InvalidID; ())|"|
+| ----------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                     | Valid           | T1(ValidID; ())              | deletePosition |
+| No                      | Invalid         | T2(InvalidID; ())            | "              |
 
 --------------------------------------------------
 
@@ -1508,12 +1508,12 @@ Version: 1.0
 
 **Predicates for method *storeItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object Item         |   Yes        |
-|          |     No      |
-|  Item with unique id in database         |   Yes        |
-|         |      No     |
+| Criteria                        | Predicate |
+| ------------------------------- | --------- |
+| Validity object Item            | Yes       |
+|                                 | No        |
+| Item with unique id in database | Yes       |
+|                                 | No        |
 
 **Boundaries**:
 
@@ -1528,11 +1528,11 @@ Version: 1.0
 
 
 | Validity object Item | Item with unique id in db | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidItem; Object)|testNewItem|
-|Yes|No|Invalid|T2(NullItem; Error)|"|
-|No|Yes|Invalid|T3(NullItem; Error)|"|
-|No|No|Invalid|T4(NullItem; Error)|"|
+| -------------------- | ------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                  | Yes                       | Valid           | T1(ValidItem; Object)        | testNewItem    |
+| Yes                  | No                        | Invalid         | T2(NullItem; Error)          | "              |
+| No                   | Yes                       | Invalid         | T3(NullItem; Error)          | "              |
+| No                   | No                        | Invalid         | T4(NullItem; Error)          | "              |
 
 
  ### **Class *ItemDao* - method *getItems***
@@ -1543,10 +1543,10 @@ Version: 1.0
 
 **Predicates for method *getItems*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Items in DB         |   Yes        |
-|          |     No      |
+| Criteria              | Predicate |
+| --------------------- | --------- |
+| There are Items in DB | Yes       |
+|                       | No        |
 
 
 **Boundaries**:
@@ -1562,9 +1562,9 @@ Version: 1.0
 
 
 | There are Positions in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListItems)|getItems|
-|No|Invalid|T2((); EmptyList)||
+| ------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                       | Valid           | T1((); ListItems)            | getItems       |
+| No                        | Invalid         | T2((); EmptyList)            |                |
 
 ### **Class *ItemDao* - method *getItemsBySupplier***
 
@@ -1574,10 +1574,10 @@ Version: 1.0
 
 **Predicates for method *getItemsBySupplier*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Valid SupplierID in DB         |   Yes        |
-|          |     No      |
+| Criteria               | Predicate |
+| ---------------------- | --------- |
+| Valid SupplierID in DB | Yes       |
+|                        | No        |
 
 
 **Boundaries**:
@@ -1592,10 +1592,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Valid Supplier in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(SupplierID; ListItems)|getItemsOfSupplier|
-|No|Invalid|T2(SupplierID; EmptyList)|"|
+| Valid Supplier in DB | Valid / Invalid | Description of the test case | Jest test case     |
+| -------------------- | --------------- | ---------------------------- | ------------------ |
+| Yes                  | Valid           | T1(SupplierID; ListItems)    | getItemsOfSupplier |
+| No                   | Invalid         | T2(SupplierID; EmptyList)    | "                  |
 
 
 
@@ -1609,10 +1609,10 @@ Version: 1.0
 
 **Predicates for method *getItemByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| The given ItemID is in database         |   Yes        |
-|          |     No      |
+| Criteria                        | Predicate |
+| ------------------------------- | --------- |
+| The given ItemID is in database | Yes       |
+|                                 | No        |
 
 
 **Boundaries**:
@@ -1627,10 +1627,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| The given ItemID is in database | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(Existing ID in database; Item)|getItemFromId|
-|No|Invalid|T2(ID is not in database; Null)|"|
+| The given ItemID is in database | Valid / Invalid | Description of the test case      | Jest test case |
+| ------------------------------- | --------------- | --------------------------------- | -------------- |
+| Yes                             | Valid           | T1(Existing ID in database; Item) | getItemFromId  |
+| No                              | Invalid         | T2(ID is not in database; Null)   | "              |
 
 
 
@@ -1643,12 +1643,12 @@ Version: 1.0
 
 **Predicates for method *updateItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object for new Item        |   Yes        |
-|          |     No      |
-| Existing ItemID from a DB |   Yes        | 
-|  |      No     |
+| Criteria                     | Predicate |
+| ---------------------------- | --------- |
+| Validity object for new Item | Yes       |
+|                              | No        |
+| Existing ItemID from a DB    | Yes       |
+|                              | No        |
 
 **Boundaries**:
 
@@ -1663,11 +1663,11 @@ Version: 1.0
 
 
 | Validity object for new Position | Existing PositionID from a DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1(ValidItem; ())|updateAnItem|
-|Yes|No|Invalid|T2(ValidItem; ())|"|
-|No|Yes|Invalid|T3(ValidItem; Error)|"|
-|No|No|Invalid|T4(ValidItem; Error)|"|
+| -------------------------------- | ----------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                              | Yes                           | Valid           | T1(ValidItem; ())            | updateAnItem   |
+| Yes                              | No                            | Invalid         | T2(ValidItem; ())            | "              |
+| No                               | Yes                           | Invalid         | T3(ValidItem; Error)         | "              |
+| No                               | No                            | Invalid         | T4(ValidItem; Error)         | "              |
 
  ### **Class *ItemDao* - method *deleteItem***
 
@@ -1677,10 +1677,10 @@ Version: 1.0
 
 **Predicates for method *deleteItem*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| ItemID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria            | Predicate |
+| ------------------- | --------- |
+| ItemID exists in DB | Yes       |
+|                     | No        |
 
 
 **Boundaries**:
@@ -1696,9 +1696,9 @@ Version: 1.0
 
 
 | ItemID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; ())|deleteItem|
-|No|Invalid|T2(InvalidID; ())|"|
+| ------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                 | Valid           | T1(ValidID; ())              | deleteItem     |
+| No                  | Invalid         | T2(InvalidID; ())            | "              |
 
 --------------------------------------------------
 
@@ -1712,10 +1712,10 @@ Version: 1.0
 
 **Predicates for method *storeInternalOrder*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object Item         |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| Validity object Item | Yes       |
+|                      | No        |
 
 **Boundaries**:
 
@@ -1727,10 +1727,10 @@ Version: 1.0
 
 
 **Combination of predicates**:
-| Validity object InternalOrder | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidInternalOrder; lastID)|testNewInternalOrder|
-|No|Invalid|T2(InvalidInternalOrder; Error)|"|
+| Validity object InternalOrder | Valid / Invalid | Description of the test case    | Jest test case       |
+| ----------------------------- | --------------- | ------------------------------- | -------------------- |
+| Yes                           | Valid           | T1(ValidInternalOrder; lastID)  | testNewInternalOrder |
+| No                            | Invalid         | T2(InvalidInternalOrder; Error) | "                    |
 
 ### **Class *InternalOrderDAO* - method *storeProducts***
 
@@ -1740,10 +1740,10 @@ Version: 1.0
 
 **Predicates for method *storeProducts*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| Validity object Item         |   Yes        |
-|          |     No      |
+| Criteria             | Predicate |
+| -------------------- | --------- |
+| Validity object Item | Yes       |
+|                      | No        |
 
 **Boundaries**:
 
@@ -1758,9 +1758,9 @@ Version: 1.0
 
 
 | Validity object Item | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidProduct; lastID)|storeProduct|
-|No|Invalid|T2(NullProduct; Error)|"|
+| -------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                  | Valid           | T1(ValidProduct; lastID)     | storeProduct   |
+| No                   | Invalid         | T2(NullProduct; Error)       | "              |
 
 
 
@@ -1772,10 +1772,10 @@ Version: 1.0
 
 **Predicates for method *getInternalOrders*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are InternalOrders in DB         |   Yes        |
-|          |     No      |
+| Criteria                       | Predicate |
+| ------------------------------ | --------- |
+| There are InternalOrders in DB | Yes       |
+|                                | No        |
 
 
 **Boundaries**:
@@ -1790,10 +1790,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| There are InternalOrders in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListInternalOrders)|getInternalOrders|
-|No|Invalid|T2((); EmptyList)||
+| There are InternalOrders in DB | Valid / Invalid | Description of the test case | Jest test case    |
+| ------------------------------ | --------------- | ---------------------------- | ----------------- |
+| Yes                            | Valid           | T1((); ListInternalOrders)   | getInternalOrders |
+| No                             | Invalid         | T2((); EmptyList)            |                   |
 
 ### **Class *InternalOrderDAO* - method *getProducts***
 
@@ -1803,10 +1803,10 @@ Version: 1.0
 
 **Predicates for method *getProducts*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| There are Products in DB associated to SKUItem         |   Yes        |
-|          |     No      |
+| Criteria                                       | Predicate |
+| ---------------------------------------------- | --------- |
+| There are Products in DB associated to SKUItem | Yes       |
+|                                                | No        |
 
 
 **Boundaries**:
@@ -1822,9 +1822,9 @@ Version: 1.0
 
 
 | There are Products in DB associated to SKUItem | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1((); ListProducts)|getProducts|
-|No|Invalid|T2((); EmptyList)|"|
+| ---------------------------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                                            | Valid           | T1((); ListProducts)         | getProducts    |
+| No                                             | Invalid         | T2((); EmptyList)            | "              |
 
  ### **Class *InternalOrderDAO* - method *getInternalOrderByID***
 
@@ -1834,10 +1834,10 @@ Version: 1.0
 
 **Predicates for method *getInternalOrderByID*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| The given InternalOrderID is in DB         |   Yes        |
-|          |     No      |
+| Criteria                           | Predicate |
+| ---------------------------------- | --------- |
+| The given InternalOrderID is in DB | Yes       |
+|                                    | No        |
 
 
 **Boundaries**:
@@ -1852,10 +1852,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| The given InternalOrderID is in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(Existing ID in DB; Item)|getItemFromInternalOrderFromID|
-|No|Invalid|T2(ID is not in DB; Null)|"|
+| The given InternalOrderID is in DB | Valid / Invalid | Description of the test case | Jest test case                 |
+| ---------------------------------- | --------------- | ---------------------------- | ------------------------------ |
+| Yes                                | Valid           | T1(Existing ID in DB; Item)  | getItemFromInternalOrderFromID |
+| No                                 | Invalid         | T2(ID is not in DB; Null)    | "                              |
 
 
 
@@ -1868,12 +1868,12 @@ Version: 1.0
 
 **Predicates for method *changeState*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| InternalOrderID exists in DB        |   Yes        |
-|          |     No      |
-| New state is valid |   Yes        | 
-|  |      No     |
+| Criteria                     | Predicate |
+| ---------------------------- | --------- |
+| InternalOrderID exists in DB | Yes       |
+|                              | No        |
+| New state is valid           | Yes       |
+|                              | No        |
 
 **Boundaries**:
 
@@ -1887,12 +1887,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| InternalOrderID exists in DB | New state is valid | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Yes|Yes|Valid|T1((ExistsID, ValidState); True)|changeState|
-|Yes|No|Invalid|T2((ExistsID, NotValidState); Error)|"|
-|No|Yes|Invalid|T3((NotExistsID, ValidState); Error)|"|
-|No|No|Invalid|T4((NotExistsID, NotValidState); Error)|"|
+| InternalOrderID exists in DB | New state is valid | Valid / Invalid | Description of the test case            | Jest test case |
+| ---------------------------- | ------------------ | --------------- | --------------------------------------- | -------------- |
+| Yes                          | Yes                | Valid           | T1((ExistsID, ValidState); True)        | changeState    |
+| Yes                          | No                 | Invalid         | T2((ExistsID, NotValidState); Error)    | "              |
+| No                           | Yes                | Invalid         | T3((NotExistsID, ValidState); Error)    | "              |
+| No                           | No                 | Invalid         | T4((NotExistsID, NotValidState); Error) | "              |
 
  ### **Class *InternalOrderDAO* - method *deleteInternalOrder***
 
@@ -1902,10 +1902,10 @@ Version: 1.0
 
 **Predicates for method *deleteInternalOrder*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| InternalOrderID exists in DB         |   Yes        |
-|          |     No      |
+| Criteria                     | Predicate |
+| ---------------------------- | --------- |
+| InternalOrderID exists in DB | Yes       |
+|                              | No        |
 
 
 **Boundaries**:
@@ -1920,10 +1920,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| InternalOrderID exists in DB | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Yes|Valid|T1(ValidID; ID)|deleteAnInternalOrder|
-|No|Invalid|T2(InvalidID; Null)|"|
+| InternalOrderID exists in DB | Valid / Invalid | Description of the test case | Jest test case        |
+| ---------------------------- | --------------- | ---------------------------- | --------------------- |
+| Yes                          | Valid           | T1(ValidID; ID)              | deleteAnInternalOrder |
+| No                           | Invalid         | T2(InvalidID; Null)          | "                     |
 
 --------------------------------------------------
 
@@ -1937,10 +1937,10 @@ Version: 1.0
 
 **Predicates for method *testCreateTables*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| List of promises returned        |   Empty        |
-|          |     Full      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| List of promises returned | Empty     |
+|                           | Full      |
 
 **Boundaries**:
 
@@ -1952,10 +1952,10 @@ Version: 1.0
 
 
 **Combination of predicates**:
-| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Full|Valid|T1((); FullList)|testCreateTables|
-|Empty|Invalid|T2((); EmptyList)|"|
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case   |
+| ------------------------- | --------------- | ---------------------------- | ---------------- |
+| Full                      | Valid           | T1((); FullList)             | testCreateTables |
+| Empty                     | Invalid         | T2((); EmptyList)            | "                |
 
 ### **Class *DB* - method *testCreateDefaultUsers***
 
@@ -1965,10 +1965,10 @@ Version: 1.0
 
 **Predicates for method *testCreateDefaultUsers*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| List of promises returned           |   Empty        |
-|          |     Full      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| List of promises returned | Empty     |
+|                           | Full      |
 
 **Boundaries**:
 
@@ -1982,10 +1982,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Full|Valid|T1((); FullList)|testCreateDefaultUsers|
-|Empty|Invalid|T2((); EmptyList)|"|
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case         |
+| ------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Full                      | Valid           | T1((); FullList)             | testCreateDefaultUsers |
+| Empty                     | Invalid         | T2((); EmptyList)            | "                      |
 
 
 
@@ -1998,12 +1998,12 @@ Version: 1.0
 
 **Predicates for method *testCreateTableR*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| List of promises returned        |   Empty        |
-|          |     Full      |
-| Identifier is unique     |   Yes        |
-|          |     No      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| List of promises returned | Empty     |
+|                           | Full      |
+| Identifier is unique      | Yes       |
+|                           | No        |
 
 
 **Boundaries**:
@@ -2018,12 +2018,12 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| List of promises returned |Identifier is unique | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|Full|Yes|Valid|T1((); FullList)|testCreateTableR|
-|Full|No|Invalid|T2((); EmptyList)|"|
-|Empty|Yes|Invalid|T3((); EmptyList)|"|
-|Empty|No|Invalid|T4((); EmptyList)|"|
+| List of promises returned | Identifier is unique | Valid / Invalid | Description of the test case | Jest test case   |
+| ------------------------- | -------------------- | --------------- | ---------------------------- | ---------------- |
+| Full                      | Yes                  | Valid           | T1((); FullList)             | testCreateTableR |
+| Full                      | No                   | Invalid         | T2((); EmptyList)            | "                |
+| Empty                     | Yes                  | Invalid         | T3((); EmptyList)            | "                |
+| Empty                     | No                   | Invalid         | T4((); EmptyList)            | "                |
 
 ### **Class *DB* - method *testCreateItems***
 
@@ -2033,10 +2033,10 @@ Version: 1.0
 
 **Predicates for method *testCreateItems*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| List of promises returned       |   Empty        |
-|          |     Full      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| List of promises returned | Empty     |
+|                           | Full      |
 
 
 **Boundaries**:
@@ -2051,10 +2051,10 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Full|Valid|T1((); FullList)|testCreateItems|
-|Empty|Invalid|T2((); EmptyList)|"|
+| List of promises returned | Valid / Invalid | Description of the test case | Jest test case  |
+| ------------------------- | --------------- | ---------------------------- | --------------- |
+| Full                      | Valid           | T1((); FullList)             | testCreateItems |
+| Empty                     | Invalid         | T2((); EmptyList)            | "               |
 
  ### **Class *DB* - method *testDeleteAll***
 
@@ -2064,10 +2064,10 @@ Version: 1.0
 
 **Predicates for method *testDeleteAll*:**
 
-| Criteria | Predicate |
-| -------- | --------- |
-| List of promises returned         |   Empty        |
-|          |     Full      |
+| Criteria                  | Predicate |
+| ------------------------- | --------- |
+| List of promises returned | Empty     |
+|                           | Full      |
 
 
 **Boundaries**:
@@ -2083,9 +2083,9 @@ Version: 1.0
 
 
 | List of promises returned | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|
-|Full|Valid|T1((); FullList)|testDeleteAll|
-|Empty|Invalid|T2((); EmptyList)|"|
+| ------------------------- | --------------- | ---------------------------- | -------------- |
+| Full                      | Valid           | T1((); FullList)             | testDeleteAll  |
+| Empty                     | Invalid         | T2((); EmptyList)            | "              |
 
 --------------------------------------------------
 
@@ -2094,24 +2094,23 @@ Version: 1.0
 ### Test cases definition
     
 
-| Unit name | Jest test case |
-|--|--|
-|InternalOrder|internalOrder.test.js|
-|Item|item.test.js|
-|Position|position.test.js|
-|RestockOrder||
-|ReturnOrder|returnOrder.test.js|
-|SKU|sku.test.js|
-|SKUItem|skuitem.test.js|
-|TestDescriptor|testdescriptor.test.js|
-|TestResult|testresult.test.js|
-|User|user.test.js|
+| Unit name      | Jest test case         |
+| -------------- | ---------------------- |
+| InternalOrder  | internalOrder.test.js  |
+| Item           | item.test.js           |
+| Position       | position.test.js       |
+| RestockOrder   |                        |
+| ReturnOrder    | returnOrder.test.js    |
+| SKU            | sku.test.js            |
+| SKUItem        | skuitem.test.js        |
+| TestDescriptor | testdescriptor.test.js |
+| TestResult     | testresult.test.js     |
+| User           | user.test.js           |
 
 
 ### Code coverage report
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the coverage tool. >
+![](images/coverage.png)
 
 
 ### Loop coverage analysis
@@ -2119,11 +2118,11 @@ Version: 1.0
     <Identify significant loops in the units and reports the test cases
     developed to cover zero, one or multiple iterations >
 
-|Unit name | Loop rows | Number of iterations | Jest test case |
-|---|---|---|---|
-|||||
-|||||
-||||||
+| Unit name | Loop rows | Number of iterations | Jest test case |
+| --------- | --------- | -------------------- | -------------- |
+|           |           |                      |                |
+|           |           |                      |                |
+|           |           |                      |                |
 
 
 
