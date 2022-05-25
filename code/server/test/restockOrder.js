@@ -205,7 +205,6 @@ describe('GET /api/restockOrders/:id', () => {
 	it('should get order', function (done) {
 		agent.get('/api/restockOrders/' + orders[4]).then((res) => {
 			res.should.have.status(200);
-			try{
 			res.body.issueDate.should.be.equal('2021/11/29 09:33');
 			res.body.products.length.should.be.equal(1);
 			res.body.products[0].SKUId.should.equal(skuId)
@@ -216,10 +215,8 @@ describe('GET /api/restockOrders/:id', () => {
 			res.body.skuItems[0].rfid.should.equal("23345678901234567890123456789017")
 			res.body.skuItems[0].SKUId.should.equal(skuId)
 			res.body.state.should.equal('COMPLETEDRETURN');
-			res.body.supplierId.should.be(suppId);
-			} catch (error) {
-        	    console.error(error)
-       		 }
+			res.body.supplierId.should.be.equal(suppId);
+
 
 			done();
 		});
@@ -245,9 +242,11 @@ describe('GET /api/restockOrders/:id', () => {
 describe('GET /api/restockOrders/:id/returnItems', () => {
 	it('should get returnItems', function (done) {
 		agent.get('/api/restockOrders/' + orders[4] + '/returnItems').then((res) => {
+			
 			res.should.have.status(200);
-
-			res.body.id.should.equal([{ rfid: "23345678901234567890123456789017", SKUId: skuId }]);
+			res.body.length.should.be.equal(1);
+			res.body[0].SKUId.should.equal(skuId)
+			res.body[0].rfid.should.equal("23345678901234567890123456789017")
 
 			done();
 		});
