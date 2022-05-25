@@ -7,6 +7,7 @@ Version: 1
 | Version | Changes | 
 | ----------------- |:-----------|
 | 1.0 | Finalized first version |
+| 1.1 | Edited some methods names |
 
 
 # Contents
