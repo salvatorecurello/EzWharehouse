@@ -67,6 +67,12 @@ function login(username, password, type) {
         expect(res.type).toStrictEqual(type);
 
     });
+
+    test('login failed', async () => {
+        var res = await userDao.login("", password, type);
+        expect(res).toBeNull();
+
+    });
 }
 
 function getUserFromId(username) {
@@ -86,6 +92,13 @@ function getUserFromEmail(email) {
         var res = await userDao.getUserFromEmail(email);
         expect(res).not.toBeNull();
         expect(res.email).toStrictEqual(email);
+    });
+
+    test('get user from email failed', async () => {
+        
+        var res = await userDao.getUserFromEmail("");
+        expect(res).toBeNull();
+
     });
 }
 

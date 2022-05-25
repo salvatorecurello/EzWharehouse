@@ -24,7 +24,19 @@ class DAO {
         sql.push("DELETE FROM TestDescriptor");
         sql.push("DELETE FROM RestockOrder");
         sql.push("DELETE FROM SKUItemsRestockOrder");
-        return this.createTablesR(sql, 0).then(() => { });
+        let promises=[];
+        sql.forEach((x)=>{
+            promises.push(new Promise((resolve, reject) => {
+                this.db.run(x, [], (err) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve();
+                });
+            }))
+        })
+        
+        return promises
     }
 
     createTestItems() {
@@ -182,7 +194,7 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS Product (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, SKUID INTEGER, DESCRIPTION VARCHAR, PRICE FLOAT, QTY INTEGER)');
         //Request body of an item required id
         sql.push('CREATE TABLE IF NOT EXISTS Item (ID INTEGER PRIMARY KEY, DESCRIPTION VARCHAR, PRICE FLOAT, SKUID INTEGER, SUPPLIERID INTEGER)');
-        sql.push('CREATE TABLE IF NOT EXISTS SKUItem (RFID VARCHAR PRIMARY KEY, SKUID INTEGER, AVAILABLE INTEGER, DATEOFSTOCK INTEGER)');
+        sql.push('CREATE TABLE IF NOT EXISTS SKUItem (RFID VARCHAR PRIMARY KEY, SKUID INTEGER, AVAILABLE INTEGER, DATEOFSTOCK VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS ReturnOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RETURNDATE INTEGER, RESTOCKORDERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS Position (ID VARCHAR PRIMARY KEY, AISLEID VARCHAR, ROW VARCHAR, COL VARCHAR, MAXWEIGHT INTEGER, MAXVOLUME INTEGER, OCCUPIEDWEIGHT INTEGER, OCCUPIEDVOLUME INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS TestResult (ID INTEGER PRIMARY KEY AUTOINCREMENT, SKUITEMID VARCHAR, IDTESTDESCRIPTOR INTEGER, DATE INTEGER, RESULT INTEGER)');
@@ -207,7 +219,6 @@ class DAO {
     }
 
     createDefaultUsers(){
-        return new Promise((resolve, reject) => {
             const sql_User = 'INSERT or IGNORE INTO User(ID, NAME, SURNAME, TYPE, PASSWORD, EMAIL) VALUES(?, ?, ?, ?, ?, ?)';
 
 
@@ -221,16 +232,18 @@ class DAO {
             users.push({ id: 5, name: 'nome', surname: 'cognome', type: 'supplier', password: password, email: 'supplier1@ezwh.com' });
             users.push({ id: 6, name: 'nome', surname: 'cognome', type: 'manager', password: password, email: 'manager1@ezwh.com' });
 
-
-            users.forEach((user) => {
-                this.db.run(sql_User, [user.id, user.name, user.surname, user.type, user.password, user.email], (err) => {
-                    if (err)
-                        reject(err);
-                    else
-                        resolve();
-                });
-            });
-        });
+            let promises=[];
+            users.forEach((user)=>{
+                promises.push(new Promise((resolve, reject) => {
+                    this.db.run(sql_User, [user.id, user.name, user.surname, user.type, user.password, user.email], (err) => {
+                        if (err)
+                            reject(err);
+                        else
+                            resolve();
+                    });
+                }))
+            })
+            return promises;
     }
 }
 

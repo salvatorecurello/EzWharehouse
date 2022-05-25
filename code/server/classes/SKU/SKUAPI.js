@@ -104,12 +104,12 @@ module.exports = function(app){
                     const pos = await Positiondao.getPositionByID(req.body.position)
                     if (pos!=undefined){ 
                         let x = await skudao.PositionOccupied(req.body.position);
-                        if(pos.MAXWEIGHT>= weight && pos.MAXVOLUME>= volume && x==undefined){ 
+                        if(pos.maxWeight>= weight && pos.maxVolume>= volume && x==undefined){ 
                             if(sku.position != null){
                                 await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                                 await skudao.updatePositionWeightVolume(sku.position, 0, 0);
-                                } else {
+                            } else {
                                 await skudao.modifySKUPosition(req.body.position, req.params.id); 
                                 await skudao.updatePositionWeightVolume(req.body.position, weight, volume);
                             }
@@ -117,6 +117,7 @@ module.exports = function(app){
                         }
                         return res.status(422).end();
                     } else {
+
                         return res.status(422).end();
                     }
                 }

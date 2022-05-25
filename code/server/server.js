@@ -30,7 +30,7 @@ require('./classes/User/UserAPI.js')(app);
 
 Promise.all(db.createTables()).then(() => {
   Promise.all(db.createTestItems()).then(() => {
-    db.createDefaultUsers().then(() => {
+    Promise.all(db.createDefaultUsers()).then(() => {
       app.listen(port, () => {
         console.log(`Server listening at http://localhost:${port}`);
       });
