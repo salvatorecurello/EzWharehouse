@@ -2099,7 +2099,7 @@ Version: 1.0
 | InternalOrder  | internalOrder.test.js  |
 | Item           | item.test.js           |
 | Position       | position.test.js       |
-| RestockOrder   |                        |
+| RestockOrder   | restockOrder.test.js   |
 | ReturnOrder    | returnOrder.test.js    |
 | SKU            | sku.test.js            |
 | SKUItem        | skuitem.test.js        |
