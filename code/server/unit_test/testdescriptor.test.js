@@ -7,14 +7,16 @@ const mainDB = require("../db.js");
 describe('test testdescriptor', () => {
     beforeAll(async () => {
 
-        await SKUDao.storeSKU({description: "testSKU", weight: 100, volume: 100, notes: "notes sku1", price: 10.0, availableQuantity:0});
+        id = await SKUDao.storeSKU({description: "testSKUtestdescriptor", weight: 100, volume: 100, notes: "notes sku1", price: 10.0, availableQuantity:0});
+        await TestDescriptorDao.storeTestDescriptor({name: "testDeleteTestDescriptor", procedureDescription: "aaaaaa", idSKU: id});
+        await TestDescriptorDao.storeTestDescriptor({name: "testUpdateTestDescriptor", procedureDescription: "aaaaaa", idSKU: id});
     });
 
     teststoreTestDescriptor("testDescriptor1", "procedureDescription1");
     testgetTestDescriptors();
     testgetTestDescriptorsByID("testDescriptor1");
-    testupdateTestDescriptor("testUpdate", "testUpdateDescription", "testDescriptor1");
-    testdeleteTestDescriptor("testUpdate");
+    testupdateTestDescriptor("testUpdateTestDescriptorUpdated", "testUpdateDescription", "testUpdateTestDescriptor");
+    testdeleteTestDescriptor("testDeleteTestDescriptor");
 });
 
 function teststoreTestDescriptor(name, procedureDescription) {
@@ -23,7 +25,7 @@ function teststoreTestDescriptor(name, procedureDescription) {
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
         for(const _sku of tmp){
-            if(_sku.description==="testSKU"){
+            if(_sku.description==="testSKUtestdescriptor"){
                 sku= _sku;
             }
         }
@@ -75,7 +77,7 @@ function testupdateTestDescriptor(newName, newProcedureDescription, oldName) {
         expect(tmp.length).toBeGreaterThanOrEqual(1);
         let sku=undefined;
         for(const _sku of tmp){
-            if(_sku.description==="testSKU"){
+            if(_sku.description==="testSKUtestdescriptor"){
                 sku= _sku;
             }
         }

@@ -21,9 +21,9 @@ const RoDAO = new RestockOrderDAO();
 
 describe('test RestockOrder', () => {
 	beforeAll(async () => {
-		let skuId = await sDAO.storeSKU({ description: "testSKU", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
-		let suppId = await uDAO.storeUser({ username: "prova", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
-		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttest", procedureDescription: "description for test", idSKU: skuId });
+		let skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
+		let suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
+		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });
 		let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
 
 		await RoDAO.store(order);
@@ -38,7 +38,7 @@ describe('test RestockOrder', () => {
 			RoDAO.setState(id, 'TESTED')
 		);
 		await RoDAO.store(order).then((id) =>
-			RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "12345678901234567890123456789017", SKUId: skuId }]))
+			RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "12345678901234567890123456789067", SKUId: skuId }]))
 		).then((id) =>
 			RoDAO.setState(id, 'COMPLETEDRETURN')
 		);
@@ -47,9 +47,9 @@ describe('test RestockOrder', () => {
 		);
 		await RoDAO.store(order);
 
-		await siDAO.storeSKUItem({ RFID: "12345678901234567890123456789016", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
-		await siDAO.storeSKUItem({ RFID: "12345678901234567890123456789017", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
-		await trDAO.storeTestResult({ rfid: "12345678901234567890123456789017", idTestDescriptor: tdId, Date: '2021/12/29', Result: 0 });
+		await siDAO.storeSKUItem({ RFID: "12345678901234567890123456789066", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
+		await siDAO.storeSKUItem({ RFID: "12345678901234567890123456789067", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
+		await trDAO.storeTestResult({ rfid: "12345678901234567890123456789067", idTestDescriptor: tdId, Date: '2021/12/29', Result: 0 });
 	});
 
 	testStore();
@@ -72,7 +72,7 @@ function testStore() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('prova').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {
@@ -207,7 +207,7 @@ function testSetSkuItems() {
 			{ rfid: "12345678901234567890123456789015", SKUId: skuId }
 		];
 		let skuItems2 = [
-			{ rfid: "12345678901234567890123456789016", SKUId: skuId }
+			{ rfid: "12345678901234567890123456789066", SKUId: skuId }
 		];
 		let skuItems3 = [
 			{ rfid: "12345678901234567890123456789015", SKUId: skuId + 10 }
@@ -301,7 +301,7 @@ function testGetAll() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('prova').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 
@@ -328,7 +328,7 @@ function testGetIssued() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('prova').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 
@@ -355,7 +355,7 @@ function testGet() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('prova').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {
@@ -412,7 +412,7 @@ function testGetReturnItems() {
 			return err;
 		});
 
-		expect(res1).toEqual([{ rfid: "12345678901234567890123456789017", SKUId: skuId }]);
+		expect(res1).toEqual([{ rfid: "12345678901234567890123456789067", SKUId: skuId }]);
 		expect(res2).toEqual("No match");
 		expect(res3).toEqual("Wrong data");
 		expect(res4).toEqual("Wrong data");
