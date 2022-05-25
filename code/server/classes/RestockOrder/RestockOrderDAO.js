@@ -42,10 +42,10 @@ class RestockOrderDAO {
 					if (err)
 						reject(err);
 					else
-						resolve(orderId);
+						resolve();
 				});
 			});
-		}).then((orderId) =>
+		}).then(() =>
 			this.insertProductsR(orderId, products, i + 1)
 		).catch((res) => {
 			return new Promise((resolve, reject) => {

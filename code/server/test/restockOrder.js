@@ -33,23 +33,19 @@ before('RestockOrder Test setup', async () => {
 	let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
 
 	orders.push(await RoDAO.store(order));
-	orders.push(await RoDAO.store(order).then((id) =>
-		RoDAO.setState(id, 'DELIVERY')
-	));
-	orders.push(await RoDAO.store(order).then((id) =>
-		RoDAO.setState(id, 'DELIVERED')
-	));
-	orders.push(await RoDAO.store(order).then((id) =>
-		RoDAO.setState(id, 'TESTED')
-	));
+	orders.push(await RoDAO.store(order));
+	orders.push(await RoDAO.store(order));
+	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order).then((id) =>
 		RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "23345678901234567890123456789017", SKUId: skuId }]))
-	).then((id) =>
-		RoDAO.setState(id, 'COMPLETEDRETURN')
 	));
-	orders.push(await RoDAO.store(order).then((id) =>
-		RoDAO.setState(id, 'COMPLETED')
-	));
+	orders.push(await RoDAO.store(order));
+
+	await RoDAO.setState(orders[1], 'DELIVERY');
+	await RoDAO.setState(orders[2], 'DELIVERED');
+	await RoDAO.setState(orders[3], 'TESTED');
+	await RoDAO.setState(orders[4], 'COMPLETEDRETURN');
+	await RoDAO.setState(orders[5], 'COMPLETED');
 
 	await siDAO.storeSKUItem({ RFID: "23345678901234567890123456789016", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
 	await siDAO.storeSKUItem({ RFID: "23345678901234567890123456789017", SKUId: skuId, DateOfStock: "2021/12/29 12:30" });
