@@ -83,7 +83,7 @@ Integration sequence: **Bottom Up**
 | InternalOrder  | internalOrder.test.js  |
 | Item           | item.test.js           |
 | Position       | position.test.js       |
-| RestockOrder   |                        |
+| RestockOrder   | restockOrder.test.js   |
 | ReturnOrder    | returnOrder.test.js    |
 | SKU            | sku.test.js            |
 | SKUItem        | skuitem.test.js        |
@@ -98,8 +98,8 @@ Integration sequence: **Bottom Up**
 | InternalOrderAPI  | internalOrder.js  |
 | ItemAPI           | item.js           |
 | PositionAPI       | position.js       |
-| RestockOrderAPI   |                   |
-| ReturnOrderAPI    |                   |
+| RestockOrderAPI   | restockOrder.js   |
+| ReturnOrderAPI    | returnOrder.js    |
 | SKUAPI            | sku.js            |
 | SKUItemAPI        | skuitem.js        |
 | TestDescriptorAPI | testdescriptor.js |
@@ -157,6 +157,5 @@ Integration sequence: **Bottom Up**
 | NFR6                       | "POST /api/skuitem" "PUT /api/skuitems/:rfid"                                                                       |
 | NFR7                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
 | NFR8                       | "POST /api/position" PUT "/api/position/:positionID"                                                                |
-| NFR9                       | "POST /api/skuitem" "POST /api/internalOrders"                                                                      | // Restock Order e Return Order 
-
+| NFR9                       | "POST /api/skuitem" "POST /api/internalOrders" "POST /api/restockOrder" "POST /api/returnOrder"                     | 
 
