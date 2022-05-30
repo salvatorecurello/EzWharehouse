@@ -19,8 +19,9 @@ module.exports = function (app) {
 
     app.get('/api/items/:id', async function (req, res) {
         try {
-            const id = parseInt(req.params.id);
-            if (id < 0 || id == undefined) {
+            const id = req.params.id;
+            
+            if (id < 0 || id == 'null') {
                 return res.status(422).end();
             }
             const result = await ItemDao.getItemByID(id);
@@ -35,21 +36,26 @@ module.exports = function (app) {
 
     app.post('/api/item', async function (req, res) {
         try {
+            
             const description = req.body.description;
             const price = req.body.price;
             const skuid = req.body.SKUId;
             const supplierID = req.body.supplierId;
             const id = req.body.id;
+            
+            const res1 = await SkuDao.getSKUByID(skuid);
+
+            if (res1 == undefined) {
+                return res.status(404).end();
+            }
 
             let supp = await UserDao.getUserFromId(supplierID);
             if (supp == undefined) {
-                
-                return res.status(422).end();
+                return res.status(404).end();
             }
 
             let i = await ItemDao.getItemByID(id);
             if (i != undefined) {
-                
                 return res.status(422).end();
             }
                 
@@ -76,11 +82,7 @@ module.exports = function (app) {
                     return res.status(422).end();
                 }
                     
-            const res1 = await SkuDao.getSKUByID(skuid);
-
-            if (res1 == undefined) {
-                return res.status(404).end();
-            }
+            
             const r = await ItemDao.storeItem(item);
 
 
