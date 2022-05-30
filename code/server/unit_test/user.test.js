@@ -18,10 +18,10 @@ describe('testUser', () => {
     getUsers();
     getSuppliers();
     login('luca', 'testpassword', 'customer');
-    getUserFromId("prova");
-    getUserFromEmail("prova");
+    getUserFromId("prova", "qualityEmployee");
+    getUserFromEmail("prova", "qualityEmployee");
     updateUser("deliveryEmployee");
-    deleteUser(id); 
+    deleteUser(); 
 });
 
 function testNewUser(username, name, surname, role, password) {
@@ -32,7 +32,7 @@ function testNewUser(username, name, surname, role, password) {
         var res = await userDao.getUsers();
         expect(res.length).toBeGreaterThanOrEqual(1);
         
-        res = await userDao.getUserFromEmail(username);
+        res = await userDao.getUserFromEmail(username, role);
 
         expect(res.email).toStrictEqual(username);
         expect(res.name).toStrictEqual(name);
@@ -77,9 +77,9 @@ function login(username, password, type) {
     });
 }
 
-function getUserFromId(username) {
+function getUserFromId(username, type) {
     test('get user from id', async () => {
-        var res = await userDao.getUserFromEmail(username);
+        var res = await userDao.getUserFromEmail(username, type);
         res = await userDao.getUserFromId(res.id);
         expect(res).not.toBeNull();
         expect(res.id).toStrictEqual(res.id);
@@ -88,17 +88,17 @@ function getUserFromId(username) {
 }
 
 
-function getUserFromEmail(email) {
+function getUserFromEmail(email, type) {
     test('get user from email', async () => {
         
-        var res = await userDao.getUserFromEmail(email);
+        var res = await userDao.getUserFromEmail(email, type);
         expect(res).not.toBeNull();
         expect(res.email).toStrictEqual(email);
     });
 
     test('get user from email failed', async () => {
         
-        var res = await userDao.getUserFromEmail("");
+        var res = await userDao.getUserFromEmail("", "");
         expect(res).toBeNull();
 
     });
@@ -106,7 +106,7 @@ function getUserFromEmail(email) {
 
 function updateUser(newType) {
     test('update user', async () => {
-        var res = await userDao.getUserFromEmail("prova");
+        var res = await userDao.getUserFromEmail("prova", "qualityEmployee");
         var id = res.id;
         await userDao.updateUser(id, newType);
         var res = await userDao.getUserFromId(id);
@@ -118,7 +118,7 @@ function updateUser(newType) {
 
 function deleteUser() {
     test('delete user', async () => {
-        var res = await userDao.getUserFromEmail("prova");
+        var res = await userDao.getUserFromEmail("prova", "deliveryEmployee");
         var id = res.id;
         await userDao.deleteUser(id);
         var res = await userDao.getUserFromId(id);
