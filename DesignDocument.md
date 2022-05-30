@@ -7,6 +7,7 @@ Version: 1
 | Version | Changes | 
 | ----------------- |:-----------|
 | 1.0 | Finalized first version |
+| 1.1 | Edited some methods names |
 
 
 # Contents
@@ -53,7 +54,7 @@ class User {
 +string getSurname()
 +string getType()
 +string getEmail()
-+bool verifyPassword(String)
++bool login(String, String, String)
 }
 
 class InternalOrder{
@@ -64,8 +65,8 @@ class InternalOrder{
 +customerID :int
 
 +void setIssueDate(string)
-+void setState(string)
-+void setProducts(integer, integer)
++void changeState(string)
++void storeProducts(integer, integer)
 +list getProductList()
 +date getIssueDate()
 }
@@ -82,7 +83,7 @@ class SKU{
 +testDescriptorsIDList :list
 
 +void setNotes(string)
-+void setPosition(string)
++void modifySKUPosition(string)
 +void setAvailableQuantity(integer)
 +void setPrice(double)
 +void setTestDescriptorIDList(list)
@@ -175,7 +176,8 @@ class RestockOrder{
 
 +void setIssueDate(string)
 +void setState(string)
-+void addSKUItem(integer, integer)
++void setTransportNote(string)
++void setSkuItems(integer, integer)
 +date getIssueDate()
 +list getSKUItemsIDList()
 +map getTransportNote()
@@ -267,7 +269,7 @@ class WarehouseInterface{
 +Item searchItem(integer)
 +void deleteItem(integer)
 +void manageDelivery(integer[], integer[])
-+User login(string, string)
++User login(string, string, string)
 +void logout()
 }
 
