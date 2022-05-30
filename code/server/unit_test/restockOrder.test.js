@@ -68,7 +68,7 @@ function testStore() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder', "supplier").then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {
@@ -297,7 +297,7 @@ function testGetAll() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder', "supplier").then((res) => {
 			return res.id;
 		});
 
@@ -324,7 +324,7 @@ function testGetIssued() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder', "supplier").then((res) => {
 			return res.id;
 		});
 
@@ -351,7 +351,7 @@ function testGet() {
 		let skuId = await sDAO.getSkus().then((res) => {
 			return res[0].id;
 		});
-		let suppId = await uDAO.getUserFromEmail('provarestockorder').then((res) => {
+		let suppId = await uDAO.getUserFromEmail('provarestockorder', "supplier").then((res) => {
 			return res.id;
 		});
 		let orderId = await RoDAO.getAll().then((res) => {

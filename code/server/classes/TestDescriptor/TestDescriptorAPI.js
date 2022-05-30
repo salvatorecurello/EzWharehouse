@@ -21,8 +21,9 @@ module.exports = function (app) {
     app.get('/api/testDescriptors/:id', async function (req, res) {
         try {
             //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
+            
             const id = parseInt(req.params.id);
-            if (id != undefined) {
+            if (id != undefined && !isNaN(id)) {
                 const testdescriptor = await TestDescriptordao.getTestDescriptorsByID(id);
                 if (testdescriptor != null) {
                     return res.status(200).json(testdescriptor);
