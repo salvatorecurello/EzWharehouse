@@ -17,6 +17,10 @@ module.exports = function (app) {
 
     app.post('/api/position', async function (req, res) {
         try {
+            if(Object.keys(req.body) == 0) {
+                return res.status(422).end();
+            }
+            
             const col = req.body.col;
             const row = req.body.row;
             const maxWeight = req.body.maxWeight;
