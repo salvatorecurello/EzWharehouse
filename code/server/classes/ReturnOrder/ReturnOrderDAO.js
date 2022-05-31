@@ -20,11 +20,12 @@ class ReturnOrderDAO {
 			const sql = 'SELECT COUNT(*) as num FROM SKUItemsRestockOrder WHERE restockOrderId = ? AND skuId = ? AND skuItemId = ?;';
 
 			this.db.get(sql, [orderId, products[i].SKUId, products[i].RFID], (err, row) => {
-				if (err)
+				if (err){
 					reject(err);
-				else if (row.num == 0)
-					reject("Wrong data");
-				else
+				/*}else if (row.num == 0){
+					console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+					reject("Wrong data");*/
+				}else
 					resolve();
 			});
 		}).then(() => this.checkProductsR(orderId, issueDate, products, i + 1));
@@ -63,15 +64,16 @@ class ReturnOrderDAO {
 	async store(data) {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT issueDate FROM RestockOrder WHERE id = ?;';
-
-			if (!parseInt(data.restockOrderId) || !data.products)
+			if (!data.restockOrderId || data.products==undefined){
 				return reject("Wrong data");
+			}
 
 			this.db.get(sql, [data.restockOrderId], (err, row) => {
 				if (err)
 					reject(err);
-				else if (row == null)
+				else if (row == null){
 					reject("No match");
+				}
 				else
 					resolve(row.ISSUEDATE);
 			});
@@ -81,10 +83,10 @@ class ReturnOrderDAO {
 			return new Promise((resolve, reject) => {
 				const sql = 'INSERT INTO ReturnOrder(RETURNDATE, RESTOCKORDERID) VALUES(?, ?);';
 				const returnDate = dayjs(data.returnDate);
-				const issueDate = dayjs.unix(res).format('YYYY/MM/DD HH:mm');
-
-				if (!returnDate.isValid() || returnDate.isBefore(issueDate))
+				const issueDate = dayjs.unix(res);
+				if (!returnDate.isValid() ){
 					return reject("Wrong data");
+				}
 
 				this.db.run(sql, [returnDate.unix(), data.restockOrderId], function (err) {
 					if (err)

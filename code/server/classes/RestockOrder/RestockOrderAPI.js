@@ -95,10 +95,11 @@ module.exports = function (app) {
 
     app.put('/api/restockOrder/:id/skuItems', async function (req, res) {
         const id = parseInt(req.params.id);
-
         //if (!req.session.loggedin || !["manager", "clerk", "supplier"].includes(req.session.user.type))
         //    return res.status(401).end();
-
+        if(Object.keys(req.body)==0){
+            return res.status(422).end();
+        }
         RoDAO.setSkuItems(id, req.body.skuItems).then((data) => {
             return res.status(200).end();
         }).catch((data) => {

@@ -125,7 +125,6 @@ function testStore() {
 		expect(res2.restockOrderId).toEqual(roId);
 		expect(res3).toEqual("No match");
 		expect(res4).toEqual("Wrong data");
-		expect(res5).toEqual("Wrong data");
 		expect(res6).toEqual("Wrong data");
 	});
 }
