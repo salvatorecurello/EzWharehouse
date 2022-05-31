@@ -27,7 +27,7 @@ module.exports = function(app){
     app.get('/api/skus/:id', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.params.id != undefined) {
+            if (req.params.id != undefined && !isNaN(parseInt(req.params.id))) {
                 const sku = await skudao.getSKUByID(req.params.id);
                 if (sku != null) {
                     sku.setTestDescriptorIDList(await skudao.getTestDescriptorsBySKUID(sku.id));
@@ -48,6 +48,9 @@ module.exports = function(app){
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             if (req.body.description != undefined && req.body.weight != undefined && req.body.volume != undefined && req.body.notes != undefined && req.body.price != undefined && req.body.availableQuantity != undefined) {
+                if(req.body.description==="" || req.body.notes==="" || typeof req.body.weight!="number" || !Number.isInteger(req.body.weight) || typeof req.body.volume!="number" || !Number.isInteger(req.body.volume) || typeof req.body.price!="number" || typeof req.body.availableQuantity!="number" || !Number.isInteger(req.body.availableQuantity) || req.body.weight<0 || req.body.volume<0 || req.body.price<0 || req.body.availableQuantity<0){
+                    return res.status(422).end();
+                }
                 await skudao.storeSKU(req.body);
                 return res.status(201).end();
             }
@@ -63,7 +66,7 @@ module.exports = function(app){
     app.put('/api/sku/:id', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.params.id != undefined && req.body.newDescription != undefined && req.body.newWeight != undefined && req.body.newVolume != undefined && req.body.newNotes != undefined && req.body.newPrice != undefined && req.body.newAvailableQuantity != undefined) {
+            if (req.params.id != undefined && !isNaN(parseInt(req.params.id)) && req.body.newDescription != undefined && req.body.newWeight != undefined && req.body.newVolume != undefined && req.body.newNotes != undefined && req.body.newPrice != undefined && req.body.newAvailableQuantity != undefined) {
                 const sku = await skudao.getSKUByID(req.params.id);
                 if (sku != null) {
                     if (sku.availableQuantity != req.body.newAvailableQuantity) {
@@ -96,7 +99,7 @@ module.exports = function(app){
     app.put('/api/sku/:id/position', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.params.id != undefined && req.body.position != undefined) {
+            if (req.params.id != undefined && !isNaN(parseInt(req.params.id)) && req.body.position != undefined) {
                 const sku = await skudao.getSKUByID(req.params.id)
                 if (sku != null) {
                     const weight = sku.availableQuantity * sku.weight;
@@ -135,7 +138,7 @@ module.exports = function(app){
     app.delete('/api/skus/:id', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.params.id != undefined) {
+            if (req.params.id != undefined && !isNaN(parseInt(req.params.id))) {
                 const sku = await skudao.getSKUByID(req.params.id);
                 if (sku != null) {
                     if (await skudao.existingSKUItem(req.params.id)) {
