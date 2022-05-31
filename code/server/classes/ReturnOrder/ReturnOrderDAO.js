@@ -20,11 +20,12 @@ class ReturnOrderDAO {
 			const sql = 'SELECT COUNT(*) as num FROM SKUItemsRestockOrder WHERE restockOrderId = ? AND skuId = ? AND skuItemId = ?;';
 
 			this.db.get(sql, [orderId, products[i].SKUId, products[i].RFID], (err, row) => {
-				if (err)
+				if (err){
 					reject(err);
-				else if (row.num == 0)
-					reject("Wrong data");
-				else
+				/*}else if (row.num == 0){
+					console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+					reject("Wrong data");*/
+				}else
 					resolve();
 			});
 		}).then(() => this.checkProductsR(orderId, issueDate, products, i + 1));
@@ -70,8 +71,9 @@ class ReturnOrderDAO {
 			this.db.get(sql, [data.restockOrderId], (err, row) => {
 				if (err)
 					reject(err);
-				else if (row == null)
+				else if (row == null){
 					reject("No match");
+				}
 				else
 					resolve(row.ISSUEDATE);
 			});
