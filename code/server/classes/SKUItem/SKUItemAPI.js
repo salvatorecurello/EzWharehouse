@@ -19,6 +19,7 @@ module.exports = function (app) {
             //    return res.status(401).end();
             //}
         } catch (error) {
+            console.error(error)
             return res.status(500).end();
         }
     });
@@ -26,7 +27,7 @@ module.exports = function (app) {
     app.get('/api/skuitems/sku/:id', async function(req, res){
         try{
         //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="customer")){
-            if(req.params.id!=undefined){
+            if(req.params.id!=undefined && !isNaN(parseInt(req.params.id))){
                 if(await SKUdao.getSKUByID(req.params.id)){
                     const skuitem = await skuitemdao.getArraySKUItemByID(req.params.id);
                     return res.status(200).json(skuitem);
@@ -46,7 +47,7 @@ module.exports = function (app) {
     app.get('/api/skuitems/:rfid', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.params.rfid != undefined) {
+            if (req.params.rfid != undefined && req.params.rfid!=null && req.params.rfid!="null" ) {
                 const skuitem = await skuitemdao.getSKUItemByRFID(req.params.rfid); 
                 if (skuitem != null) {
                     return res.status(200).json(skuitem);
@@ -68,15 +69,15 @@ module.exports = function (app) {
             //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="clerk")){
             const rfid = req.body.RFID
             if(rfid!=undefined && rfid.length==32 && /^\d+$/.test(rfid) && req.body.SKUId!=undefined && (d1.test(req.body.DateOfStock) || d2.test(req.body.DateOfStock) || req.body.DateOfStock == null)){
-                if(await skuitemdao.getSKUItemByRFID(rfid)){
-                    return res.status(422).end();
+                if(!(await SKUdao.getSKUByID(req.body.SKUId))){
+                    return res.status(404).end();
                 }
                 else {
-                    if(await SKUdao.getSKUByID(req.body.SKUId)){
+                    if(!(await skuitemdao.getSKUItemByRFID(rfid))){
                         await skuitemdao.storeSKUItem(req.body);
                         return res.status(201).end();
                     }
-                    return res.status(404).end();
+                    return res.status(422).end();
                 }
             }
             return res.status(422).end();

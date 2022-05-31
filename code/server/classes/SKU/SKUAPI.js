@@ -141,12 +141,12 @@ module.exports = function(app){
             if (req.params.id != undefined && !isNaN(parseInt(req.params.id))) {
                 const sku = await skudao.getSKUByID(req.params.id);
                 if (sku != null) {
-                    if (await skudao.existingSKUItem(req.params.id)) {
+                   /* if (await skudao.existingSKUItem(req.params.id)) {
                         return res.status(422).end();
                     }
                     if (await skudao.existingTestDescriptor(req.params.id)) {
                         return res.status(422).end();
-                    }
+                    }*/
                     if (sku.position != null) {
                         await skudao.updatePositionWeightVolume(sku.position, 0, 0);
                         await skudao.deleteSKU(req.params.id);
