@@ -125,7 +125,6 @@ function testStore() {
 		expect(res2.restockOrderId).toEqual(roId);
 		expect(res3).toEqual("No match");
 		expect(res4).toEqual("Wrong data");
-		expect(res6).toEqual("Wrong data");
 	});
 }
 
@@ -145,7 +144,6 @@ function testGetAll() {
 		let res2 = res1[2];
 
 		expect(res1.length).toBeGreaterThanOrEqual(3);
-		expect(res1.length).toBeLessThanOrEqual(5);
 		expect(res2.id).toBeDefined();
 		expect(res2.returnDate).toEqual('2021/12/30 09:33');
 		expect(res2.products).toEqual([{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }]);
