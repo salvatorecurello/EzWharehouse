@@ -67,6 +67,7 @@ module.exports = function (app) {
             //}
             //return res.status(401).end();
         } catch (error) {
+            console.error(error)
             return res.status(500).end();
         }
     });
@@ -271,14 +272,17 @@ module.exports = function (app) {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             const username = req.params.username;
             const type = req.params.type;
-            if (username != undefined && type != undefined) {
+            if (username != undefined && type != undefined && /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(username)&& ["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(type)) {
                 const user = await Userdao.getUserFromEmail(username, type);
+                console.log(user)
                 if (user != null) {
                     if (user.type == type && type != "manager") {
                         await Userdao.deleteUser(user.id);
                         return res.status(204).end();
                     }
                 }
+                return res.status(204).end();
+                
             }
             return res.status(422).end();
             //}
