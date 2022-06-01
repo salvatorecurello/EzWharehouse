@@ -172,7 +172,7 @@ class RestockOrderDAO {
 				else
 					resolve();
 			});
-		}).then(() => {
+		})/*.then(() => {
 			return new Promise((resolve, reject) => {
 				const sql = 'SELECT COUNT(*) as num FROM SKUItem WHERE rfid = ?';
 
@@ -188,7 +188,7 @@ class RestockOrderDAO {
 						resolve();
 				});
 			});
-		}).then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
+		})*/.then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
 	}
 	checkSKUItems(order, skuItems) {
 		if (order.State != 2 || skuItems == undefined)
@@ -255,7 +255,7 @@ class RestockOrderDAO {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT id FROM User WHERE type = "supplier" and id = ?';
 
-			if (!parseInt(data.supplierId))
+			if (!data || !parseInt(data.supplierId))
 				return reject("Wrong data");
 
 			this.db.get(sql, [data.supplierId], (err, row) => {
@@ -379,16 +379,17 @@ class RestockOrderDAO {
 	}
 
 	//UPDATE
-	setState(id, state) {
+	setState(orderId, state) {
 		return new Promise((resolve, reject) => {
 			const sql = 'UPDATE RestockOrder SET state = ? WHERE ID = ?;';
-			let i;
+			let i, id = parseInt(orderId);
+
+			if (!id || !state)
+				return reject("Wrong data");
 
 			for (i = 0; i < RestockOrder.states.length && state != RestockOrder.states[i]; i++);
 
-			id = parseInt(id);
-
-			if (!id || i >= RestockOrder.states.length)
+			if (i >= RestockOrder.states.length)
 				return reject("Wrong data");
 
 			this.db.run(sql, [i + 1, id], function (err) {
