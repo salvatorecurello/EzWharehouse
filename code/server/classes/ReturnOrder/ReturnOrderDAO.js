@@ -86,7 +86,7 @@ class ReturnOrderDAO {
 				const issueDate = dayjs.unix(res);
 
 				if (!returnDate.isValid() /*|| returnDate.isBefore(issueDate)*/)
-					return reject("Wrong data");ç
+					return reject("Wrong data");
 
 				this.db.run(sql, [returnDate.unix(), data.restockOrderId], function (err) {
 					if (err)
