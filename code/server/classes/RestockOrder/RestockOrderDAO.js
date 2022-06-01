@@ -186,7 +186,7 @@ class RestockOrderDAO {
 						reject(err);
 /*					}else if (row.num != 0){
 						console.log("sono qui e");
-						reject("Wrong data");*/
+						reject("Wrong data");
 					}else
 						resolve();
 				});
