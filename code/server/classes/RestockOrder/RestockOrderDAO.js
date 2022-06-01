@@ -56,10 +56,10 @@ class RestockOrderDAO {
 			});
 		});
 	}
-	getOrder(id) {
+	getOrder(orderId) {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT id, issueDate, supplierId, state FROM RestockOrder WHERE id = ?;';
-			id = parseInt(id);
+			let id = parseInt(orderId);
 
 			if (!id){
 				return reject("Wrong data");
