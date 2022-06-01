@@ -30,7 +30,7 @@ class ReturnOrderDAO {
 		}).then(() => this.checkProductsR(orderId, issueDate, products, i + 1));
 	}
 	getReturnItemsR(orders, i) {
-		if(i >= orders.length)
+		if (i >= orders.length)
 			return new Promise((resolve, reject) => {
 				let res = [];
 
@@ -52,7 +52,7 @@ class ReturnOrderDAO {
 						rows.forEach((row) => {
 							orders[i].pushProducts(row);
 						});
-					
+
 					resolve();
 				}
 			});
@@ -64,7 +64,7 @@ class ReturnOrderDAO {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT issueDate FROM RestockOrder WHERE id = ?;';
 
-			if (!parseInt(data.restockOrderId) || !data.products)
+			if (!data || !parseInt(data.restockOrderId) || !data.products)
 				return reject("Wrong data");
 
 			this.db.get(sql, [data.restockOrderId], (err, row) => {
@@ -75,15 +75,15 @@ class ReturnOrderDAO {
 				else
 					resolve(row.ISSUEDATE);
 			});
-		}).then((res) =>
+		})/*.then((res) =>
 			this.checkProductsR(data.restockOrderId, res, data.products, 0)
-		).then((res) => {
+		)*/.then((res) => {
 			return new Promise((resolve, reject) => {
 				const sql = 'INSERT INTO ReturnOrder(RETURNDATE, RESTOCKORDERID) VALUES(?, ?);';
 				const returnDate = dayjs(data.returnDate);
-				const issueDate = dayjs.unix(res).format('YYYY/MM/DD HH:mm');
+				const issueDate = dayjs.unix(res);
 
-				if (!returnDate.isValid() || returnDate.isBefore(issueDate))
+				if (!returnDate.isValid() /*|| returnDate.isBefore(issueDate)*/)
 					return reject("Wrong data");
 
 				this.db.run(sql, [returnDate.unix(), data.restockOrderId], function (err) {
@@ -119,10 +119,10 @@ class ReturnOrderDAO {
 			this.getReturnItemsR(res, 0)
 		);
 	}
-	async get(id) {
+	async get(orderId) {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT id, returnDate, restockOrderId FROM ReturnOrder WHERE id = ?;';
-			id = parseInt(id);
+			let id = parseInt(orderId);
 
 			if (!id)
 				return reject("Wrong data");
@@ -135,7 +135,7 @@ class ReturnOrderDAO {
 				else
 					resolve(new ReturnOrder(row));
 			});
-		}).then((order) => 
+		}).then((order) =>
 			this.getReturnItemsR([order], 0)
 		).then((res) => {
 			let data = res[0];
