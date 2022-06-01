@@ -24,6 +24,5 @@
     "test": "node_modules/.bin/jest --runInBand --coverage > ./unitTestResult.txt",
     "acceptanceTest": "npx mocha --spec acceptanceTest/testEzWhAPI.js --reporter mochawesome --timeout 10000 --exit",
     "totalcoverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha test --timeout 10000 --exit"
- 
   }
 }

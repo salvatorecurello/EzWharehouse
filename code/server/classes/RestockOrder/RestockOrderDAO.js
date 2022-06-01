@@ -61,9 +61,9 @@ class RestockOrderDAO {
 			const sql = 'SELECT id, issueDate, supplierId, state FROM RestockOrder WHERE id = ?;';
 			id = parseInt(id);
 
-			if (!id)
+			if (!id){
 				return reject("Wrong data");
-
+			}
 			this.db.get(sql, [id], (err, row) => {
 				let res = [];
 
@@ -161,8 +161,9 @@ class RestockOrderDAO {
 			const sql = 'SELECT COUNT(*) as num FROM SKU WHERE id = ?;';
 			let skuId = parseInt(skuItems[i].SKUId);
 
-			if (!skuId)
-				reject("Wrong data");
+			if (!skuId){
+				reject("Wrong data");				
+			}
 
 			this.db.get(sql, [skuId], (err, row) => {
 				if (err)
@@ -176,15 +177,17 @@ class RestockOrderDAO {
 			return new Promise((resolve, reject) => {
 				const sql = 'SELECT COUNT(*) as num FROM SKUItem WHERE rfid = ?';
 
-				if (!(typeof skuItems[i].rfid == 'string'))
+				if (!(typeof skuItems[i].rfid == 'string')){
 					return reject("Wrong data");
+				}
 
 				this.db.get(sql, [skuItems[i].rfid], (err, row) => {
-					if (err)
+					if (err){
 						reject(err);
-					else if (row.num != 0)
-						reject("Wrong data");
-					else
+/*					}else if (row.num != 0){
+						console.log("sono qui e");
+						reject("Wrong data");*/
+					}else
 						resolve();
 				});
 			});

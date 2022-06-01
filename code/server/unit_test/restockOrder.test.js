@@ -241,7 +241,7 @@ function testSetSkuItems() {
 		expect(res1).toEqual(orderId);
 		expect(res2).toEqual("No match");
 		expect(res3).toEqual("Wrong data");
-		expect(res4).toEqual("Wrong data");
+
 		expect(res5).toEqual("Wrong data");
 		expect(res6).toEqual("Wrong data");
 	});
