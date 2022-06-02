@@ -56,14 +56,14 @@ class RestockOrderDAO {
 			});
 		});
 	}
-	getOrder(id) {
+	getOrder(orderId) {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT id, issueDate, supplierId, state FROM RestockOrder WHERE id = ?;';
-			id = parseInt(id);
+			let id = parseInt(orderId);
 
-			if (!id)
+			if (!id){
 				return reject("Wrong data");
-
+			}
 			this.db.get(sql, [id], (err, row) => {
 				let res = [];
 
@@ -161,8 +161,9 @@ class RestockOrderDAO {
 			const sql = 'SELECT COUNT(*) as num FROM SKU WHERE id = ?;';
 			let skuId = parseInt(skuItems[i].SKUId);
 
-			if (!skuId)
-				reject("Wrong data");
+			if (!skuId){
+				reject("Wrong data");				
+			}
 
 			this.db.get(sql, [skuId], (err, row) => {
 				if (err)
@@ -172,23 +173,25 @@ class RestockOrderDAO {
 				else
 					resolve();
 			});
-		}).then(() => {
+		})/*.then(() => {
 			return new Promise((resolve, reject) => {
 				const sql = 'SELECT COUNT(*) as num FROM SKUItem WHERE rfid = ?';
 
-				if (!(typeof skuItems[i].rfid == 'string'))
+				if (!(typeof skuItems[i].rfid == 'string')){
 					return reject("Wrong data");
+				}
 
 				this.db.get(sql, [skuItems[i].rfid], (err, row) => {
-					if (err)
+					if (err){
 						reject(err);
-					else if (row.num != 0)
+/*					}else if (row.num != 0){
+						console.log("sono qui e");
 						reject("Wrong data");
-					else
+					}else
 						resolve();
 				});
 			});
-		}).then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
+		})*/.then(() => this.checkSKUItemsR(orderId, skuItems, i + 1));
 	}
 	checkSKUItems(order, skuItems) {
 		if (order.State != 2 || skuItems == undefined)
@@ -255,7 +258,7 @@ class RestockOrderDAO {
 		return new Promise((resolve, reject) => {
 			const sql = 'SELECT id FROM User WHERE type = "supplier" and id = ?';
 
-			if (!parseInt(data.supplierId))
+			if (!data || !parseInt(data.supplierId))
 				return reject("Wrong data");
 
 			this.db.get(sql, [data.supplierId], (err, row) => {
@@ -379,16 +382,17 @@ class RestockOrderDAO {
 	}
 
 	//UPDATE
-	setState(id, state) {
+	setState(orderId, state) {
 		return new Promise((resolve, reject) => {
 			const sql = 'UPDATE RestockOrder SET state = ? WHERE ID = ?;';
-			let i;
+			let i, id = parseInt(orderId);
+
+			if (!id || !state)
+				return reject("Wrong data");
 
 			for (i = 0; i < RestockOrder.states.length && state != RestockOrder.states[i]; i++);
 
-			id = parseInt(id);
-
-			if (!id || i >= RestockOrder.states.length)
+			if (i >= RestockOrder.states.length)
 				return reject("Wrong data");
 
 			this.db.run(sql, [i + 1, id], function (err) {
