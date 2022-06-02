@@ -26,15 +26,12 @@ require('./classes/SKUItem/SKUItemAPI.js')(app);
 require('./classes/TestDescriptor/TestDescriptorAPI.js')(app);
 require('./classes/TestResult/TestResultAPI.js')(app);
 require('./classes/User/UserAPI.js')(app);
+db.createTables();
+db.createDefaultUsers();
+app.listen(port, () => {
+console.log(`Server listening at http://localhost:${port}`);
+});
 
-
-Promise.all(db.createTables()).then(() => {
-  Promise.all(db.createDefaultUsers()).then(() => {
-    app.listen(port, () => {
-      console.log(`Server listening at http://localhost:${port}`);
-    });
-  })
-})
 
 
 
