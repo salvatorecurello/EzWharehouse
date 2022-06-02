@@ -47,8 +47,12 @@ module.exports = function(app){
     app.post('/api/sku', async function (req, res) {
         try {
             //if(req.session.loggedin && req.session.user.type=="manager"){
-            if (req.body.description != undefined && req.body.weight != undefined && req.body.volume != undefined && req.body.notes != undefined && req.body.price != undefined && req.body.availableQuantity != undefined) {
-                if(req.body.description==="" || req.body.notes==="" || typeof req.body.weight!="number" || !Number.isInteger(req.body.weight) || typeof req.body.volume!="number" || !Number.isInteger(req.body.volume) || typeof req.body.price!="number" || typeof req.body.availableQuantity!="number" || !Number.isInteger(req.body.availableQuantity) || req.body.weight<0 || req.body.volume<0 || req.body.price<0 || req.body.availableQuantity<0){
+            if (req.body.id != undefined || req.body.description != undefined && req.body.weight != undefined && req.body.volume != undefined && req.body.notes != undefined && req.body.price != undefined && req.body.availableQuantity != undefined) {
+                if(!Number.isInteger(req.body.id) && req.body.description==="" || req.body.notes==="" || typeof req.body.weight!="number" || !Number.isInteger(req.body.weight) || typeof req.body.volume!="number" || !Number.isInteger(req.body.volume) || typeof req.body.price!="number" || typeof req.body.availableQuantity!="number" || !Number.isInteger(req.body.availableQuantity) || req.body.weight<0 || req.body.volume<0 || req.body.price<0 || req.body.availableQuantity<0){
+                    return res.status(422).end();
+                }
+                const sku = await skudao.getSKUByID(req.body.id);
+                if(sku!=null){
                     return res.status(422).end();
                 }
                 await skudao.storeSKU(req.body);

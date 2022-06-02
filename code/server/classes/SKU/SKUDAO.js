@@ -10,8 +10,8 @@ class SKUDAO {
 
     storeSKU(data) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO SKU(DESCRIPTION, WEIGHT, VOLUME, NOTE, PRICE, AVAILABLEQUANTITY) VALUES(?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [data.description, data.weight, data.volume, data.notes, data.price, data.availableQuantity], function(err) {
+            const sql = 'INSERT INTO SKU(ID, DESCRIPTION, WEIGHT, VOLUME, NOTE, PRICE, AVAILABLEQUANTITY) VALUES(?, ?, ?, ?, ?, ?, ?)';
+            this.db.run(sql, [parseInt(data.id), data.description, data.weight, data.volume, data.notes, data.price, data.availableQuantity], function(err) {
                 if (err) {
                   reject(err);
                   return;
