@@ -160,7 +160,7 @@ module.exports = function(app){
                         return res.status(204).end();
                     }
                 }
-                return res.status(422).end();
+                return res.status(204).end();
             }
             return res.status(422).end();
             //}else{
