@@ -196,7 +196,7 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS TestDescriptor (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDURE VARCHAR, SKUID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS RestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUEDATE INTEGER, STATE INTEGER, SUPPLIERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS SKUItemsRestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RESTOCKORDERID INTEGER, SKUITEMID VARCHAR, SKUID INTEGER)');
-
+        sql.push("PRAGMA busy_timeout = 10000");
         sql.forEach((x) => {
             promises.push(new Promise((resolve, reject) => {
                 this.db.run(x, [], (err) => {
