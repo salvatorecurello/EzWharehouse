@@ -7,6 +7,7 @@ class DAO {
         this.db = new sqlite.Database("EzWh.db", (err) => {
             if (err) throw err;
         });
+        this.db.get("PRAGMA busy_timeout = 10000");
     }
 
     deleteAll() {
@@ -183,7 +184,6 @@ class DAO {
     createTables() {
         const sql = [];
         let promises = [];
-        sql.push("PRAGMA busy_timeout = 10000");
         sql.push('CREATE TABLE IF NOT EXISTS User (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR, SURNAME VARCHAR, TYPE VARCHAR, PASSWORD VARCHAR, EMAIL VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS SKU (ID INTEGER PRIMARY KEY,DESCRIPTION VARCHAR, WEIGHT INTEGER, VOLUME INTEGER, POSITION VARCHAR, AVAILABLEQUANTITY INTEGER, PRICE FLOAT, NOTE VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS TransportNote (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, KEY VARCHAR, NOTE VARCHAR)');
