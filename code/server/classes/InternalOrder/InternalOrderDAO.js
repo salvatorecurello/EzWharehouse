@@ -7,6 +7,7 @@ class InternalOrderDAO {
         this.db = new this.sqlite.Database("EzWh.db", (err) => {
             if (err) throw err;
         });
+        this.db.get("PRAGMA busy_timeout = 10000");
     }
 
     changeState(id, state) {
