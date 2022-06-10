@@ -25,19 +25,23 @@ const trDAO = new TestResultDAO();
 const RestockOrderDAO = require('../classes/RestockOrder/RestockOrderDAO');
 const RoDAO = new RestockOrderDAO();
 
-var skuId, suppId, orders = [];
+const ItemDAO = require('../classes/Item/ItemDAO');
+const iDAO = new ItemDAO();
+
+var skuId, suppId, orders, itemId = [];
 before('RestockOrder Test setup', async () => {
 	skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 	suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
 	let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });
-	let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
+	itemId = (await iDAO.storeItem({id:1, description:"a test item", price: 10.5, skuid:skuId, supplierID:suppId})).lastID;
+	let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:itemId}], supplierId: suppId };
 
 	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order).then((id) =>
-		RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "23345678901234567890123456789017", SKUId: skuId }]))
+		RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "23345678901234567890123456789017", SKUId: skuId, itemId:itemId}]))
 	));
 	orders.push(await RoDAO.store(order));
 
@@ -55,7 +59,7 @@ before('RestockOrder Test setup', async () => {
 describe('POST /api/restockOrder', () => {
 	it('should create new order', function (done) {
 		agent.post('/api/restockOrder').send(
-			{ issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId }
+			{ issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:itemId }], supplierId: suppId }
 		).then((res) => {
 			res.should.have.status(201);
 
@@ -107,7 +111,7 @@ describe('PUT /api/restockOrder/:id/skuItems', () => {
 		agent.put('/api/restockOrder/' + orders[2] + '/skuItems').send(
 			{
 				"skuItems":
-					[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+					[{ rfid: "23345678901234567890123456789015", SKUId: skuId, itemId:itemId }]
 			}
 		).then((res) => {
 
@@ -121,7 +125,7 @@ describe('PUT /api/restockOrder/:id/skuItems', () => {
 		agent.put('/api/restockOrder/-1/skuItems').send(
 			{
 				"skuItems":
-					[{ rfid: "23345678901234567890123456789015", SKUId: skuId }]
+					[{ rfid: "23345678901234567890123456789015", SKUId: skuId, itemId:itemId }]
 			}
 		).then((res) => {
 			res.should.have.status(404);
@@ -211,9 +215,11 @@ describe('GET /api/restockOrders/:id', () => {
 			res.body.products[0].description.should.equal("a product")
 			res.body.products[0].price.should.equal(10.99)
 			res.body.products[0].qty.should.equal(3)
+			res.body.products[0].itemId.should.equal(itemId);
 			res.body.skuItems.length.should.be.equal(1);
 			res.body.skuItems[0].rfid.should.equal("23345678901234567890123456789017")
 			res.body.skuItems[0].SKUId.should.equal(skuId)
+			res.body.skuItems[0].itemId.should.equal(itemId);
 			res.body.state.should.equal('COMPLETEDRETURN');
 			res.body.supplierId.should.be.equal(suppId);
 
@@ -247,7 +253,7 @@ describe('GET /api/restockOrders/:id/returnItems', () => {
 			res.body.length.should.be.equal(1);
 			res.body[0].SKUId.should.equal(skuId)
 			res.body[0].rfid.should.equal("23345678901234567890123456789017")
-
+			res.body[0].itemId.should.equal(itemId);
 			done();
 		});
 	});

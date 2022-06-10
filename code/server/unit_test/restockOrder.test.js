@@ -13,6 +13,9 @@ const tdDAO = new TestDescriptorDAO();
 const TestResultDAO = require('../classes/TestResult/TestResultDAO');
 const trDAO = new TestResultDAO();
 
+const ItemDAO = require('../classes/Item/ItemDAO');
+const iDAO = new ItemDAO();
+
 const RestockOrderDAO = require('../classes/RestockOrder/RestockOrderDAO');
 const RoDAO = new RestockOrderDAO();
 const mainDB = require("../db.js");
@@ -24,7 +27,8 @@ describe('test RestockOrder', () => {
 		let skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 		let suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
 		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });
-		let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
+		let itemId = (await iDAO.storeItem({id:3, description:"a test item for unit restock", price: 10.5, skuid:skuId, supplierID:suppId})).lastID;
+		let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:itemId }], supplierId: suppId };
 
 		await RoDAO.store(order);
 		await RoDAO.store(order);
@@ -38,7 +42,7 @@ describe('test RestockOrder', () => {
 			RoDAO.setState(id, 'TESTED')
 		);
 		await RoDAO.store(order).then((id) =>
-			RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "21345678901234567890123456789017", SKUId: skuId }]))
+			RoDAO.setState(id, 'DELIVERED').then(() => RoDAO.setSkuItems(id, [{ rfid: "21345678901234567890123456789017", SKUId: skuId, itemId:itemId }]))
 		).then((id) =>
 			RoDAO.setState(id, 'COMPLETEDRETURN')
 		);
@@ -77,25 +81,25 @@ function testStore() {
 
 		let order1 = {
 			issueDate: '2021/11/29 09:33',
-			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }],
+			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }],
 			supplierId: suppId
 		};
 
 		let order2 = {
 			issueDate: 'g',
-			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }],
+			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }],
 			supplierId: suppId
 		};
 
 		let order3 = {
 			issueDate: '2021/11/29 09:33',
-			products: [{ SKUId: -1, description: 'a product', price: 10.99, qty: 30 }],
+			products: [{ SKUId: -1, description: 'a product', price: 10.99, qty: 30, itemId:3 }],
 			supplierId: suppId
 		};
 
 		let order4 = {
 			issueDate: '2021/11/29 09:33',
-			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 30 }],
+			products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 30, itemId:3 }],
 			supplierId: -1
 		};
 
@@ -125,7 +129,7 @@ function testStore() {
 		expect(res2.transportNote).not.toBeDefined();
 		expect(res2.issueDate).toEqual('2021/11/29 09:33');
 		expect(res2.state).toEqual('ISSUED');
-		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }]);
+		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }]);
 		expect(res2.supplierId).toEqual(suppId);
 		expect(res2.skuItems).toEqual([]);
 		expect(res3).toEqual("Wrong data");
@@ -200,13 +204,13 @@ function testSetSkuItems() {
 			return res[0].id;
 		});
 		let skuItems1 = [
-			{ rfid: "21345678901234567890123456789015", SKUId: skuId }
+			{ rfid: "21345678901234567890123456789015", SKUId: skuId, itemId:3 }
 		];
 		let skuItems2 = [
-			{ rfid: "21345678901234567890123456789016", SKUId: skuId }
+			{ rfid: "21345678901234567890123456789016", SKUId: skuId, itemId:3 }
 		];
 		let skuItems3 = [
-			{ rfid: "21345678901234567890123456789015", SKUId: -1 }
+			{ rfid: "21345678901234567890123456789015", SKUId: -1, itemId:3 }
 		];
 		let orderId = await RoDAO.getAll().then((res) => {
 			for (order of res)
@@ -312,7 +316,7 @@ function testGetAll() {
 		expect(res2.id).toBeDefined();
 		expect(res2.issueDate).toEqual('2021/11/29 09:33');
 		expect(states).toContain(res2.state);
-		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }]);
+		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }]);
 		expect(res2.supplierId).toEqual(suppId);
 		expect(res2.skuItems).toBeDefined();
 	});
@@ -339,7 +343,7 @@ function testGetIssued() {
 		expect(res2.id).toBeDefined();
 		expect(res2.issueDate).toEqual('2021/11/29 09:33');
 		expect(res2.state).toEqual('ISSUED');
-		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }]);
+		expect(res2.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }]);
 		expect(res2.supplierId).toEqual(suppId);
 		expect(res2.skuItems).toBeDefined();
 	});
@@ -373,7 +377,7 @@ function testGet() {
 		expect(res1.id).not.toBeDefined();
 		expect(res1.issueDate).toEqual('2021/11/29 09:33');
 		expect(states).toContain(res1.state);
-		expect(res1.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }]);
+		expect(res1.products).toEqual([{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:3 }]);
 		expect(res1.supplierId).toEqual(suppId);
 		expect(res1.skuItems).toBeDefined();
 		expect(res2).toEqual("No match");
@@ -408,7 +412,7 @@ function testGetReturnItems() {
 			return err;
 		});
 
-		expect(res1).toEqual([{ rfid: "21345678901234567890123456789017", SKUId: skuId }]);
+		expect(res1).toEqual([{ rfid: "21345678901234567890123456789017", SKUId: skuId, itemId:3 }]);
 		expect(res2).toEqual("No match");
 		expect(res3).toEqual("Wrong data");
 		expect(res4).toEqual("Wrong data");

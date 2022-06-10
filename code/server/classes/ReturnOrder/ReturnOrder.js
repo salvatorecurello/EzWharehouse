@@ -11,6 +11,7 @@ class ReturnOrder{
     pushProducts(products){
         this.Products.push({
             SKUId: products.SKUID,
+            itemId: products.ITEMID,
             description: products.DESCRIPTION,
             price: products.PRICE,
             RFID: products.SKUITEMID

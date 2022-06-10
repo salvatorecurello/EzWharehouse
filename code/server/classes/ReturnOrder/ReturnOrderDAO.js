@@ -18,14 +18,13 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT COUNT(*) as num FROM SKUItemsRestockOrder WHERE restockOrderId = ? AND skuId = ? AND skuItemId = ?;';
+			const sql = 'SELECT COUNT(*) as num FROM SKUItemsRestockOrder WHERE restockOrderId = ? AND skuId = ? AND skuItemId = ? AND itemId = ?;';
 
-			this.db.get(sql, [orderId, products[i].SKUId, products[i].RFID], (err, row) => {
+			this.db.get(sql, [orderId, products[i].SKUId, products[i].RFID, products[i].itemId], (err, row) => {
 				if (err){
 					reject(err);
-				/*}else if (row.num == 0){
-					console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-					reject("Wrong data");*/
+				}else if (row.num == 0){
+					reject("Wrong data");
 				}else
 					resolve();
 			});
@@ -44,7 +43,7 @@ class ReturnOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT DISTINCT s.skuId, description, price, s.skuItemId FROM Product p, SKUItemsRestockOrder s, TestResult t WHERE p.orderId = s.restockOrderId AND s.skuItemId = t.skuItemId AND result = 0 AND restockOrderId = ?;';
+			const sql = 'SELECT DISTINCT s.skuId, s.itemId, description, price, s.skuItemId FROM Product p, SKUItemsRestockOrder s, TestResult t WHERE p.orderId = s.restockOrderId AND s.skuItemId = t.skuItemId AND result = 0 AND restockOrderId = ?;';
 
 			this.db.all(sql, [orders[i].RestockOrderId], (err, rows) => {
 				if (err)
