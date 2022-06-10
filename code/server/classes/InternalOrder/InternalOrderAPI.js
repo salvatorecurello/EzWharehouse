@@ -220,9 +220,9 @@ module.exports = function (app) {
                 let products = req.body.products;
                 products.forEach(async function (e) {
                     let a = await SkuItemDao.getSKUItemByRFID(e.RFID);
-                    if (a == null) { 
-                        return res.status(422).end();
-                    }
+                    // if (a == null) { 
+                    //     return res.status(422).end();
+                    // }
                 });
                 products.forEach(async function (e) {
                     let a = await SkuItemDao.getSKUItemByRFID(e.RFID);
@@ -232,9 +232,9 @@ module.exports = function (app) {
             }else if (newState=="REFUSED" || newState=="CANCELLED"){
                 products.forEach(async function (e) {
                     let a = await skuDao.getSKUByID(e.SKUId);
-                    if(a == null){
-                        return res.status(422).end();
-                    }
+                    // if(a == null){
+                    //     return res.status(422).end();
+                    // }
                 })
                 products.forEach(async function (e) {
                     let a = await skuDao.getSKUByID(e.SKUId);

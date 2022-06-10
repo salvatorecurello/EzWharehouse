@@ -6,6 +6,7 @@ class UserDAO {
         this.db = new this.sqlite.Database("EzWh.db", (err) => {
             if (err) throw err;
         });
+        this.db.get("PRAGMA busy_timeout = 10000");
     }
 
     storeUser(data) {
@@ -92,10 +93,10 @@ class UserDAO {
         });
     }
 
-    getUserFromEmail(email) {
+    getUserFromEmail(email, type) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM User WHERE EMAIL==?';
-            this.db.all(sql, [email], (err, rows) => {
+            const sql = 'SELECT * FROM User WHERE EMAIL==? AND TYPE==?';
+            this.db.all(sql, [email, type], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;

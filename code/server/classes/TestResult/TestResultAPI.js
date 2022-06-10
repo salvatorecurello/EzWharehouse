@@ -13,8 +13,8 @@ module.exports = function (app) {
             //if(req.session.loggedin && (req.session.user.type=="manager" || req.session.user.type=="qualityEmployee")){
             const rfid = req.params.rfid;
             if (rfid != undefined && rfid.length == 32 && /^\d+$/.test(rfid)) {
-                const testresults = await TestResultdao.getTestResultBySKUITEMID(rfid);
-                if (testresults.length > 0) {
+                if (await SKUItemdao.getSKUItemByRFID(rfid)!=null) {
+                    const testresults = await TestResultdao.getTestResultBySKUITEMID(rfid);
                     const data = testresults.map((r) => (r.toJson()));
                     return res.status(200).json(data);
                 }

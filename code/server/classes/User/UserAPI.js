@@ -55,7 +55,7 @@ module.exports = function (app) {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             if (req.body.username != undefined && req.body.name != undefined && req.body.surname != undefined && req.body.password != undefined && req.body.type != undefined) {
                 if (["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(req.body.type) && req.body.password.length >= 8) {
-                    const exists = await Userdao.getUserFromEmail(req.body.username);
+                    const exists = await Userdao.getUserFromEmail(req.body.username, req.body.type);
                     if (exists == null) {
                         const data = await Userdao.storeUser(req.body);
                         return res.status(201).json(data);
@@ -67,6 +67,7 @@ module.exports = function (app) {
             //}
             //return res.status(401).end();
         } catch (error) {
+            console.error(error)
             return res.status(500).end();
         }
     });
@@ -242,7 +243,7 @@ module.exports = function (app) {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             const username = req.params.username;
             if (username != undefined && req.body.oldType != undefined && req.body.newType != undefined && req.body.newType != "manager") {
-                const user = await Userdao.getUserFromEmail(username);
+                const user = await Userdao.getUserFromEmail(username, req.body.oldType);
                 if (user != null) {
                     if (user.type == req.body.oldType) {
                         if (["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(req.body.newType)) {
@@ -271,14 +272,17 @@ module.exports = function (app) {
             //if(req.session.loggedin && req.session.user.type=="manager"){
             const username = req.params.username;
             const type = req.params.type;
-            if (username != undefined && type != undefined) {
-                const user = await Userdao.getUserFromEmail(username);
+            if (username != undefined && type != undefined && /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(username)&& ["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"].includes(type)) {
+                const user = await Userdao.getUserFromEmail(username, type);
+                console.log(user)
                 if (user != null) {
                     if (user.type == type && type != "manager") {
                         await Userdao.deleteUser(user.id);
                         return res.status(204).end();
                     }
                 }
+                return res.status(204).end();
+                
             }
             return res.status(422).end();
             //}
