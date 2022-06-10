@@ -27,7 +27,8 @@ describe('test RestockOrder', () => {
 		let skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 		let suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
 		let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestrestockorder", procedureDescription: "description for test", idSKU: skuId });
-		let itemId = (await iDAO.storeItem({id:3, description:"a test item for unit restock", price: 10.5, skuid:skuId, supplierID:suppId})).lastID;
+		await iDAO.storeItem({id:3, description:"a test item for unit restock", price: 10.5, skuid:skuId, supplierID:suppId});
+		let itemId = 3;
 		let order = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3, itemId:itemId }], supplierId: suppId };
 
 		await RoDAO.store(order);
@@ -411,7 +412,6 @@ function testGetReturnItems() {
 		let res4 = await RoDAO.getReturnItems('g').catch((err) => {
 			return err;
 		});
-
 		expect(res1).toEqual([{ rfid: "21345678901234567890123456789017", SKUId: skuId, itemId:3 }]);
 		expect(res2).toEqual("No match");
 		expect(res3).toEqual("Wrong data");

@@ -356,7 +356,7 @@ class RestockOrderDAO {
 	async getReturnItems(id) {
 		return this.getOrder(id).then((orders) => {
 			return new Promise((resolve, reject) => {
-				const sql = 'SELECT DISTINCT s.skuItemId, skuId FROM TestResult t, SKUItemsRestockOrder s WHERE s.skuItemId = t.skuItemId AND restockOrderId = ? AND result = 0;';
+				const sql = 'SELECT DISTINCT s.skuItemId, s.itemId, skuId FROM TestResult t, SKUItemsRestockOrder s WHERE s.skuItemId = t.skuItemId AND restockOrderId = ? AND result = 0;';
 				let order = orders[0];
 
 				if (order.State != 4)
@@ -372,6 +372,7 @@ class RestockOrderDAO {
 							rows.forEach((row) => {
 								res.push({
 									SKUId: row.SKUID,
+									itemId: row.ITEMID,
 									rfid: row.SKUITEMID
 								});
 							});

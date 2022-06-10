@@ -1,0 +1,233 @@
+Server listening at http://localhost:3001
+
+
+Cleaning DB
+  POST /api/internalOrders
+    ✔ Creates a new internal order in state = ISSUED
+    ✔ Creates a new internal order in state = ISSUED with error 422 for supplier does not found
+
+  GET /api/internalOrders
+    ✔ Return an array containing all internal orders
+
+  GET /api/internalOrdersIssued
+    ✔ Return an array containing all internal orders in state = ISSUED
+
+  GET /api/internalOrdersAccepted
+    ✔ Return an array containing all internal orders in state = ACCEPTED
+
+  GET /api/internalOrders
+    ✔ Return an internal order, given its id
+
+  PUT /api/internalOrders
+    ✔ Modify the state of an internal order, given its id. If newState is = COMPLETED an array of RFIDs is sent
+
+  DELETE /api/internalOrders
+    ✔ Delete an item receiving its id
+    ✔ Delete an item receiving an id unvalidated
+
+  POST /api/item
+    ✔ Creates a new Item without Error
+    ✔ Creates a new Item with status 422
+    ✔ Creates a new Item with status 404
+
+  GET /api/items
+    ✔ Return an array containing all Items
+
+  GET /api/items
+    ✔ Return an item, given its id without error
+    ✔ Return an item, given its id with error 404
+    ✔ Return an item, given its id with error 422 for id not valid
+
+  PUT /api/item
+    ✔ Modify an existing item
+
+  DELETE /api/items
+    ✔ Delete an item receiving its id: 1234 without error
+    ✔ Delete an item receiving its id with error 422 parsing id
+    ✔ Delete an item receiving its id with error 422 for not found
+
+  POST /api/position
+    ✔ Creates a new Position
+    ✔ Creates a new Position with different PositionID
+    ✔ Creates a new Position with error 422
+
+  GET /api/positions
+    ✔ Return an array containing all positions
+
+  PUT /api/position
+    ✔ Modify a position identified by positionID: 123412341234
+    ✔ Modify a position with error 404 not found position
+    ✔ Modify a position with error 422 not valid Weigh and Volume
+
+  PUT /api/position/changeID
+    ✔ Modify the positionID of a position, given its old positionID: 123412341234
+    ✔ Modify the positionID of a position, given its old positionID: 123412341234
+
+  DELETE /api/position
+    ✔ Delete a position receiving its positionID: 123412341234
+    ✔ Delete a position receiving a position not found
+
+  POST /api/restockOrder
+    ✔ should create new order
+    ✔ should not create new order
+
+  PUT /api/restockOrder/:id
+    ✔ should set order.state to newState 
+    ✔ should not set order.state to newState 
+    ✔ should not set order.state to newState 
+
+  PUT /api/restockOrder/:id/skuItems
+    ✔ should add skuItems to order
+    ✔ should not add skuItems to order
+    ✔ should not add skuItems to order
+
+  PUT /api/restockOrder/:id/transportNote
+    ✔ should add transportNote to order
+    ✔ should not add transportNote to order
+    ✔ should not add transportNote to order
+
+  GET /api/restockOrders
+    ✔ should get all orders
+
+  GET /api/restockOrdersIssued
+    ✔ should get issued orders
+
+  GET /api/restockOrders/:id
+    ✔ should get order
+    ✔ should not get order
+    ✔ should not get order
+
+  GET /api/restockOrders/:id/returnItems
+    ✔ should get returnItems
+    ✔ should not get returnItems
+    ✔ should not get returnItems
+
+  DELETE /api/restockOrder/:id
+    ✔ should delete an order
+    ✔ should not delete order
+    ✔ should not delete order
+
+  POST /api/returnOrder
+    ✔ should create new order
+    ✔ should not create new order
+
+  GET /api/returnOrders
+    ✔ should get all orders
+
+  GET /api/returnOrders/:id
+    ✔ should get order
+    ✔ should not get order
+    ✔ should not get order
+
+  DELETE /api/returnOrder/:id
+    ✔ should delete an order
+    ✔ should not delete order
+    ✔ should not delete order
+
+  POST /api/sku
+    ✔ should add new sku
+
+  GET /api/skus
+    ✔ should get all skus
+
+  GET /api/skus/:id
+    ✔ should get the sku with id
+
+  PUT /api/sku/:id
+    ✔ should edit the sku with id
+
+  PUT /api/sku/:id/position
+    ✔ should edit position of sku with id
+
+  DELETE /api/skus/:id
+    ✔ should delete the sku with id
+
+  POST /api/skuitem
+    ✔ should add new skuitem
+
+  GET /api/skuitems
+    ✔ should get all skuitems
+
+  GET /api/skuitems/:rfid
+    ✔ should get the skuitem with rfid
+
+  GET /api/skuitems/sku/:id
+    ✔ should get the skuitems of sku with id
+
+  PUT /api/skuitems/:rfid
+    ✔ should edit the skuitem with rfid
+
+  DELETE /api/skuitems/:rfid
+    ✔ should delete the skuitem with rfid
+
+  POST /api/testDescriptor
+    ✔ should add new test descriptor
+
+  GET /api/testDescriptors
+    ✔ should get all test descriptors
+
+  GET /api/testDescriptors/:id
+    ✔ should get the test descriptor with id
+
+  PUT /api/testDescriptors/:id
+    ✔ should edit the test descriptor with id
+
+  DELETE /api/testDescriptors/:id
+    ✔ should delete the test descriptor with id
+
+  POST /api/skuitems/testResult
+    ✔ should add new positive test result
+    ✔ should add new negative test result
+
+  GET /api/skuitems/:rfid/testResults
+    ✔ should get all test results for rfid
+
+  GET /api/skuitems/:rfid/testResults/:id
+    ✔ should get test results id for rfid
+
+  PUT /api/skuitems/:rfid/testResults/:id
+    ✔ should edit test results id for rfid
+
+  DELETE /api/skuitems/:rfid/testResults/:id
+    ✔ should delete test results id for rfid
+
+  POST /api/newUser
+    ✔ should add new user
+
+  GET /api/users
+    ✔ should return added user without managers
+
+  GET /api/suppliers
+    ✔ should return only suppliers
+
+  GET /api/userinfo
+    ✔ should return data of logged in user
+
+  POST /api/logins
+    ✔ should login manager
+    ✔ should login customer
+    ✔ should login supplier
+    ✔ should login clerk
+    ✔ should login quality employee
+    ✔ should login delivery employee
+
+  GET /api/logout
+    ✔ should logout user
+
+  PUT /api/users/:username
+    ✔ should edit user type
+
+  DELETE /api/users/:username/:type
+User {
+  id: 11,
+  name: 'luca2',
+  surname: 'ardito2',
+  type: 'supplier',
+  password: '5f4dcc3b5aa765d61d8327deb882cf99',
+  email: 'luca3ardito3@ezwh.it'
+}
+    ✔ should delete user
+
+
+  98 passing (595ms)
+

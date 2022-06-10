@@ -30,7 +30,7 @@ const RoDAO = new ReturnOrderDAO();
 const ItemDAO = require('../classes/Item/ItemDAO');
 const iDAO = new ItemDAO();
 
-var skuId, roId, orders, itemId = [];
+var skuId, roId, itemId, orders = [];
 before('ReturnOrder Test setup', async () => {
 	skuId = await sDAO.storeSKU({ description: "testSKUreturnOrder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 	let suppId = await uDAO.storeUser({ username: "provareturnorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });

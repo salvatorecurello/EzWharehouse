@@ -28,7 +28,7 @@ const RoDAO = new RestockOrderDAO();
 const ItemDAO = require('../classes/Item/ItemDAO');
 const iDAO = new ItemDAO();
 
-var skuId, suppId, orders, itemId = [];
+var skuId, suppId, itemId, orders = [];
 before('RestockOrder Test setup', async () => {
 	skuId = await sDAO.storeSKU({ description: "testSKUrestockorder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 	suppId = await uDAO.storeUser({ username: "provarestockorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
