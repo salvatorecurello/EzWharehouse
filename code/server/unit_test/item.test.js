@@ -9,10 +9,10 @@ describe('test Items', () => {
     });
     testNewItem(2, 'description2', 3.00, 4, 1);
     getItems();
-    getItemFromId(2);
-    updateAnItem({id: 1, description: 'new_description', price: 4.00, skuid: 2, supplierID: 1});
+    getItemFromId(2, 1);
+    updateAnItem({id: 1, description: 'new_description', price: 4.00, skuid: 2, supplierID: 5});
     getItemsOfSupplier(1);
-    deleteItem(1); 
+    deleteItem(1, 5); 
 });
 
 function testNewItem(new_id, new_description, new_price, new_skuid, new_supplierid ) {
@@ -23,7 +23,7 @@ function testNewItem(new_id, new_description, new_price, new_skuid, new_supplier
         var res = await itemDao.getItems();
         expect(res.length).toBeGreaterThanOrEqual(1);
         
-        res = await itemDao.getItemByID(new_id);
+        res = await itemDao.getItemByIDAndSupplierID(new_id, new_supplierid);
 
         expect(res.id).toStrictEqual(new_id);
         expect(res.description).toStrictEqual(new_description);
@@ -42,9 +42,9 @@ function getItems() {
 }
 
 
-function getItemFromId(id) {
+function getItemFromId(id, supplierid) {
     test('get Item from position ID', async () => {
-        var res = await itemDao.getItemByID(id);
+        var res = await itemDao.getItemByIDAndSupplierID(id, supplierid);
         expect(res).not.toBeNull();
         expect(res.id).toStrictEqual(id);
     });
@@ -53,10 +53,11 @@ function getItemFromId(id) {
 
 function updateAnItem(item) {
     test('update all fields of item', async () => {
-        let res_old = await itemDao.getItemByID(item.id);
+        let res_old = await itemDao.getItemByIDAndSupplierID(item.id, item.supplierID);
         await itemDao.updateItem(item);
-        res_new = await itemDao.getItemByID(item.id);
+        res_new = await itemDao.getItemByIDAndSupplierID(item.id, item.supplierID);
         expect(res_new).not.toBeNull();
+        expect(res_old).not.toBeNull();
         expect(res_old.ID).toStrictEqual(res_new.ID);
         expect(res_old.description).not.toStrictEqual(res_new.DESCRIPTION);
         expect(res_old.price).not.toStrictEqual(res_new.PRICE)
@@ -66,12 +67,12 @@ function updateAnItem(item) {
     });
 }
 
-function deleteItem(id) {
+function deleteItem(id, supplierid) {
     test('delete item', async () => {
-        let res_old = await itemDao.getItemByID(id);
+        let res_old = await itemDao.getItemByIDAndSupplierID(id, supplierid);
         expect(res_old).not.toBeNull();
         await itemDao.deleteItem(id);
-        let res_new = await itemDao.getItemByID(id);
+        let res_new = await itemDao.getItemByIDAndSupplierID(id, supplierid);
         expect(res_new).toBeNull();
     });
 }
@@ -79,6 +80,6 @@ function deleteItem(id) {
 function getItemsOfSupplier(supplierID) {
     test('get items of a supplier', async () => {
         var res = await itemDao.getItemsBySupplier(supplierID);
-        expect(res.length).toStrictEqual(2);
+        expect(res.length).toStrictEqual(1);
     });
 }

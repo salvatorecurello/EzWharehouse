@@ -70,10 +70,28 @@ class ItemDAO {
         });
     }
 
-    getItemByID(id) {
+    // getItemByID(id) {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'SELECT * FROM Item WHERE ID == ?';
+    //         this.db.all(sql, [id], function(err, rows) {
+    //             if (err) {
+    //                 reject(err);
+    //             }
+    //             if(rows.length==0){
+    //                 resolve(null);
+    //             }else{
+    //                 resolve(new Item(rows[0]));
+    //             }
+                
+    //         });
+    //     });
+
+    // }
+
+    getItemByIDAndSupplierID(itemId, supplierId) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Item WHERE ID == ?';
-            this.db.all(sql, [id], function(err, rows) {
+            const sql = 'SELECT * FROM Item WHERE ID == ? and SUPPLIERID == ?';
+            this.db.all(sql, [itemId, supplierId], function(err, rows) {
                 if (err) {
                     reject(err);
                 }
@@ -87,6 +105,7 @@ class ItemDAO {
         });
 
     }
+
 
     deleteItem(itemID) {
         return new Promise((resolve, reject) => {
@@ -103,6 +122,8 @@ class ItemDAO {
         });
 
     }
+
+
 }
 
 module.exports = ItemDAO;
