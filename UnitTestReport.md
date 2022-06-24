@@ -1873,17 +1873,20 @@ Version: 1.0
 
 
 
- ### **Class *ItemDao* - method *getItemByID***
+ ### **Class *ItemDao* - method *getItemByIDAndSupplierID***
 
-**Criteria for method *getItemByID*:**
+**Criteria for method *getItemByIDAndSupplierID*:**
 
  - The given ItemID is in database
+ - The given supplierID is valid
 
-**Predicates for method *getItemByID*:**
+**Predicates for method *getItemByIDAndSupplierID*:**
 
 | Criteria                        | Predicate |
 | ------------------------------- | --------- |
 | The given ItemID is in database | Yes       |
+|                                 | No        |
+| The given supplierID is valid   | Yes       |
 |                                 | No        |
 
 
@@ -1903,6 +1906,13 @@ Version: 1.0
 | ------------------------------- | --------------- | --------------------------------- | -------------- |
 | Yes                             | Valid           | T1(Existing ID in database; Item) | getItemFromId  |
 | No                              | Invalid         | T2(ID is not in database; Null)   | "              |
+
+| The given ItemID is in database | The given supplierID is valid | Valid / Invalid | Description of the test case | Jest test case |
+| -------------------- | ------------------------- | --------------- | ---------------------------- | -------------- |
+| Yes                  | Yes                       | Valid           | T1(Existing tuple in database; Item)        | getItemFromId    |
+| Yes                  | No                        | Invalid         | T2(Not existing tuple in database; Error)          | "              |
+| No                   | Yes                       | Invalid         | T3(Not existing tuple in database; Error)          | "              |
+| No                   | No                        | Invalid         | T4(Not existing tuple in database; Error)          | "              |
 
 
 

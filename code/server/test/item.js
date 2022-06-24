@@ -59,21 +59,21 @@ describe("GET /api/items", function () {
 
 describe("GET /api/items", function () {
     it('Return an item, given its id without error', function (done) {
-        agent.get("/api/items/1234")
+        agent.get("/api/items/1234/"+users[0])
             .then(function (res) {
                 res.should.have.status(200);
                 done();
             })
     })
     it('Return an item, given its id with error 404', function (done) {
-        agent.get("/api/items/dsaddw")
+        agent.get("/api/items/dsaddw/1")
             .then(function (res) {
                 res.should.have.status(404);
                 done();
             })
     })
     it('Return an item, given its id with error 422 for id not valid', function (done) {
-        agent.get("/api/items/-1")
+        agent.get("/api/items/-1/1")
             .then(function (res) {
                 res.should.have.status(422);
                 done();
@@ -86,7 +86,7 @@ describe("PUT /api/item", function () {
     let newDescr = 'a new sku';
     let newPri = 10.99;
     it('Modify an existing item', function (done) {
-        agent.put("/api/item/1234")
+        agent.put("/api/item/1234/"+users[0])
             .send({ newDescription: newDescr, newPrice: newPri })
             .then(function (res) {
                 res.should.have.status(200);
@@ -97,10 +97,10 @@ describe("PUT /api/item", function () {
 
 describe("DELETE /api/items", function () {
     it('Delete an item receiving its id: 1234 without error', function (done) {
-        agent.delete("/api/items/1234")
+        agent.delete("/api/items/1234/"+users[0])
             .then(function (res) {
                 res.should.have.status(204);
-                agent.get("/api/items/1234")
+                agent.get("/api/items/1234/"+users[0])
                     .then(function (res) {
                         res.should.have.status(404);
                         done();
@@ -108,14 +108,14 @@ describe("DELETE /api/items", function () {
             })
     })
     it('Delete an item receiving its id with error 422 parsing id', function (done) {
-        agent.delete("/api/items/dsfsdfdsfs")
+        agent.delete("/api/items/dsfsdfdsfs/1")
             .then(function (res) {
                 res.should.have.status(422);
                 done();
             })
     })
     it('Delete an item receiving its id with error 422 for not found', function (done) {
-        agent.delete("/api/items/324243422112")
+        agent.delete("/api/items/324243422112/1")
             .then(function (res) {
                 res.should.have.status(422);
                 done();

@@ -17,14 +17,20 @@ module.exports = function (app) {
         }
     });
 
-    app.get('/api/items/:id', async function (req, res) {
+    app.get('/api/items/:id/:supplierid', async function (req, res) {
         try {
             const id = req.params.id;
+            const supplierId = req.params.supplierid;
             
             if (id < 0 || id == 'null') {
                 return res.status(422).end();
             }
-            const result = await ItemDao.getItemByID(id);
+
+            if (supplierId < 0 || supplierId == 'null') {
+                return res.status(422).end();
+            }
+
+            const result = await ItemDao.getItemByIDAndSupplierID(id, supplierId);
             if (result == undefined)
                 return res.status(404).end();
 
@@ -54,7 +60,7 @@ module.exports = function (app) {
                 return res.status(404).end();
             }
 
-            let i = await ItemDao.getItemByID(id);
+            let i = await ItemDao.getItemByIDAndSupplierID(id, supplierID);
             if (i != undefined) {
                 return res.status(422).end();
             }
@@ -92,10 +98,12 @@ module.exports = function (app) {
         }
     });
 
-    app.put('/api/item/:id', async function (req, res) {
+    app.put('/api/item/:id/:supplierid', async function (req, res) {
         try {
             const id = parseInt(req.params.id);
-            const itemSelected = await ItemDao.getItemByID(id);
+            const supplierId = req.params.supplierid;
+
+            const itemSelected = await ItemDao.getItemByIDAndSupplierID(id, supplierId);
 
             if (itemSelected == undefined)
                 return res.status(404).end();
@@ -119,13 +127,15 @@ module.exports = function (app) {
         }
     });
 
-    app.delete('/api/items/:id', async function (req, res) {
+    app.delete('/api/items/:id/:supplierid', async function (req, res) {
         try {
             const itemId = parseInt(req.params.id);
-            if (itemId == undefined) {
+            const supplierId = req.params.supplierid;
+            
+            if (itemId == undefined || supplierId == undefined) {
                 return res.status(422).end();
             }
-            const itemSelected = await ItemDao.getItemByID(itemId);
+            const itemSelected = await ItemDao.getItemByIDAndSupplierID(itemId, supplierId);
             if (itemSelected == undefined) {
                 return res.status(422).end();
             }

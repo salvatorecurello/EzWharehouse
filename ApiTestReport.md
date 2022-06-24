@@ -119,7 +119,6 @@ Integration sequence: **Bottom Up**
 | 2.3         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                                               |
 | 2.4         | FR3.1.1  FR3.1.4                    | "PUT /api/position"                                                                                                               |
 | 2.5         | FR3.1.2                             | "DELETE /api/position"                                                                                                            |
-| 3.1         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers" "POST /api/restockOrder" "PUT /api/restockOrder/:id/skuItems"                                                |
 | 3.2         | FR5.1 FR5.2 FR5.5 FR1.3             | "GET /api/suppliers" "POST /api/restockOrder" "PUT /api/restockOrder/:id/skuItems"                                                |
 | 4.1         | FR1.1                               | "POST /api/newUser"                                                                                                               |
 | 4.2         | FR1.1                               | "PUT /api/users/:username"                                                                                                        |

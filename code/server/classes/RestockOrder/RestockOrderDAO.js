@@ -34,12 +34,12 @@ class RestockOrderDAO {
 			});
 		}).then((p) => {
 			return new Promise((resolve, reject) => {
-				const sql = 'INSERT INTO Product(ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?);';
+				const sql = 'INSERT INTO Product(ORDERID, SKUID, ITEMID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?);';
 
 				if (!(typeof p.description == 'string') || !parseFloat(p.price) || !parseInt(p.qty))
 					return reject("Wrong data");
 
-				this.db.run(sql, [orderId, p.SKUId, p.description, p.price, p.qty], function (err) {
+				this.db.run(sql, [orderId, p.SKUId, p.itemId, p.description, p.price, p.qty], function (err) {
 					if (err)
 						reject(err);
 					else
@@ -87,7 +87,7 @@ class RestockOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT skuId, description, price, qty FROM Product WHERE orderId = ?;';
+			const sql = 'SELECT skuId, itemId, description, price, qty FROM Product WHERE orderId = ?;';
 
 			this.db.all(sql, [orders[i].Id], (err, rows) => {
 				if (err)
@@ -126,7 +126,7 @@ class RestockOrderDAO {
 			});
 		}).then(() => {
 			return new Promise((resolve, reject) => {
-				const sql = 'SELECT skuId, skuItemId FROM SKUItemsRestockOrder WHERE restockOrderId = ?;';
+				const sql = 'SELECT skuId, itemId, skuItemId FROM SKUItemsRestockOrder WHERE restockOrderId = ?;';
 
 				this.db.all(sql, [orders[i].Id], (err, rows) => {
 					if (err)
@@ -159,14 +159,15 @@ class RestockOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'SELECT COUNT(*) as num FROM SKU WHERE id = ?;';
+			const sql = 'SELECT COUNT(*) as num FROM Item WHERE id = ? AND skuId = ?;';
+			let itemId = parseInt(skuItems[i].itemId);
 			let skuId = parseInt(skuItems[i].SKUId);
 
-			if (!skuId){
+			if (!skuId || !itemId){
 				reject("Wrong data");				
 			}
 
-			this.db.get(sql, [skuId], (err, row) => {
+			this.db.get(sql, [itemId, skuId], (err, row) => {
 				if (err)
 					reject(err);
 				else if (row.num == 0)
@@ -209,10 +210,10 @@ class RestockOrderDAO {
 			});
 
 		return new Promise((resolve, reject) => {
-			const sql = 'INSERT INTO SKUItemsRestockOrder(RESTOCKORDERID, SKUITEMID, SKUID) VALUES(?, ?, ?);';
+			const sql = 'INSERT INTO SKUItemsRestockOrder(RESTOCKORDERID, SKUITEMID, SKUID, ITEMID) VALUES(?, ?, ?, ?);';
 			let s = skuItems[i];
 
-			this.db.run(sql, [orderId, s.rfid, s.SKUId], (err) => {
+			this.db.run(sql, [orderId, s.rfid, s.SKUId, s.itemId], (err) => {
 				if (err)
 					reject(err);
 				else
@@ -355,7 +356,7 @@ class RestockOrderDAO {
 	async getReturnItems(id) {
 		return this.getOrder(id).then((orders) => {
 			return new Promise((resolve, reject) => {
-				const sql = 'SELECT DISTINCT s.skuItemId, skuId FROM TestResult t, SKUItemsRestockOrder s WHERE s.skuItemId = t.skuItemId AND restockOrderId = ? AND result = 0;';
+				const sql = 'SELECT DISTINCT s.skuItemId, s.itemId, skuId FROM TestResult t, SKUItemsRestockOrder s WHERE s.skuItemId = t.skuItemId AND restockOrderId = ? AND result = 0;';
 				let order = orders[0];
 
 				if (order.State != 4)
@@ -371,6 +372,7 @@ class RestockOrderDAO {
 							rows.forEach((row) => {
 								res.push({
 									SKUId: row.SKUID,
+									itemId: row.ITEMID,
 									rfid: row.SKUITEMID
 								});
 							});

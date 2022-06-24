@@ -27,20 +27,24 @@ const roDAO = new RestockOrderDAO();
 const ReturnOrderDAO = require('../classes/ReturnOrder/ReturnOrderDAO');
 const RoDAO = new ReturnOrderDAO();
 
-var skuId, roId, orders = [];
+const ItemDAO = require('../classes/Item/ItemDAO');
+const iDAO = new ItemDAO();
+
+var skuId, roId, itemId, orders = [];
 before('ReturnOrder Test setup', async () => {
 	skuId = await sDAO.storeSKU({ description: "testSKUreturnOrder", weight: 100, volume: 100, notes: "notes sku", price: 10, availableQuantity: 10 });
 	let suppId = await uDAO.storeUser({ username: "provareturnorder", name: "luca", surname: "ardito2", type: "supplier", password: "password" });
 	let tdId = await tdDAO.storeTestDescriptor({ name: "testresulttestreturnorder", procedureDescription: "description for test", idSKU: skuId });
-	let ro = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
+	itemId = (await iDAO.storeItem({id:2, description:"a test item for returnOrder", price: 10.6, skuid:skuId, supplierID:suppId})).lastID;
+	let ro = { issueDate: '2021/11/29 09:33', products: [{ SKUId: skuId, itemId:itemId, description: 'a product', price: 10.99, qty: 3 }], supplierId: suppId };
 	roId = await roDAO.store(ro);
 	let order = {
 		returnDate: "2021/12/30 09:33",
-		products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
+		products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017", itemId:itemId }],
 		restockOrderId: roId
 	};
 
-	await roDAO.setState(roId, 'DELIVERED').then(() => roDAO.setSkuItems(roId, [{ rfid: "22345678901234567890123456789017", SKUId: skuId }]));
+	await roDAO.setState(roId, 'DELIVERED').then(() => roDAO.setSkuItems(roId, [{ rfid: "22345678901234567890123456789017", SKUId: skuId, itemId:itemId }]));
 
 	orders.push(await RoDAO.store(order));
 	orders.push(await RoDAO.store(order));
@@ -55,7 +59,7 @@ describe('POST /api/returnOrder', () => {
 		agent.post('/api/returnOrder').send(
 			{
 				returnDate: "2021/12/30 09:33",
-				products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017" }],
+				products: [{ SKUId: skuId, description: "a product", price: 10.99, RFID: "22345678901234567890123456789017", itemId:itemId, }],
 				restockOrderId: roId
 			}
 		).then((res) => {
@@ -97,6 +101,7 @@ describe('GET /api/returnOrders/:id', () => {
 			res.body.products[0].SKUId.should.equal(skuId)
 			res.body.products[0].description.should.equal("a product")
 			res.body.products[0].price.should.equal(10.99)
+			res.body.products[0].itemId.should.equal(itemId)
 			res.body.products[0].RFID.should.equal("22345678901234567890123456789017")
 
 

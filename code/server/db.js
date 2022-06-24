@@ -49,7 +49,7 @@ class DAO {
         const sql_Items = 'INSERT or IGNORE INTO Item(DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?,?)';
         const sql_InternalOrders = 'INSERT or IGNORE INTO InternalOrder( ISSUEDATE, STATE, CUSTOMERID) VALUES(?, ?, ?)';
         const sql_SKU = 'INSERT or IGNORE INTO Sku(ID, DESCRIPTION, WEIGHT, VOLUME, POSITION, AVAILABLEQUANTITY, PRICE, NOTE) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-        const sql_Product = 'INSERT or IGNORE INTO Product(ID, ORDERID, SKUID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql_Product = 'INSERT or IGNORE INTO Product(ID, ORDERID, SKUID, ITEMID, DESCRIPTION, PRICE, QTY) VALUES(?, ?, ?, ?, ?, ?, ?)';
         const sql_SkuItem = 'INSERT or IGNORE INTO SKUItem(RFID, SKUID , AVAILABLE, DATEOFSTOCK ) VALUES(?, ?, ?, ?)';
 
         let skuItems = [];
@@ -90,11 +90,11 @@ class DAO {
         skus.push({ id: 5, description: 'description5', weight: 20, volume: 7, position: 4, availableQuantity: 15, price: 8.00, note: 'note5' });
 
         let prods = [];
-        prods.push({ id: 1, orderid: 1, skuid: 1, description: 'description1', price: 50.00, qty: 40 });
-        prods.push({ id: 2, orderid: 2, skuid: 2, description: 'description2', price: 70.00, qty: 50 });
-        prods.push({ id: 3, orderid: 1, skuid: 3, description: 'description3', price: 40.00, qty: 30 });
-        prods.push({ id: 4, orderid: 2, skuid: 4, description: 'description4', price: 30.00, qty: 20 });
-        prods.push({ id: 5, orderid: 1, skuid: 5, description: 'description5', price: 20.00, qty: 70 });
+        prods.push({ id: 1, orderid: 1, skuid: 1, itemid:1, description: 'description1', price: 50.00, qty: 40 });
+        prods.push({ id: 2, orderid: 2, skuid: 2, itemid:2, description: 'description2', price: 70.00, qty: 50 });
+        prods.push({ id: 3, orderid: 1, skuid: 3, itemid:3, description: 'description3', price: 40.00, qty: 30 });
+        prods.push({ id: 4, orderid: 2, skuid: 4, itemid:4, description: 'description4', price: 30.00, qty: 20 });
+        prods.push({ id: 5, orderid: 1, skuid: 5, itemid:5, description: 'description5', price: 20.00, qty: 70 });
 
         skuItems.forEach((skuItem) => {
             promises.push(new Promise((resolve, reject) => {
@@ -153,7 +153,7 @@ class DAO {
 
         prods.forEach((prod) => {
             promises.push(new Promise((resolve, reject) => {
-                this.db.run(sql_Product, [prod.orderid, prod.skuid, prod.description, prod.price, prod.qty], (err) => {
+                this.db.run(sql_Product, [prod.orderid, prod.skuid, prod.description, prod.itemid, prod.price, prod.qty], (err) => {
                     if (err)
                         reject(err);
                     else
@@ -188,7 +188,7 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS SKU (ID INTEGER PRIMARY KEY,DESCRIPTION VARCHAR, WEIGHT INTEGER, VOLUME INTEGER, POSITION VARCHAR, AVAILABLEQUANTITY INTEGER, PRICE FLOAT, NOTE VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS TransportNote (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, KEY VARCHAR, NOTE VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS InternalOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUEDATE INTEGER, STATE INTEGER, CUSTOMERID INTEGER)');
-        sql.push('CREATE TABLE IF NOT EXISTS Product (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, SKUID INTEGER, DESCRIPTION VARCHAR, PRICE FLOAT, QTY INTEGER)');
+        sql.push('CREATE TABLE IF NOT EXISTS Product (ID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERID INTEGER, SKUID INTEGER, ITEMID INTGER, DESCRIPTION VARCHAR, PRICE FLOAT, QTY INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS Item (ID INTEGER PRIMARY KEY, DESCRIPTION VARCHAR, PRICE FLOAT, SKUID INTEGER, SUPPLIERID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS SKUItem (RFID VARCHAR PRIMARY KEY, SKUID INTEGER, AVAILABLE INTEGER, DATEOFSTOCK VARCHAR)');
         sql.push('CREATE TABLE IF NOT EXISTS ReturnOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RETURNDATE INTEGER, RESTOCKORDERID INTEGER)');
@@ -196,7 +196,7 @@ class DAO {
         sql.push('CREATE TABLE IF NOT EXISTS TestResult (ID INTEGER PRIMARY KEY AUTOINCREMENT, SKUITEMID VARCHAR, IDTESTDESCRIPTOR INTEGER, DATE INTEGER, RESULT INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS TestDescriptor (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PROCEDURE VARCHAR, SKUID INTEGER)');
         sql.push('CREATE TABLE IF NOT EXISTS RestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISSUEDATE INTEGER, STATE INTEGER, SUPPLIERID INTEGER)');
-        sql.push('CREATE TABLE IF NOT EXISTS SKUItemsRestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RESTOCKORDERID INTEGER, SKUITEMID VARCHAR, SKUID INTEGER)');
+        sql.push('CREATE TABLE IF NOT EXISTS SKUItemsRestockOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, RESTOCKORDERID INTEGER, SKUITEMID VARCHAR, SKUID INTEGER, ITEMID INTEGER)');
         sql.forEach((x) => {
             promises.push(new Promise((resolve, reject) => {
                 this.db.run(x, [], (err) => {

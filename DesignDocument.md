@@ -95,10 +95,10 @@ class SKU{
 class SKUItem{
 +RFID :string
 +SKUID :int
++ItemId :int
 +Available :bool
 +DateOfStock :date
 
-+void setRFID(string)
 +void setAvailable(bool)
 +void setDateOfStock(date)
 +bool getAvailable()
@@ -177,7 +177,7 @@ class RestockOrder{
 +void setIssueDate(string)
 +void setState(string)
 +void setTransportNote(string)
-+void setSkuItems(integer, integer)
++void setSkuItems(string, integer, integer)
 +date getIssueDate()
 +list getSKUItemsIDList()
 +map getTransportNote()
@@ -231,10 +231,10 @@ class WarehouseInterface{
 +void deleteTestDescriptor(integer)
 +TestDescriptor[] retrieveTestDescriptors()
 +TestDescriptor searchTestDescriptor(integer)
-+void createRestockOrder(string, integer[], integer[])
-+void modifyRestockOrder(integer, integer[], integer[])
++void createRestockOrder(string, integer[], integer[], integer[])
++void modifyRestockOrder(integer, integer[], integer[], integer[])
 +void changeStateOfRestockOrder(integer, string)
-+void addTransportNote(integer, Map)
++void addTransportNote(integer, map)
 +RestockOrder[] retrieveRestockOrders()
 +RestockOrder[] retrieveIssuedRestockOrders()
 +RestockOrder searchRestockOrder(integer)
